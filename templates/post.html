@@ -3,63 +3,61 @@
 {% block content %}
 
 <div class="container py-5">
-    <div class="mx-auto" style="max-width: 900px;">
+    <div class="mx-auto" style="max-width: 760px;">
 
         <!-- Author -->
-        <div class="d-flex align-items-center mb-4">
+        <a href="{{ url_for('user_posts', username=post.author.username) }}"
+           class="text-decoration-none">
 
-            <a href="{{ url_for('user_posts', username=post.author.username) }}">
+            <div class="d-flex align-items-center mb-4">
+
                 <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
                      class="rounded-circle me-3"
-                     width="56"
-                     height="56"
-                     style="object-fit: cover;">
-            </a>
+                     width="48"
+                     height="48"
+                     style="object-fit:cover;">
 
-            <div>
-                <div class="fw-bold fs-5 text-white">
-                    {{ post.author.username }}
+                <div>
+                    <div class="fw-bold text-white">
+                        {{ post.author.username }}
+                    </div>
+
+                    <small class="text-secondary">
+                        {{ post.date_posted.strftime('%B %d, %Y') }}
+                    </small>
                 </div>
 
-                <small class="text-secondary">
-                    {{ post.date_posted.strftime('%B %d, %Y') }}
-                </small>
             </div>
 
-        </div>
+        </a>
 
         <!-- Title -->
-        <h1 class="article-title">
+        <h1 class="article-title mb-5">
             {{ post.title }}
         </h1>
 
-        <!-- Divider -->
-        <hr class="article-divider">
-
         <!-- Content -->
         <div class="article-content">
-
             {{ post.content }}
-
         </div>
 
+        <!-- Buttons -->
         {% if current_user.is_authenticated and post.author == current_user %}
 
-        <hr class="article-divider my-5">
+        <hr class="my-5">
 
         <div class="d-flex justify-content-center gap-3 flex-wrap">
 
             <a href="{{ url_for('edit_post', post_id=post.id) }}"
-               class="btn btn-outline-light px-4 py-2">
-                ✏️ Edit Post
+               class="btn btn-outline-light px-4">
+                ✏️ Edit
             </a>
 
             <form action="{{ url_for('delete_post', post_id=post.id) }}"
                   method="POST"
                   onsubmit="return confirm('Delete this post permanently?');">
 
-                <button type="submit"
-                        class="btn btn-danger px-4 py-2">
+                <button class="btn btn-danger px-4">
                     🗑 Delete
                 </button>
 
@@ -75,66 +73,47 @@
 <style>
 
 .article-title{
-    font-size:clamp(3.5rem,6vw,5.5rem);
-    font-weight:900;
-    line-height:1.05;
-    color:#ffffff;
-    margin-bottom:2rem;
-    letter-spacing:-1px;
-}
-
-.article-divider{
-    border-color:#343943;
-    margin:2rem 0;
+    font-size:clamp(2.8rem,5vw,4.5rem);
+    font-weight:800;
+    line-height:1.1;
+    color:#fff;
 }
 
 .article-content{
     white-space:pre-wrap;
-    font-size:1.3rem;
-    line-height:2.1;
-    color:#dde3ea;
-    max-width:800px;
-    margin:0 auto;
-    word-break:break-word;
+    font-size:1.2rem;
+    line-height:2;
+    color:#d6dbe1;
 }
 
 .article-content p{
-    margin-bottom:1.8rem;
+    margin-bottom:1.6rem;
 }
 
-.article-content h1,
 .article-content h2,
 .article-content h3{
-    color:#ffffff;
     margin-top:3rem;
     margin-bottom:1rem;
     font-weight:700;
+    color:#fff;
 }
 
 .article-content img{
-    display:block;
-    max-width:100%;
-    height:auto;
-    margin:2.5rem auto;
-    border-radius:14px;
+    width:100%;
+    border-radius:12px;
+    margin:2rem 0;
 }
 
 .article-content blockquote{
-    border-left:4px solid #d94b4b;
-    padding-left:1.25rem;
-    margin:2rem 0;
+    border-left:4px solid #555;
+    padding-left:1rem;
     color:#9aa4af;
     font-style:italic;
+    margin:2rem 0;
 }
 
-.article-content ul,
-.article-content ol{
-    padding-left:2rem;
-    margin-bottom:1.5rem;
-}
-
-.article-content li{
-    margin-bottom:.75rem;
+hr{
+    border-color:#343943;
 }
 
 </style>

@@ -1,245 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "layout.html" %}
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+{% block content %}
 
-    <!-- Main CSS -->
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='main.css') }}">
+<div class="container py-5">
+    <div class="mx-auto" style="max-width: 900px;">
 
-    <link rel="icon" href="{{ url_for('static', filename='images/OIP.ico') }}">
+        <!-- Author -->
+        <div class="d-flex align-items-center mb-4">
 
-    <title>
-        {% if title %}
-            Knights - {{ title }}
-        {% else %}
-            Knights
-        {% endif %}
-    </title>
-</head>
-
-<body>
-
-<!-- ========================= -->
-<!-- NAVBAR -->
-<!-- ========================= -->
-
-<nav class="navbar navbar-expand-lg topbar">
-
-    <div class="container">
-
-        <a class="navbar-brand fw-bold"
-           href="{{ url_for('home') }}">
-            Knights
-        </a>
-
-        <div class="ms-auto d-flex align-items-center gap-4">
-
-            <a class="nav-link"
-               href="{{ url_for('home') }}">
-                HOME
+            <a href="{{ url_for('user_posts', username=post.author.username) }}">
+                <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
+                     class="rounded-circle me-3"
+                     width="56"
+                     height="56"
+                     style="object-fit: cover;">
             </a>
 
-            {% if current_user.is_authenticated %}
-
-                <a class="nav-link"
-                   href="{{ url_for('new_post') }}">
-                    CREATE
-                </a>
-
-                <a class="nav-link"
-                   href="{{ url_for('account') }}">
-                    ACCOUNT
-                </a>
-
-                <a class="nav-link text-danger"
-                   href="{{ url_for('logout') }}">
-                    LOGOUT
-                </a>
-
-            {% else %}
-
-                <a class="nav-link"
-                   href="{{ url_for('login') }}">
-                    LOGIN
-                </a>
-
-                <a class="nav-link"
-                   href="{{ url_for('register') }}">
-                    REGISTER
-                </a>
-
-            {% endif %}
-
-            <button class="btn btn-outline-light btn-sm"
-                    onclick="toggleDarkMode()">
-                🌙
-            </button>
-
-        </div>
-
-    </div>
-
-</nav>
-
-
-{% if request.endpoint != 'post' %}
-
-<div class="container mt-4">
-
-    <form action="{{ url_for('home') }}" method="GET">
-
-        <div class="search-panel">
-
-            <div class="row g-2">
-
-                <div class="col-md-9">
-                    <input
-                        type="text"
-                        name="q"
-                        class="form-control search-input"
-                        placeholder="Search blog posts..."
-                        value="{{ request.args.get('q', '') }}">
+            <div>
+                <div class="fw-bold fs-5 text-white">
+                    {{ post.author.username }}
                 </div>
 
-                <div class="col-md-2">
-                    <select class="form-select search-input" name="sort">
-                        <option value="latest">Latest</option>
-                        <option value="oldest">Oldest</option>
-                    </select>
-                </div>
-
-                <div class="col-md-1">
-                    <button type="submit" class="btn search-btn w-100">
-                        🔍
-                    </button>
-                </div>
-
+                <small class="text-secondary">
+                    {{ post.date_posted.strftime('%B %d, %Y') }}
+                </small>
             </div>
 
         </div>
 
-    </form>
+        <!-- Title -->
+        <h1 class="article-title">
+            {{ post.title }}
+        </h1>
 
+        <!-- Divider -->
+        <hr class="article-divider">
+
+        <!-- Content -->
+        <div class="article-content">
+
+            {{ post.content }}
+
+        </div>
+
+        {% if current_user.is_authenticated and post.author == current_user %}
+
+        <hr class="article-divider my-5">
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+            <a href="{{ url_for('edit_post', post_id=post.id) }}"
+               class="btn btn-outline-light px-4 py-2">
+                ✏️ Edit Post
+            </a>
+
+            <form action="{{ url_for('delete_post', post_id=post.id) }}"
+                  method="POST"
+                  onsubmit="return confirm('Delete this post permanently?');">
+
+                <button type="submit"
+                        class="btn btn-danger px-4 py-2">
+                    🗑 Delete
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endif %}
+
+    </div>
 </div>
 
-{% endif %}
+<style>
 
-{% if request.endpoint == 'post' %}
-
-<main class="container py-5">
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    {% block content %}{% endblock %}
-
-</main>
-
-{% else %}
-
-<main class="container mt-4">
-
-    <div class="row g-4">
-
-        <div class="col-lg-9">
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-        
-
-        </div>
-
-        <div class="col-lg-3">
-
-            <div class="filter-panel">
-
-                <h5 class="mb-3">Explore</h5>
-
-                <hr>
-
-                <h6>Categories</h6>
-
-                <div class="mb-3">
-                    <span class="badge bg-secondary">Python</span>
-                    <span class="badge bg-secondary">Flask</span>
-                    <span class="badge bg-secondary">Web</span>
-                </div>
-
-                <hr>
-
-                <h6>Quick Tips</h6>
-
-                <ul class="list-unstyled small text-secondary">
-                    <li>• Use the search box.</li>
-                    <li>• Sort newest or oldest.</li>
-                    <li>• Click any author to view their posts.</li>
-                </ul>
-
-                <hr>
-
-                <p class="small text-secondary mb-0">
-                    Built with Calm + Love
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</main>
-
-{% endif %}
-
-<script>
-
-function toggleDarkMode() {
-
-    document.body.classList.toggle("dark-mode");
-
-    localStorage.setItem(
-        "darkMode",
-        document.body.classList.contains("dark-mode")
-        ? "enabled"
-        : "disabled"
-    );
-
+.article-title{
+    font-size:clamp(3.5rem,6vw,5.5rem);
+    font-weight:900;
+    line-height:1.05;
+    color:#ffffff;
+    margin-bottom:2rem;
+    letter-spacing:-1px;
 }
 
-window.onload = function () {
+.article-divider{
+    border-color:#343943;
+    margin:2rem 0;
+}
 
-    if (localStorage.getItem("darkMode") === "enabled") {
+.article-content{
+    white-space:pre-wrap;
+    font-size:1.3rem;
+    line-height:2.1;
+    color:#dde3ea;
+    max-width:800px;
+    margin:0 auto;
+    word-break:break-word;
+}
 
-        document.body.classList.add("dark-mode");
+.article-content p{
+    margin-bottom:1.8rem;
+}
 
-    }
+.article-content h1,
+.article-content h2,
+.article-content h3{
+    color:#ffffff;
+    margin-top:3rem;
+    margin-bottom:1rem;
+    font-weight:700;
+}
 
-};
+.article-content img{
+    display:block;
+    max-width:100%;
+    height:auto;
+    margin:2.5rem auto;
+    border-radius:14px;
+}
 
-</script>
+.article-content blockquote{
+    border-left:4px solid #d94b4b;
+    padding-left:1.25rem;
+    margin:2rem 0;
+    color:#9aa4af;
+    font-style:italic;
+}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+.article-content ul,
+.article-content ol{
+    padding-left:2rem;
+    margin-bottom:1.5rem;
+}
 
-</body>
-</html>
+.article-content li{
+    margin-bottom:.75rem;
+}
+
+</style>
+
+{% endblock %}
