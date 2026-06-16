@@ -411,3 +411,19 @@ a{
 .dark-mode .post-content{
     color:var(--text);
 }
+.post-preview{
+    position: relative;
+    max-height: 4.8em; /* ~3 lines */
+    overflow: hidden;
+    line-height: 1.6;
+}
+
+.post-preview::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1.5em;
+    background: linear-gradient(to bottom, transparent, var(--card));
+}
