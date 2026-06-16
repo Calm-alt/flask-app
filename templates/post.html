@@ -128,53 +128,57 @@
 
 <div class="row justify-content-center">
 
-    <div class="col-lg-6 col-md-8">
+    <div class="col-12 d-flex justify-content-center">
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+        <div class="reading-panel">
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <h1 class="mb-3 text-center">{{ post.title }}</h1>
+
+            <p class="text-muted text-center mb-4">
+                Posted on {{ post.date_posted.strftime('%Y-%m-%d') }}
+            </p>
+
+            {% if current_user.is_authenticated and current_user == post.author %}
+
+            <div class="text-center mb-4">
+
+                <a href="{{ url_for('edit_post', post_id=post.id) }}"
+                   class="btn btn-primary btn-sm">
+                    ✏️ Edit
+                </a>
+
+                <form action="{{ url_for('delete_post', post_id=post.id) }}"
+                      method="POST"
+                      style="display:inline;">
+
+                    <button type="submit"
+                            class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete this post?');">
+                        🗑 Delete
+                    </button>
+
+                </form>
+
+            </div>
+
             {% endif %}
-        {% endwith %}
 
-        <h2 class="mb-3">{{ post.title }}</h2>
+            <hr>
 
-        <p class="text-muted small">
-            Posted on {{ post.date_posted.strftime('%Y-%m-%d') }}
-        </p>
+            <div class="post-content">
+                {{ post.content | replace('\n', '<br><br>') | safe }}
+            </div>
 
-        {% if current_user.is_authenticated and current_user == post.author %}
-
-        <div class="mb-3">
-
-            <a href="{{ url_for('edit_post', post_id=post.id) }}"
-               class="btn btn-primary btn-sm">
-                ✏️ Edit
-            </a>
-
-            <form action="{{ url_for('delete_post', post_id=post.id) }}"
-                  method="POST"
-                  style="display:inline;">
-
-                <button type="submit"
-                        class="btn btn-danger btn-sm"
-                        onclick="return confirm('Delete this post?');">
-                    🗑 Delete
-                </button>
-
-            </form>
-
-        </div>
-
-        {% endif %}
-
-        <hr>
-
-        <div class="post-content">
-            {{ post.content }}
         </div>
 
     </div>

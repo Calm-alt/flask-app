@@ -340,3 +340,34 @@ a{
         margin-top:10px;
     }
 }
+/* ===== Novel-style reading page ===== */
+
+.reading-panel {
+    max-width: 760px;
+    width: 100%;
+    margin: 30px auto;
+    padding: 45px;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.post-content {
+    font-size: 1.15rem;
+    line-height: 2;
+    text-align: justify;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.post-content br {
+    line-height: 2;
+}
+
+.dark-mode .reading-panel {
+    background: #1f1f1f;
+}
+
+.dark-mode .post-content {
+    color: #f0f0f0;
+}
