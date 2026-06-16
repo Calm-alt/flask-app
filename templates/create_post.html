@@ -52,7 +52,7 @@
             {{ form.content.label(class="form-label text-secondary") }}
 
             {% if form.content.errors %}
-                {{ form.content(class="form-control is-invalid editor-textarea", rows="10") }}
+                {{ form.content(class="form-control is-invalid editor-textarea", rows="8") }}
 
                 <div class="invalid-feedback">
                     {% for error in form.content.errors %}
