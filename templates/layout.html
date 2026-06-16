@@ -66,9 +66,8 @@
 
 
 <!-- ========================= -->
-<!-- SEARCH BAR -->
+<!-- SEARCH BAR (HIDE ON POST PAGE) -->
 <!-- ========================= -->
-
 {% if request.endpoint != 'post' %}
 
 <div class="container mt-4">
@@ -121,57 +120,43 @@
 
 
 <!-- ========================= -->
-<!-- MAIN CONTENT -->
+<!-- MAIN CONTENT WRAPPER -->
 <!-- ========================= -->
-
 <main class="container mt-4">
+
+    <!-- FLASH MESSAGES (GLOBAL ONCE ONLY) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="mb-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
     {% if request.endpoint == 'post' %}
 
         <!-- ========================= -->
-        <!-- POST FULL WIDTH VIEW -->
+        <!-- POST READING MODE -->
         <!-- ========================= -->
         <div class="row justify-content-center">
-
             <div class="col-lg-8 col-md-10">
-
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-
                 {% block content %}{% endblock %}
-
             </div>
-
         </div>
 
     {% else %}
 
         <!-- ========================= -->
-        <!-- FEED + SIDEBAR -->
+        <!-- FEED MODE (WITH SIDEBAR) -->
         <!-- ========================= -->
         <div class="row g-4">
 
             <div class="col-lg-9">
-
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-
                 {% block content %}{% endblock %}
-
             </div>
 
             <div class="col-lg-3">
@@ -194,9 +179,9 @@
                     <h6>Quick Tips</h6>
 
                     <ul class="list-unstyled small text-secondary">
-                        <li>• Use the search box.</li>
-                        <li>• Sort newest or oldest.</li>
-                        <li>• Click any author to view posts.</li>
+                        <li>• Use search box</li>
+                        <li>• Sort posts</li>
+                        <li>• Visit authors</li>
                     </ul>
 
                     <hr>
@@ -221,7 +206,6 @@
 <!-- ========================= -->
 <script>
 function toggleDarkMode() {
-
     document.body.classList.toggle("dark-mode");
 
     localStorage.setItem(
@@ -233,7 +217,6 @@ function toggleDarkMode() {
 }
 
 window.onload = function () {
-
     if (localStorage.getItem("darkMode") === "enabled") {
         document.body.classList.add("dark-mode");
     }
