@@ -339,3 +339,48 @@ button,
         padding:22px 12px;
     }
 }
+/* =========================================
+   KNIGHTS BRANDING (PREMIUM LOGO)
+========================================= */
+
+.site-logo{
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    color: #dbe8d8 !important;
+
+    text-shadow:
+        0 1px 0 rgba(255,255,255,0.05),
+        0 3px 12px rgba(0,0,0,0.35);
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease,
+        text-shadow 0.25s ease;
+}
+
+.site-logo:hover{
+    color: var(--accent-soft) !important;
+    transform: scale(1.03);
+    text-shadow:
+        0 2px 16px rgba(111,143,115,0.35);
+}
+
+.site-logo::after{
+    content: "";
+    display: block;
+    width: 55%;
+    height: 2px;
+    margin: 4px auto 0;
+    border-radius: 999px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        var(--accent-soft),
+        transparent
+    );
+    opacity: 0.75;
+}
