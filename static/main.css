@@ -352,7 +352,7 @@ a{
     width:100%;
     margin:30px auto;
     padding:45px;
-    background:#eef3ea; /* light paper with a forest tint */
+    background:#dbe6dc; /* light paper with a forest tint */
     border-radius:14px;
     box-shadow:0 4px 16px rgba(0,0,0,.18);
 }
@@ -371,7 +371,7 @@ a{
 }
 
 .dark-mode .reading-panel{
-    background:var(--card);
+    background:#121e16;
 }
 
 .dark-mode .post-content{
