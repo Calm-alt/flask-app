@@ -1,0 +1,272 @@
+/* =========================================
+   GLOBAL THEME
+========================================= */
+
+:root{
+    --bg:#14171c;
+    --card:#222831;
+    --card-hover:#2a313c;
+    --border:#363d48;
+    --text:#f3f3f3;
+    --muted:#9aa4af;
+    --accent:#d94b4b;
+}
+
+body.dark-mode{
+    --bg:#0f1216;
+    --card:#1b2028;
+    --card-hover:#252b35;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:Inter,system-ui,Arial,sans-serif;
+    transition:.25s;
+}
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.topbar{
+    background:linear-gradient(#252a32,#1c2027);
+    border-bottom:1px solid var(--border);
+    padding:14px 0;
+}
+
+.navbar-brand{
+    color:white !important;
+    font-size:2rem;
+    font-weight:800;
+}
+
+.nav-link{
+    color:#c0c7cf !important;
+    font-size:.9rem;
+    font-weight:600;
+    transition:.2s;
+}
+
+.nav-link:hover{
+    color:white !important;
+}
+
+.nav-link.active{
+    color:var(--accent) !important;
+}
+
+/* =========================================
+   SEARCH BAR
+========================================= */
+
+.search-panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:15px;
+}
+
+.search-input{
+    background:#181c22;
+    border:1px solid var(--border);
+    color:white;
+}
+
+.search-input:focus{
+    background:#181c22;
+    color:white;
+    border-color:var(--accent);
+    box-shadow:none;
+}
+
+.search-input::placeholder{
+    color:#7e8790;
+}
+
+.search-btn{
+    background:var(--accent);
+    border:none;
+    color:white;
+    font-weight:600;
+}
+
+.search-btn:hover{
+    background:#bf3f3f;
+}
+
+/* =========================================
+   POSTS
+========================================= */
+
+.post-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    transition:.2s;
+    box-shadow:none;
+}
+
+.post-card:hover{
+    transform:translateY(-3px);
+    background:var(--card-hover);
+    border-color:var(--accent);
+}
+
+.author-avatar{
+    transition:.2s;
+}
+
+.author-avatar:hover{
+    transform:scale(1.05);
+}
+
+.author-name{
+    color:white;
+    text-decoration:none;
+    font-weight:700;
+}
+
+.author-name:hover{
+    color:var(--accent);
+}
+
+.post-title{
+    color:white;
+    font-size:1.8rem;
+    font-weight:800;
+    transition:.2s;
+}
+
+.post-card:hover .post-title{
+    color:var(--accent);
+}
+
+.post-preview{
+    color:var(--muted);
+    line-height:1.7;
+    font-size:1rem;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+.filter-panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:20px;
+    position:sticky;
+    top:20px;
+}
+
+.filter-panel h5,
+.filter-panel h6{
+    color:white;
+}
+
+.filter-panel p,
+.filter-panel li{
+    color:var(--muted);
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn-danger{
+    background:var(--accent);
+    border:none;
+}
+
+.btn-danger:hover{
+    background:#bf3f3f;
+}
+
+.btn-outline-secondary{
+    border-color:#505862;
+    color:#c6ccd2;
+}
+
+.btn-outline-secondary:hover{
+    background:#2a313c;
+    color:white;
+    border-color:#707884;
+}
+
+/* =========================================
+   BACK TO TOP
+========================================= */
+
+.back-top{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    width:48px;
+    height:48px;
+    font-size:20px;
+    z-index:999;
+}
+
+/* =========================================
+   ALERTS
+========================================= */
+
+.alert{
+    border:none;
+    border-radius:10px;
+}
+
+/* =========================================
+   LINKS
+========================================= */
+
+a{
+    text-decoration:none;
+}
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:#181c22;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#444b55;
+    border-radius:20px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#666f79;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:991px){
+
+    .filter-panel{
+        position:static;
+        margin-top:20px;
+    }
+
+    .navbar-brand{
+        font-size:1.5rem;
+    }
+
+    .post-title{
+        font-size:1.4rem;
+    }
+
+    .search-btn{
+        margin-top:10px;
+    }
+}

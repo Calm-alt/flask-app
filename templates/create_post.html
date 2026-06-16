@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+
+    <h2 class="mb-4">
+        {% if title == "Edit Post" %}
+            Edit Post
+        {% else %}
+            Create New Post
+        {% endif %}
+    </h2>
+
+    <form method="POST">
+
+        {{ form.hidden_tag() }}
+
+        <!-- TITLE -->
+        <div class="form-group mb-3">
+            {{ form.title.label(class="form-control-label") }}
+
+            {% if form.title.errors %}
+                {{ form.title(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.title.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.title(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+
+        <!-- CONTENT -->
+        <div class="form-group mb-3">
+            {{ form.content.label(class="form-control-label") }}
+
+            {% if form.content.errors %}
+                {{ form.content(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.content.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.content(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+
+        <!-- SUBMIT -->
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

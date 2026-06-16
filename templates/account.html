@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+    <!-- PROFILE HEADER -->
+    <div class="media d-flex align-items-center mb-4">
+
+        <!-- CLICKABLE PROFILE IMAGE -->
+        <label for="picture-upload" style="cursor: pointer;">
+            <img
+                class="rounded-circle account-img me-3"
+                src="{{ image_file }}"
+                alt="Profile Picture"
+                style="width: 125px; height: 125px; object-fit: cover;"
+            >
+        </label>
+
+        <div class="media-body">
+            <h2 class="account-heading">
+                {{ current_user.username }}
+            </h2>
+
+            <p class="text-secondary">
+                {{ current_user.email }}
+            </p>
+        </div>
+
+    </div>
+
+    <!-- FORM -->
+    <div class="content-section">
+
+        <form method="POST" action="{{ url_for('account') }}" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Account Settings</legend>
+
+                <!-- USERNAME -->
+                <div class="form-group mb-3">
+                    {{ form.username.label(class="form-control-label") }}
+
+                    {% if form.username.errors %}
+                        {{ form.username(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.username(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <!-- EMAIL -->
+                <div class="form-group mb-3">
+                    {{ form.email.label(class="form-control-label") }}
+
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+
+                <!-- HIDDEN FILE INPUT (CLICK IMAGE TRIGGERS THIS) -->
+                <div style="display: none;">
+                    {{ form.picture(id="picture-upload") }}
+                </div>
+
+            </fieldset>
+
+            <!-- SUBMIT -->
+            <div class="form-group mb-3">
+                {{ form.submit(class="btn btn-outline-info w-100") }}
+            </div>
+
+        </form>
+
+</div>
+
+{% endblock content %}

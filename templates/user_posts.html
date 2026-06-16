@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- USER HEADER -->
+    <div class="text-center mb-5">
+
+        <img
+            src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}"
+            class="rounded-circle mb-3 shadow-sm"
+            width="90"
+            height="90"
+            style="object-fit: cover;"
+        >
+
+        <h2 class="fw-bold">{{ user.username }}</h2>
+
+        <p class="text-muted">
+            All posts by {{ user.username }}
+        </p>
+
+    </div>
+
+    <!-- POSTS -->
+    {% for post in posts %}
+
+    <a href="{{ url_for('post', post_id=post.id) }}"
+       class="text-decoration-none text-dark">
+
+        <article class="card border-0 shadow-sm rounded-4 mb-4 post-card">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold post-title">
+                    {{ post.title }}
+                </h4>
+
+                <p class="text-muted">
+                    {{ post.content[:250] }}
+                    {% if post.content|length > 250 %}...{% endif %}
+                </p>
+
+                <small class="text-muted">
+                    {{ post.date_posted.strftime('%B %d, %Y') }}
+                </small>
+
+            </div>
+
+        </article>
+
+    </a>
+
+    {% endfor %}
+
+</div>
+
+<style>
+.post-card {
+    transition: transform 0.2s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-3px);
+}
+
+.post-card:hover .post-title {
+    color: #0d6efd;
+}
+</style>
+
+{% endblock %}
