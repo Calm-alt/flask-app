@@ -52,7 +52,7 @@
             {{ form.content.label(class="form-label text-secondary") }}
 
             {% if form.content.errors %}
-                {{ form.content(class="form-control is-invalid editor-textarea", rows="6") }}
+                {{ form.content(class="form-control is-invalid editor-textarea", rows="10") }}
 
                 <div class="invalid-feedback">
                     {% for error in form.content.errors %}
@@ -61,7 +61,7 @@
                 </div>
 
             {% else %}
-                {{ form.content(class="form-control editor-textarea", rows="12", placeholder="Start writing your story...") }}
+                {{ form.content(class="form-control editor-textarea", rows="10", placeholder="Start writing your story...") }}
             {% endif %}
 
         </div>
