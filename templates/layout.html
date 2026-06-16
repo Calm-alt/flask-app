@@ -87,9 +87,8 @@
 
 </nav>
 
-<!-- ========================= -->
-<!-- SEARCH -->
-<!-- ========================= -->
+
+{% if request.endpoint != 'post' %}
 
 <div class="container mt-4">
 
@@ -100,52 +99,25 @@
             <div class="row g-2">
 
                 <div class="col-md-9">
-
                     <input
                         type="text"
                         name="q"
                         class="form-control search-input"
                         placeholder="Search blog posts..."
                         value="{{ request.args.get('q', '') }}">
-
                 </div>
 
                 <div class="col-md-2">
-
-                    <select
-                        class="form-select search-input"
-                        name="sort">
-
-                        <option value="latest"
-                            {% if request.args.get('sort') == 'latest' %}
-                                selected
-                            {% endif %}
-                        >
-                            Latest
-                        </option>
-
-                        <option value="oldest"
-                            {% if request.args.get('sort') == 'oldest' %}
-                                selected
-                            {% endif %}
-                        >
-                            Oldest
-                        </option>
-
+                    <select class="form-select search-input" name="sort">
+                        <option value="latest">Latest</option>
+                        <option value="oldest">Oldest</option>
                     </select>
-
                 </div>
 
                 <div class="col-md-1">
-
-                    <button
-                        type="submit"
-                        class="btn search-btn w-100">
-
+                    <button type="submit" class="btn search-btn w-100">
                         🔍
-
                     </button>
-
                 </div>
 
             </div>
@@ -156,74 +128,62 @@
 
 </div>
 
-<!-- ========================= -->
-<!-- MAIN CONTENT -->
-<!-- ========================= -->
+{% endif %}
+
+{% if request.endpoint == 'post' %}
+
+<main class="container py-5">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+</main>
+
+{% else %}
 
 <main class="container mt-4">
 
     <div class="row g-4">
 
-        <!-- FEED -->
-
         <div class="col-lg-9">
 
             {% with messages = get_flashed_messages(with_categories=true) %}
-
                 {% if messages %}
-
                     {% for category, message in messages %}
-
-                        <div class="alert alert-{{ category }} alert-dismissible fade show">
-
+                        <div class="alert alert-{{ category }}">
                             {{ message }}
-
-                            <button
-                                type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert">
-                            </button>
-
                         </div>
-
                     {% endfor %}
-
                 {% endif %}
-
             {% endwith %}
 
             {% block content %}{% endblock %}
 
         </div>
 
-        <!-- SIDEBAR -->
-
         <div class="col-lg-3">
 
             <div class="filter-panel">
 
-                <h5 class="mb-3">
-                    Explore
-                </h5>
+                <h5 class="mb-3">Explore</h5>
 
                 <hr>
 
                 <h6>Categories</h6>
 
                 <div class="mb-3">
-
-                    <span class="badge bg-secondary">
-                        Python
-                    </span>
-
-                    <span class="badge bg-secondary">
-                        Flask
-                    </span>
-
-                    <span class="badge bg-secondary">
-                        Web
-                    </span>
-
+                    <span class="badge bg-secondary">Python</span>
+                    <span class="badge bg-secondary">Flask</span>
+                    <span class="badge bg-secondary">Web</span>
                 </div>
 
                 <hr>
@@ -231,21 +191,15 @@
                 <h6>Quick Tips</h6>
 
                 <ul class="list-unstyled small text-secondary">
-
                     <li>• Use the search box.</li>
-
                     <li>• Sort newest or oldest.</li>
-
                     <li>• Click any author to view their posts.</li>
-
                 </ul>
 
                 <hr>
 
                 <p class="small text-secondary mb-0">
-
                     Built with Calm + Love
-
                 </p>
 
             </div>
@@ -255,6 +209,8 @@
     </div>
 
 </main>
+
+{% endif %}
 
 <script>
 
