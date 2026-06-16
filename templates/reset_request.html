@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="content-section">
+    <form method="POST">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Reset Password</legend>
+
+            <div class="form-group mb-3">
+                <label for="email">Enter your email</label>
+                <input type="email" name="email" class="form-control form-control-lg" required>
+            </div>
+
+            <button type="submit" class="btn btn-outline-info w-100">
+                Send Reset Link
+            </button>
+        </fieldset>
+
+        <small class="text-muted d-block mt-3">
+            Remember your password?
+            <a href="{{ url_for('login') }}">Login</a>
+        </small>
+    </form>
+</div>
+
+{% endblock content %}

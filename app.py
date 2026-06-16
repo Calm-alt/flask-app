@@ -1,5 +1,6 @@
 import os
 import secrets
+import logging
 from PIL import Image
 
 from sqlalchemy import or_
@@ -26,24 +27,39 @@ from flask_login import (
 from forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from models import db, User, Post
 
+# ---------------- LOGGING (Render-friendly) ----------------
+logging.basicConfig(level=logging.INFO)
+
 app = Flask(__name__)
 
 # ---------------- CONFIG ----------------
 
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-change-this")
 
-# ✅ IMPORTANT FIX: use DATABASE_URL from Render (Postgres)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+# ---------------- DATABASE SAFETY ----------------
+database_url = os.environ.get("DATABASE_URL")
 
-# Fix for SQLAlchemy + Postgres (Render requirement)
-if app.config["SQLALCHEMY_DATABASE_URI"] and app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
-    app.config["SQLALCHEMY_DATABASE_URI"] = app.config["SQLALCHEMY_DATABASE_URI"].replace("postgres://", "postgresql://", 1)
+if not database_url:
+    logging.warning("DATABASE_URL is missing. App may not work correctly.")
+    database_url = "sqlite:///site.db"  # safe fallback for local/debug
 
+# Fix Render postgres format
+if database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# ---------------- DATABASE ----------------
-
+# ---------------- INIT DB ----------------
 db.init_app(app)
+
+# Optional: safe startup check (Render-friendly)
+with app.app_context():
+    try:
+        db.engine.connect()
+        logging.info("Database connection successful.")
+    except Exception as e:
+        logging.error(f"Database connection failed: {e}")
 
 # ---------------- LOGIN ----------------
 
@@ -51,6 +67,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -162,12 +179,39 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
 
+            # SAFE redirect (strong protection)
             next_page = request.args.get("next")
-            return redirect(next_page) if next_page else redirect(url_for("home"))
+
+            if next_page:
+                if next_page.startswith("/") and not next_page.startswith("//"):
+                    return redirect(next_page)
+
+            return redirect(url_for("home"))
 
         flash("Login failed.", "danger")
 
     return render_template("login.html", form=form)
+
+
+# ---------------- RESET PASSWORD ----------------
+
+@app.route("/reset_request", methods=["GET", "POST"])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+
+    if request.method == "POST":
+        email = request.form.get("email")
+
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            flash("Password reset link sent (demo mode).", "info")
+            return redirect(url_for("login"))
+
+        flash("Email not found.", "danger")
+
+    return render_template("reset_request.html")
 
 
 # ---------------- LOGOUT ----------------
@@ -203,7 +247,10 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
 
-    image_file = url_for("static", filename="profile_pics/" + (current_user.image_file or "default.jpg"))
+    image_file = url_for(
+        "static",
+        filename="profile_pics/" + (current_user.image_file or "default.jpg")
+    )
 
     return render_template("account.html", form=form, image_file=image_file)
 
@@ -292,9 +339,7 @@ def user_posts(username):
     return render_template("user_posts.html", user=user, posts=posts)
 
 
-
-
 # ---------------- RUN ----------------
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

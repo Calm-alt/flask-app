@@ -15,7 +15,7 @@
 {% endwith %}
 
 <div class="content-section">
-    <form method="POST" action="{{ url_for('login') }}" class="form-signin">
+    <form method="POST" action="" class="form-signin">
         {{ form.hidden_tag() }}
 
         <fieldset class="form-group">
@@ -24,31 +24,13 @@
             <!-- EMAIL -->
             <div class="form-group mb-3">
                 {{ form.email.label(class="form-control-label") }}
-                {% if form.email.errors %}
-                    {{ form.email(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.email.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.email(class="form-control form-control-lg") }}
-                {% endif %}
+                {{ form.email(class="form-control form-control-lg") }}
             </div>
 
             <!-- PASSWORD -->
             <div class="form-group mb-3">
                 {{ form.password.label(class="form-control-label") }}
-                {% if form.password.errors %}
-                    {{ form.password(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.password.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.password(class="form-control form-control-lg") }}
-                {% endif %}
+                {{ form.password(class="form-control form-control-lg") }}
             </div>
 
             <!-- REMEMBER ME -->
