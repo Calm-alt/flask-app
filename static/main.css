@@ -1,5 +1,5 @@
 /* =========================================
-   DESIGN SYSTEM - FOREST MINIMAL EDITION (BOOTSTRAP FREE)
+   DESIGN SYSTEM - FOREST MINIMAL EDITION (AUTHOR UPGRADE)
 ========================================= */
 
 :root{
@@ -24,7 +24,7 @@ body.dark-mode{
 }
 
 /* =========================================
-   GLOBAL RESET (BOOTSTRAP CLEANUP)
+   GLOBAL RESET
 ========================================= */
 
 *{
@@ -41,18 +41,14 @@ body{
     letter-spacing:-0.1px;
 }
 
-/* Remove Bootstrap link/button weirdness globally */
 a, button{
     font-family:inherit;
     color:inherit;
-}
-
-a{
     text-decoration:none;
 }
 
 /* =========================================
-   FEED CONTAINER (TIGHT & CLEAN)
+   FEED CONTAINER
 ========================================= */
 
 .feed-container{
@@ -62,7 +58,7 @@ a{
 }
 
 /* =========================================
-   FEED LIST (NO GRID, PURE LIST)
+   FEED LIST
 ========================================= */
 
 .post-grid{
@@ -72,65 +68,82 @@ a{
 }
 
 /* =========================================
-   POST CARD (FULL CLICKABLE BEHAVIOR)
+   POST CARD
 ========================================= */
 
 .post-card{
     background:transparent;
     border:none;
     border-bottom:1px solid rgba(169,184,173,0.12);
-    padding:10px 0;
+    padding:12px 0;
     cursor:pointer;
-    display:block;
     transition:all .18s ease;
+    display:block;
 }
 
 .post-card:hover{
     border-color:var(--accent);
 }
 
-/* make entire card clickable if wrapped in <a> */
-.post-card a{
-    display:block;
-    color:inherit;
-    text-decoration:none;
-}
-
 /* =========================================
-   INNER LAYOUT
+   INNER
 ========================================= */
 
 .post-card-inner{
     display:flex;
     flex-direction:column;
-    gap:4px;
+    gap:6px;
     min-width:0;
 }
 
 /* =========================================
-   TITLE
+   🧠 TITLE (MORE PRONOUNCED / EDITORIAL STYLE)
 ========================================= */
 
 .post-title{
     color:var(--text);
-    font-size:1.35rem;
-    font-weight:750;
-    line-height:1.25;
+    font-size:1.55rem;
+    font-weight:850;
+    line-height:1.2;
     margin:0;
-    letter-spacing:-0.2px;
+    letter-spacing:-0.3px;
+
+    /* subtle premium feel */
+    text-rendering:optimizeLegibility;
 }
 
 .post-card:hover .post-title{
     color:var(--accent-soft);
 }
 
-/* spacing under title */
-.post-title-space{
-    height:6px;
+/* =========================================
+   AUTHOR ROW (NEW ✨)
+========================================= */
+
+.post-author{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:2px;
+    font-size:0.85rem;
+    color:var(--muted);
+}
+
+.post-author img{
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    object-fit:cover;
+    border:1px solid var(--border);
+}
+
+.post-author-name{
+    font-weight:600;
+    color:var(--muted);
 }
 
 /* =========================================
-   PREVIEW TEXT (2 LINES CLEAN)
+   PREVIEW TEXT
 ========================================= */
 
 .post-preview{
@@ -189,10 +202,43 @@ a{
     padding:30px 14px;
 }
 
+/* 🧠 ARTICLE TITLE (more elegant) */
 .article-title{
-    font-size:2rem;
-    font-weight:800;
+    font-size:2.2rem;
+    font-weight:900;
     color:var(--text);
+    letter-spacing:-0.4px;
+    line-height:1.2;
+}
+
+/* =========================================
+   ARTICLE AUTHOR HEADER (NEW ✨)
+========================================= */
+
+.article-author{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:14px 0 24px 0;
+    color:var(--muted);
+}
+
+.article-author img{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    object-fit:cover;
+}
+
+.article-author-name{
+    font-weight:700;
+    color:var(--text);
+}
+
+.article-author-meta{
+    font-size:0.85rem;
+    color:var(--muted);
 }
 
 /* =========================================
@@ -209,7 +255,7 @@ a{
 }
 
 /* =========================================
-   BUTTON SYSTEM (NO BOOTSTRAP LEFT)
+   BUTTON SYSTEM
 ========================================= */
 
 button,
@@ -224,7 +270,7 @@ button,
     transition:all .2s ease;
 }
 
-/* PRIMARY (EDIT / MAIN ACTION) */
+/* PRIMARY */
 .btn-primary,
 .btn-edit{
     background:var(--accent) !important;
@@ -253,7 +299,7 @@ button,
     color:var(--accent-soft) !important;
 }
 
-/* SAFE ACTION BUTTON */
+/* SAFE ACTION */
 .btn-danger{
     background:var(--accent) !important;
     color:#0b1510 !important;
@@ -286,7 +332,7 @@ button,
 
 @media(max-width:991px){
     .post-title{
-        font-size:1.2rem;
+        font-size:1.3rem;
     }
 
     .feed-container{
