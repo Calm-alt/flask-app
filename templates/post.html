@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +65,6 @@
     </div>
 </nav>
 
-
 <!-- ========================= -->
 <!-- SEARCH BAR -->
 <!-- ========================= -->
@@ -119,115 +119,133 @@
 
 {% endif %}
 
-
 <!-- ========================= -->
 <!-- MAIN CONTENT -->
 <!-- ========================= -->
 
 <main class="container mt-4">
 
-    {% if request.path.startswith('/post/') %}
+{% if request.path.startswith('/post/') %}
 
-        <!-- ========================= -->
-        <!-- POST FULL WIDTH VIEW -->
-        <!-- ========================= -->
-        <div class="row justify-content-center">
+<div class="row justify-content-center">
 
-            <div class="col-lg-8 col-md-10">
+    <div class="col-lg-8 col-md-10">
 
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-                <h2 class="mb-3">{{ post.title }}</h2>
+        <h2 class="mb-3">{{ post.title }}</h2>
 
-<p class="text-muted small">
-    Posted on {{ post.date_posted.strftime('%Y-%m-%d') }}
-</p>
+        <p class="text-muted small">
+            Posted on {{ post.date_posted.strftime('%Y-%m-%d') }}
+        </p>
 
-<hr>
+        {% if current_user.is_authenticated and current_user == post.author %}
 
-<div class="post-content">
-    {{ post.content }}
+        <div class="mb-3">
+
+            <a href="{{ url_for('edit_post', post_id=post.id) }}"
+               class="btn btn-primary btn-sm">
+                ✏️ Edit
+            </a>
+
+            <form action="{{ url_for('delete_post', post_id=post.id) }}"
+                  method="POST"
+                  style="display:inline;">
+
+                <button type="submit"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Delete this post?');">
+                    🗑 Delete
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endif %}
+
+        <hr>
+
+        <div class="post-content">
+            {{ post.content }}
+        </div>
+
+    </div>
+
 </div>
 
-            </div>
+{% else %}
 
-        </div>
+<div class="row g-4">
 
-    {% else %}
+    <div class="col-lg-9">
 
-        <!-- ========================= -->
-        <!-- FEED + SIDEBAR -->
-        <!-- ========================= -->
-        <div class="row g-4">
-
-            <div class="col-lg-9">
-
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-
-
-            </div>
-
-            <div class="col-lg-3">
-
-                <div class="filter-panel">
-
-                    <h5 class="mb-3">Explore</h5>
-                    <hr>
-
-                    <h6>Categories</h6>
-
-                    <div class="mb-3">
-                        <span class="badge bg-secondary">Python</span>
-                        <span class="badge bg-secondary">Flask</span>
-                        <span class="badge bg-secondary">Web</span>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
                     </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
 
-                    <hr>
+    </div>
 
-                    <h6>Quick Tips</h6>
+    <div class="col-lg-3">
 
-                    <ul class="list-unstyled small text-secondary">
-                        <li>• Use the search box.</li>
-                        <li>• Sort newest or oldest.</li>
-                        <li>• Click any author to view posts.</li>
-                    </ul>
+        <div class="filter-panel">
 
-                    <hr>
+            <h5 class="mb-3">Explore</h5>
 
-                    <p class="small text-secondary mb-0">
-                        Built with Love
-                    </p>
+            <hr>
 
-                </div>
+            <h6>Categories</h6>
 
+            <div class="mb-3">
+                <span class="badge bg-secondary">Python</span>
+                <span class="badge bg-secondary">Flask</span>
+                <span class="badge bg-secondary">Web</span>
             </div>
+
+            <hr>
+
+            <h6>Quick Tips</h6>
+
+            <ul class="list-unstyled small text-secondary">
+                <li>• Use the search box.</li>
+                <li>• Sort newest or oldest.</li>
+                <li>• Click any author to view posts.</li>
+            </ul>
+
+            <hr>
+
+            <p class="small text-secondary mb-0">
+                Built with Love
+            </p>
 
         </div>
 
-    {% endif %}
+    </div>
+
+</div>
+
+{% endif %}
 
 </main>
-
 
 <!-- ========================= -->
 <!-- SCRIPTS -->
 <!-- ========================= -->
+
 <script>
 function toggleDarkMode() {
 
@@ -246,6 +264,7 @@ window.onload = function () {
     if (localStorage.getItem("darkMode") === "enabled") {
         document.body.classList.add("dark-mode");
     }
+
 };
 </script>
 
@@ -253,3 +272,4 @@ window.onload = function () {
 
 </body>
 </html>
+```
