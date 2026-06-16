@@ -108,20 +108,37 @@ a{
 }
 
 /* =========================================
-   POST CARDS
+   POST CARDS (MODERN UPGRADE)
 ========================================= */
 
 .post-card{
     background:var(--card);
     border:1px solid var(--border);
-    border-radius:12px;
-    transition:.25s ease;
+    border-radius:14px;
+    transition:all .25s ease;
+    overflow:hidden;
 }
 
 .post-card:hover{
-    transform:translateY(-4px);
+    transform:translateY(-5px);
     background:var(--card-hover);
     border-color:var(--accent);
+    box-shadow:0 12px 30px rgba(0,0,0,.25);
+}
+
+/* INNER LAYOUT CONTROL (IMPORTANT UPGRADE) */
+.post-card-inner{
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+/* AUTHOR SECTION */
+.author-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
 .author-avatar{
@@ -129,22 +146,27 @@ a{
 }
 
 .author-avatar:hover{
-    transform:scale(1.05);
+    transform:scale(1.06);
+    border-color:var(--accent);
 }
 
 .author-name{
     color:var(--text);
     font-weight:700;
+    transition:.2s;
 }
 
 .author-name:hover{
     color:var(--accent);
 }
 
+/* TITLE */
 .post-title{
     color:var(--text);
-    font-size:1.6rem;
+    font-size:1.5rem;
     font-weight:800;
+    line-height:1.3;
+    margin:0;
     transition:.2s;
 }
 
@@ -152,10 +174,21 @@ a{
     color:var(--accent);
 }
 
+/* PREVIEW */
 .post-preview{
     color:var(--muted);
     line-height:1.7;
     font-size:1rem;
+    margin:0;
+    white-space:pre-line;
+}
+
+/* FOOTER */
+.post-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:6px;
 }
 
 /* =========================================
@@ -236,6 +269,7 @@ a{
 .filter-panel li{
     color:var(--muted);
 }
+
 /* =========================================
    BUTTONS
 ========================================= */
@@ -352,7 +386,7 @@ a{
     width:100%;
     margin:30px auto;
     padding:45px;
-    background:#0b1410; /* light paper with a forest tint */
+    background:#0b1410;
     border-radius:14px;
     box-shadow:0 4px 16px rgba(0,0,0,.18);
 }
@@ -363,7 +397,7 @@ a{
     text-align:justify;
     white-space:normal;
     word-break:break-word;
-    color:#253228; /* deep pine ink */
+    color:#253228;
 }
 
 .post-content br{
