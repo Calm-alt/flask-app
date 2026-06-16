@@ -1,23 +1,16 @@
+
 /* =========================================
-   DESIGN SYSTEM (NEXT LEVEL)
+   DESIGN SYSTEM
 ========================================= */
 
 :root{
     --bg:#14171c;
-    --bg-soft:#1a1f27;
-
     --card:#222831;
     --card-hover:#2a313c;
-
     --border:#363d48;
-
     --text:#f3f3f3;
     --muted:#9aa4af;
-
     --accent:#d94b4b;
-
-    --radius:14px;
-    --shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
 body.dark-mode{
@@ -27,29 +20,27 @@ body.dark-mode{
 }
 
 /* =========================================
-   BASE
+   GLOBAL
 ========================================= */
 
 body{
     background:var(--bg);
     color:var(--text);
     font-family:Inter, system-ui, Arial, sans-serif;
-    transition:.25s ease;
-    line-height:1.6;
+    transition: background .25s ease, color .25s ease;
 }
 
 a{
     text-decoration:none;
-    transition:.2s ease;
+    color:inherit;
 }
 
 /* =========================================
-   NAVBAR (REFINED)
+   NAVBAR
 ========================================= */
 
 .topbar{
-    background:rgba(24,28,34,0.85);
-    backdrop-filter: blur(10px);
+    background:linear-gradient(#252a32,#1c2027);
     border-bottom:1px solid var(--border);
     padding:14px 0;
 }
@@ -58,7 +49,6 @@ a{
     color:white !important;
     font-size:1.8rem;
     font-weight:800;
-    letter-spacing:-0.5px;
 }
 
 .nav-link{
@@ -79,83 +69,62 @@ a{
 .search-panel{
     background:var(--card);
     border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:16px;
-    box-shadow:var(--shadow);
+    border-radius:12px;
+    padding:15px;
 }
 
 .search-input{
     background:#181c22;
     border:1px solid var(--border);
     color:white;
-    border-radius:10px;
 }
 
 .search-input:focus{
+    background:#181c22;
+    color:white;
     border-color:var(--accent);
     box-shadow:none;
+}
+
+.search-input::placeholder{
+    color:#7e8790;
 }
 
 .search-btn{
     background:var(--accent);
     border:none;
+    color:white;
     font-weight:600;
-    border-radius:10px;
+    transition:.2s;
+}
+
+.search-btn:hover{
+    background:#bf3f3f;
 }
 
 /* =========================================
-   POST FEED (MAJOR UPGRADE)
+   POST CARDS (HOME)
 ========================================= */
 
 .post-card{
     background:var(--card);
     border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
+    border-radius:12px;
     transition:.25s ease;
-    overflow:hidden;
 }
 
 .post-card:hover{
-    transform:translateY(-6px);
+    transform:translateY(-4px);
     background:var(--card-hover);
     border-color:var(--accent);
 }
 
-/* inner padding separation */
-.post-card-inner{
-    padding:20px;
-}
-
-/* TITLE */
-.post-title{
-    color:white;
-    font-size:1.9rem;
-    font-weight:800;
-    line-height:1.2;
-    margin-bottom:10px;
-}
-
-.post-card:hover .post-title{
-    color:var(--accent);
-}
-
-/* PREVIEW */
-.post-preview{
-    color:var(--muted);
-    font-size:1rem;
-    line-height:1.7;
-}
-
-/* AUTHOR */
 .author-avatar{
-    border:2px solid var(--border);
     transition:.2s ease;
 }
 
 .author-avatar:hover{
-    transform:scale(1.08);
-    border-color:var(--accent);
+    transform:scale(1.05);
 }
 
 .author-name{
@@ -167,16 +136,95 @@ a{
     color:var(--accent);
 }
 
+.post-title{
+    color:white;
+    font-size:1.6rem;
+    font-weight:800;
+    transition:.2s;
+}
+
+.post-card:hover .post-title{
+    color:var(--accent);
+}
+
+.post-preview{
+    color:var(--muted);
+    line-height:1.7;
+    font-size:1rem;
+}
+
 /* =========================================
-   SIDEBAR (MODERNIZED)
+   ARTICLE (POST PAGE) — FIXED UX
+========================================= */
+
+.article-wrapper{
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+/* FIXED TITLE (IMPORTANT) */
+.article-title{
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+}
+
+/* CONTENT READABILITY UPGRADE */
+.article-content{
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: #d6dbe1;
+    margin-top: 1.5rem;
+    word-break: break-word;
+}
+
+/* PARAGRAPHS */
+.article-content p{
+    margin-bottom: 1.4rem;
+}
+
+/* HEADINGS */
+.article-content h2,
+.article-content h3{
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* IMAGES */
+.article-content img{
+    width: 100%;
+    border-radius: 12px;
+    margin: 2rem 0;
+}
+
+/* BLOCKQUOTE */
+.article-content blockquote{
+    border-left: 4px solid var(--accent);
+    padding-left: 1rem;
+    color: var(--muted);
+    font-style: italic;
+    margin: 2rem 0;
+}
+
+/* DIVIDER */
+.article-divider{
+    border-color: var(--border);
+    margin: 3rem 0;
+}
+
+/* =========================================
+   SIDEBAR
 ========================================= */
 
 .filter-panel{
     background:var(--card);
     border:1px solid var(--border);
-    border-radius:var(--radius);
+    border-radius:12px;
     padding:20px;
-    box-shadow:var(--shadow);
     position:sticky;
     top:20px;
 }
@@ -198,7 +246,6 @@ a{
 .btn-danger{
     background:var(--accent);
     border:none;
-    border-radius:10px;
 }
 
 .btn-danger:hover{
@@ -208,12 +255,18 @@ a{
 .btn-outline-secondary{
     border-color:#505862;
     color:#c6ccd2;
-    border-radius:10px;
 }
 
 .btn-outline-secondary:hover{
     background:#2a313c;
     color:white;
+    border-color:#707884;
+}
+
+/* EDIT BUTTON POLISH */
+.btn-outline-light:hover{
+    transform: translateY(-2px);
+    transition: .2s ease;
 }
 
 /* =========================================
@@ -224,12 +277,10 @@ a{
     position:fixed;
     right:25px;
     bottom:25px;
-    width:52px;
-    height:52px;
+    width:48px;
+    height:48px;
     font-size:20px;
     z-index:999;
-    border-radius:50%;
-    box-shadow:var(--shadow);
 }
 
 /* =========================================
@@ -238,7 +289,7 @@ a{
 
 .alert{
     border:none;
-    border-radius:12px;
+    border-radius:10px;
 }
 
 /* =========================================
@@ -263,7 +314,7 @@ a{
 }
 
 /* =========================================
-   MOBILE OPTIMIZATION
+   MOBILE FIXES
 ========================================= */
 
 @media(max-width:991px){
@@ -273,11 +324,19 @@ a{
         margin-top:20px;
     }
 
-    .post-title{
+    .navbar-brand{
         font-size:1.5rem;
     }
 
-    .navbar-brand{
-        font-size:1.4rem;
+    .post-title{
+        font-size:1.3rem;
+    }
+
+    .article-title{
+        font-size:1.8rem;
+    }
+
+    .search-btn{
+        margin-top:10px;
     }
 }
