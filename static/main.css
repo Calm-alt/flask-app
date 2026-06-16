@@ -1,9 +1,8 @@
 /* =========================================
-   DESIGN SYSTEM - FOREST MINIMAL EDITION (FIXED)
+   DESIGN SYSTEM - FOREST MINIMAL EDITION (BOOTSTRAP FREE)
 ========================================= */
 
 :root{
-    /* Natural forest palette only */
     --bg:#0b1510;
     --card:#14231a;
     --card-hover:#1a2d22;
@@ -25,116 +24,86 @@ body.dark-mode{
 }
 
 /* =========================================
-   GLOBAL
+   GLOBAL RESET (BOOTSTRAP CLEANUP)
 ========================================= */
 
+*{
+    box-sizing:border-box;
+}
+
 body{
+    margin:0;
+    padding:0;
     background:var(--bg);
     color:var(--text);
     font-family:Inter, system-ui, Arial, sans-serif;
     line-height:1.65;
     letter-spacing:-0.1px;
-    transition:background .25s ease,color .25s ease;
+}
+
+/* Remove Bootstrap link/button weirdness globally */
+a, button{
+    font-family:inherit;
+    color:inherit;
 }
 
 a{
     text-decoration:none;
-    color:inherit;
 }
 
 /* =========================================
-   TOPBAR
-========================================= */
-
-.topbar{
-    background:linear-gradient(to bottom, var(--card), var(--bg));
-    border-bottom:1px solid var(--border);
-    padding:14px 0;
-}
-
-.navbar-brand{
-    color:var(--accent-soft) !important;
-    font-size:1.7rem;
-    font-weight:800;
-}
-
-.nav-link{
-    color:var(--muted) !important;
-    font-size:.9rem;
-    font-weight:600;
-    transition:.2s;
-}
-
-.nav-link:hover{
-    color:var(--accent-soft) !important;
-}
-
-/* =========================================
-   SEARCH
-========================================= */
-
-.search-panel{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:14px;
-}
-
-.search-input{
-    background:var(--bg);
-    border:1px solid var(--border);
-    color:var(--text);
-}
-
-.search-input:focus{
-    border-color:var(--accent);
-    box-shadow:none;
-}
-
-/* =========================================
-   CONTAINER
+   FEED CONTAINER (TIGHT & CLEAN)
 ========================================= */
 
 .feed-container{
-    max-width:680px;
+    max-width:620px;
     margin:0 auto;
-    padding:35px 16px;
+    padding:30px 14px;
 }
 
 /* =========================================
-   FEED LIST
+   FEED LIST (NO GRID, PURE LIST)
 ========================================= */
 
 .post-grid{
     display:flex;
     flex-direction:column;
-    gap:14px;
+    gap:10px;
 }
 
 /* =========================================
-   POST CARD
+   POST CARD (FULL CLICKABLE BEHAVIOR)
 ========================================= */
 
 .post-card{
     background:transparent;
     border:none;
-    border-bottom:1px solid rgba(169,184,173,0.15);
-    padding:14px 0;
-    transition:all .2s ease;
+    border-bottom:1px solid rgba(169,184,173,0.12);
+    padding:10px 0;
+    cursor:pointer;
+    display:block;
+    transition:all .18s ease;
 }
 
 .post-card:hover{
     border-color:var(--accent);
 }
 
+/* make entire card clickable if wrapped in <a> */
+.post-card a{
+    display:block;
+    color:inherit;
+    text-decoration:none;
+}
+
 /* =========================================
-   INNER
+   INNER LAYOUT
 ========================================= */
 
 .post-card-inner{
     display:flex;
     flex-direction:column;
-    gap:6px;
+    gap:4px;
     min-width:0;
 }
 
@@ -144,9 +113,9 @@ a{
 
 .post-title{
     color:var(--text);
-    font-size:1.45rem;
+    font-size:1.35rem;
     font-weight:750;
-    line-height:1.35;
+    line-height:1.25;
     margin:0;
     letter-spacing:-0.2px;
 }
@@ -155,21 +124,26 @@ a{
     color:var(--accent-soft);
 }
 
+/* spacing under title */
+.post-title-space{
+    height:6px;
+}
+
 /* =========================================
-   PREVIEW
+   PREVIEW TEXT (2 LINES CLEAN)
 ========================================= */
 
 .post-preview{
     color:var(--muted);
-    font-size:1rem;
-    line-height:1.65;
+    font-size:0.98rem;
+    line-height:1.55;
 
     white-space:pre-line;
 
     display:-webkit-box;
     -webkit-box-orient:vertical;
-    -webkit-line-clamp:3;
-    line-clamp :3;
+    -webkit-line-clamp:2;
+    line-clamp:2;
     overflow:hidden;
 
     word-break:break-word;
@@ -177,28 +151,46 @@ a{
 }
 
 /* =========================================
+   READ CTA
+========================================= */
+
+.post-read{
+    font-size:0.85rem;
+    color:var(--accent-soft);
+    margin-top:2px;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-weight:600;
+}
+
+.post-card:hover .post-read{
+    color:var(--text);
+}
+
+/* =========================================
    META
 ========================================= */
 
 .post-meta{
-    font-size:0.82rem;
+    font-size:0.78rem;
     color:var(--muted);
     display:flex;
-    gap:10px;
+    gap:8px;
 }
 
 /* =========================================
-   ARTICLE
+   ARTICLE PAGE
 ========================================= */
 
 .article-wrapper{
-    max-width:680px;
+    max-width:620px;
     margin:0 auto;
-    padding:35px 16px;
+    padding:30px 14px;
 }
 
 .article-title{
-    font-size:2.1rem;
+    font-size:2rem;
     font-weight:800;
     color:var(--text);
 }
@@ -211,23 +203,34 @@ a{
     background:var(--card);
     border:1px solid var(--border);
     border-radius:12px;
-    padding:18px;
+    padding:16px;
     position:sticky;
     top:20px;
 }
 
 /* =========================================
-   BUTTONS (FIXED - NO BLUE ANYMORE)
+   BUTTON SYSTEM (NO BOOTSTRAP LEFT)
 ========================================= */
 
-/* override Bootstrap primary buttons */
+button,
+.btn,
 .btn-primary,
-.btn-edit,
-button.primary,
-a.primary{
+.btn-secondary,
+.btn-danger,
+.btn-edit{
+    border:none;
+    font-family:inherit;
+    cursor:pointer;
+    transition:all .2s ease;
+}
+
+/* PRIMARY (EDIT / MAIN ACTION) */
+.btn-primary,
+.btn-edit{
     background:var(--accent) !important;
-    border:1px solid var(--border) !important;
     color:#0b1510 !important;
+    padding:8px 14px;
+    border-radius:8px;
     font-weight:700;
 }
 
@@ -236,11 +239,13 @@ a.primary{
     background:var(--accent-soft) !important;
 }
 
-/* secondary subtle buttons */
+/* SECONDARY */
 .btn-secondary{
     background:transparent !important;
     border:1px solid var(--border) !important;
     color:var(--muted) !important;
+    padding:8px 14px;
+    border-radius:8px;
 }
 
 .btn-secondary:hover{
@@ -248,11 +253,12 @@ a.primary{
     color:var(--accent-soft) !important;
 }
 
-/* danger = safe forest version */
+/* SAFE ACTION BUTTON */
 .btn-danger{
     background:var(--accent) !important;
-    border:none !important;
     color:#0b1510 !important;
+    padding:8px 14px;
+    border-radius:8px;
     font-weight:700;
 }
 
@@ -262,13 +268,16 @@ a.primary{
 
 .back-top{
     position:fixed;
-    right:20px;
-    bottom:20px;
-    width:44px;
-    height:44px;
+    right:18px;
+    bottom:18px;
+    width:42px;
+    height:42px;
     background:var(--accent);
     color:#0b1510;
     border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 /* =========================================
@@ -277,10 +286,10 @@ a.primary{
 
 @media(max-width:991px){
     .post-title{
-        font-size:1.25rem;
+        font-size:1.2rem;
     }
 
     .feed-container{
-        padding:25px 12px;
+        padding:22px 12px;
     }
 }
