@@ -3,17 +3,14 @@
 ========================================= */
 
 :root{
-    /* Base */
     --bg:#0f1b14;
     --card:#1b2a20;
     --card-hover:#26382c;
     --border:#4f6957;
 
-    /* Typography */
     --text:#edf4ec;
     --muted:#b8c7b8;
 
-    /* Pine Green Accent */
     --accent:#73a66e;
     --accent-hover:#8fc48a;
 }
@@ -85,30 +82,12 @@ a{
 }
 
 .search-input:focus{
-    background:var(--bg);
-    color:var(--text);
     border-color:var(--accent);
     box-shadow:none;
 }
 
-.search-input::placeholder{
-    color:#8ea793;
-}
-
-.search-btn{
-    background:var(--accent);
-    border:none;
-    color:#0f1b14;
-    font-weight:700;
-    transition:.2s;
-}
-
-.search-btn:hover{
-    background:var(--accent-hover);
-}
-
 /* =========================================
-   POST CARDS (MODERN UPGRADE)
+   POST CARDS
 ========================================= */
 
 .post-card{
@@ -126,64 +105,53 @@ a{
     box-shadow:0 12px 30px rgba(0,0,0,.25);
 }
 
-/* INNER LAYOUT CONTROL (IMPORTANT UPGRADE) */
 .post-card-inner{
     padding:22px;
     display:flex;
     flex-direction:column;
     gap:14px;
+
+    /* IMPORTANT FIX FOR LINE CLAMP STABILITY */
+    min-width: 0;
 }
 
-/* AUTHOR SECTION */
-.author-row{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
+/* =========================================
+   TITLE
+========================================= */
 
-.author-avatar{
-    transition:.2s ease;
-}
-
-.author-avatar:hover{
-    transform:scale(1.06);
-    border-color:var(--accent);
-}
-
-.author-name{
-    color:var(--text);
-    font-weight:700;
-    transition:.2s;
-}
-
-.author-name:hover{
-    color:var(--accent);
-}
-
-/* TITLE */
 .post-title{
     color:var(--text);
     font-size:1.5rem;
     font-weight:800;
     line-height:1.3;
     margin:0;
-    transition:.2s;
 }
 
-.post-card:hover .post-title{
-    color:var(--accent);
-}
+/* =========================================
+   ✅ FIXED POST PREVIEW (2 LINES EXACT)
+========================================= */
 
-/* PREVIEW */
 .post-preview{
     color:var(--muted);
-    line-height:1.7;
     font-size:1rem;
-    margin:0;
-    white-space:pre-line;
+    line-height:1.6;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+
+    /* IMPORTANT STABILITY FIXES */
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
-/* FOOTER */
+/* =========================================
+   FOOTER
+========================================= */
+
 .post-footer{
     display:flex;
     justify-content:space-between;
@@ -203,48 +171,6 @@ a{
 .article-title{
     font-size:2.2rem;
     font-weight:800;
-    line-height:1.25;
-    color:var(--text);
-    margin-bottom:1.5rem;
-}
-
-.article-content{
-    font-size:1.15rem;
-    line-height:1.9;
-    color:#dfe9df;
-    margin-top:1.5rem;
-    word-break:break-word;
-}
-
-.article-content p{
-    margin-bottom:1.4rem;
-}
-
-.article-content h2,
-.article-content h3{
-    margin-top:2.5rem;
-    margin-bottom:1rem;
-    font-weight:700;
-    color:var(--accent);
-}
-
-.article-content img{
-    width:100%;
-    border-radius:12px;
-    margin:2rem 0;
-}
-
-.article-content blockquote{
-    border-left:4px solid var(--accent);
-    padding-left:1rem;
-    color:var(--muted);
-    font-style:italic;
-    margin:2rem 0;
-}
-
-.article-divider{
-    border-color:var(--border);
-    margin:3rem 0;
 }
 
 /* =========================================
@@ -260,16 +186,6 @@ a{
     top:20px;
 }
 
-.filter-panel h5,
-.filter-panel h6{
-    color:var(--accent);
-}
-
-.filter-panel p,
-.filter-panel li{
-    color:var(--muted);
-}
-
 /* =========================================
    BUTTONS
 ========================================= */
@@ -279,26 +195,6 @@ a{
     border:none;
     color:#0f1b14;
     font-weight:700;
-}
-
-.btn-danger:hover{
-    background:var(--accent-hover);
-}
-
-.btn-outline-secondary{
-    border-color:var(--border);
-    color:var(--muted);
-}
-
-.btn-outline-secondary:hover{
-    background:var(--card-hover);
-    color:var(--text);
-    border-color:var(--accent);
-}
-
-.btn-outline-light:hover{
-    transform:translateY(-2px);
-    transition:.2s ease;
 }
 
 /* =========================================
@@ -311,42 +207,8 @@ a{
     bottom:25px;
     width:48px;
     height:48px;
-    font-size:20px;
-    z-index:999;
     background:var(--accent);
     color:#0f1b14;
-}
-
-/* =========================================
-   ALERTS
-========================================= */
-
-.alert{
-    border:none;
-    border-radius:10px;
-    background:var(--card-hover);
-    color:var(--text);
-}
-
-/* =========================================
-   SCROLLBAR
-========================================= */
-
-::-webkit-scrollbar{
-    width:10px;
-}
-
-::-webkit-scrollbar-track{
-    background:var(--bg);
-}
-
-::-webkit-scrollbar-thumb{
-    background:var(--border);
-    border-radius:20px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-    background:var(--accent);
 }
 
 /* =========================================
@@ -354,76 +216,7 @@ a{
 ========================================= */
 
 @media(max-width:991px){
-
-    .filter-panel{
-        position:static;
-        margin-top:20px;
-    }
-
-    .navbar-brand{
-        font-size:1.5rem;
-    }
-
     .post-title{
         font-size:1.3rem;
     }
-
-    .article-title{
-        font-size:1.8rem;
-    }
-
-    .search-btn{
-        margin-top:10px;
-    }
-}
-
-/* =========================================
-   NOVEL READING PAGE
-========================================= */
-
-.reading-panel{
-    max-width:760px;
-    width:100%;
-    margin:30px auto;
-    padding:45px;
-    background:#0b1410;
-    border-radius:14px;
-    box-shadow:0 4px 16px rgba(0,0,0,.18);
-}
-
-.post-content{
-    font-size:1.15rem;
-    line-height:2;
-    text-align:justify;
-    white-space:normal;
-    word-break:break-word;
-    color:#253228;
-}
-
-.post-content br{
-    line-height:2;
-}
-
-.dark-mode .reading-panel{
-    background:#121e16;
-}
-
-.dark-mode .post-content{
-    color:var(--text);
-}
-.post-preview{
-    position: relative;
-    max-height: 4.8em; /* ~3 lines */
-    overflow: hidden;
-    line-height: 1.6;
-}
-
-.post-preview::after{
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1.5em;
-    background: linear-gradient(to bottom, transparent, var(--card));
 }
