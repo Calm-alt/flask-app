@@ -19,6 +19,8 @@ body.dark-mode{
     --bg:#08110c;
     --card:#121e16;
     --card-hover:#1c2d21;
+    --border:#3f5a49;
+    --muted:#a9bba9;
 }
 
 /* =========================================
@@ -87,6 +89,30 @@ a{
 }
 
 /* =========================================
+   GRID SYSTEM (NEW ✨)
+========================================= */
+
+.post-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:20px;
+}
+
+/* Tablet */
+@media (max-width: 991px){
+    .post-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px){
+    .post-grid{
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================
    POST CARDS
 ========================================= */
 
@@ -110,9 +136,7 @@ a{
     display:flex;
     flex-direction:column;
     gap:14px;
-
-    /* IMPORTANT FIX FOR LINE CLAMP STABILITY */
-    min-width: 0;
+    min-width:0;
 }
 
 /* =========================================
@@ -128,7 +152,7 @@ a{
 }
 
 /* =========================================
-   ✅ FIXED POST PREVIEW (2 LINES EXACT)
+   FIXED PREVIEW (LINE BREAKS + CLAMP)
 ========================================= */
 
 .post-preview{
@@ -136,17 +160,19 @@ a{
     font-size:1rem;
     line-height:1.6;
 
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    /* FIX: preserve line breaks from home page text */
+    white-space: pre-line;
 
-    overflow: hidden;
+    /* clamp to 2 lines visually */
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    line-clamp:2;
+    overflow:hidden;
 
-    /* IMPORTANT STABILITY FIXES */
-    min-width: 0;
-    word-break: break-word;
-    overflow-wrap: break-word;
+    word-break:break-word;
+    overflow-wrap:break-word;
+    min-width:0;
 }
 
 /* =========================================
@@ -213,7 +239,7 @@ a{
 }
 
 /* =========================================
-   MOBILE
+   MOBILE FIXES
 ========================================= */
 
 @media(max-width:991px){
