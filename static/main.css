@@ -19,8 +19,6 @@ body.dark-mode{
     --bg:#08110c;
     --card:#121e16;
     --card-hover:#1c2d21;
-    --border:#3f5a49;
-    --muted:#a9bba9;
 }
 
 /* =========================================
@@ -96,12 +94,8 @@ a{
     background:var(--card);
     border:1px solid var(--border);
     border-radius:14px;
+    transition:all .25s ease;
     overflow:hidden;
-
-    transition: transform .25s ease,
-                background .25s ease,
-                box-shadow .25s ease,
-                border-color .25s ease;
 }
 
 .post-card:hover{
@@ -117,7 +111,8 @@ a{
     flex-direction:column;
     gap:14px;
 
-    min-width:0; /* fixes overflow issues */
+    /* IMPORTANT FIX FOR LINE CLAMP STABILITY */
+    min-width: 0;
 }
 
 /* =========================================
@@ -133,7 +128,7 @@ a{
 }
 
 /* =========================================
-   POST PREVIEW (FIXED 2-LINE CLAMP)
+   ✅ FIXED POST PREVIEW (2 LINES EXACT)
 ========================================= */
 
 .post-preview{
@@ -141,16 +136,17 @@ a{
     font-size:1rem;
     line-height:1.6;
 
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
-    line-clamp:2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
 
-    overflow:hidden;
+    overflow: hidden;
 
-    word-break:break-word;
-    overflow-wrap:break-word;
-    min-width:0;
+    /* IMPORTANT STABILITY FIXES */
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* =========================================
@@ -195,7 +191,7 @@ a{
    BUTTONS
 ========================================= */
 
-.btn-accent{
+.btn-danger{
     background:var(--accent);
     border:none;
     color:#0f1b14;
