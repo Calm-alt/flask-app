@@ -1,15 +1,23 @@
 /* =========================================
-   GLOBAL THEME
+   DESIGN SYSTEM (NEXT LEVEL)
 ========================================= */
 
 :root{
     --bg:#14171c;
+    --bg-soft:#1a1f27;
+
     --card:#222831;
     --card-hover:#2a313c;
+
     --border:#363d48;
+
     --text:#f3f3f3;
     --muted:#9aa4af;
+
     --accent:#d94b4b;
+
+    --radius:14px;
+    --shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
 body.dark-mode{
@@ -18,27 +26,39 @@ body.dark-mode{
     --card-hover:#252b35;
 }
 
+/* =========================================
+   BASE
+========================================= */
+
 body{
     background:var(--bg);
     color:var(--text);
-    font-family:Inter,system-ui,Arial,sans-serif;
-    transition:.25s;
+    font-family:Inter, system-ui, Arial, sans-serif;
+    transition:.25s ease;
+    line-height:1.6;
+}
+
+a{
+    text-decoration:none;
+    transition:.2s ease;
 }
 
 /* =========================================
-   NAVBAR
+   NAVBAR (REFINED)
 ========================================= */
 
 .topbar{
-    background:linear-gradient(#252a32,#1c2027);
+    background:rgba(24,28,34,0.85);
+    backdrop-filter: blur(10px);
     border-bottom:1px solid var(--border);
     padding:14px 0;
 }
 
 .navbar-brand{
     color:white !important;
-    font-size:2rem;
+    font-size:1.8rem;
     font-weight:800;
+    letter-spacing:-0.5px;
 }
 
 .nav-link{
@@ -52,78 +72,94 @@ body{
     color:white !important;
 }
 
-.nav-link.active{
-    color:var(--accent) !important;
-}
-
 /* =========================================
-   SEARCH BAR
+   SEARCH
 ========================================= */
 
 .search-panel{
     background:var(--card);
     border:1px solid var(--border);
-    border-radius:10px;
-    padding:15px;
+    border-radius:var(--radius);
+    padding:16px;
+    box-shadow:var(--shadow);
 }
 
 .search-input{
     background:#181c22;
     border:1px solid var(--border);
     color:white;
+    border-radius:10px;
 }
 
 .search-input:focus{
-    background:#181c22;
-    color:white;
     border-color:var(--accent);
     box-shadow:none;
-}
-
-.search-input::placeholder{
-    color:#7e8790;
 }
 
 .search-btn{
     background:var(--accent);
     border:none;
-    color:white;
     font-weight:600;
-}
-
-.search-btn:hover{
-    background:#bf3f3f;
+    border-radius:10px;
 }
 
 /* =========================================
-   POSTS
+   POST FEED (MAJOR UPGRADE)
 ========================================= */
 
 .post-card{
     background:var(--card);
     border:1px solid var(--border);
-    border-radius:10px;
-    transition:.2s;
-    box-shadow:none;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    transition:.25s ease;
+    overflow:hidden;
 }
 
 .post-card:hover{
-    transform:translateY(-3px);
+    transform:translateY(-6px);
     background:var(--card-hover);
     border-color:var(--accent);
 }
 
+/* inner padding separation */
+.post-card-inner{
+    padding:20px;
+}
+
+/* TITLE */
+.post-title{
+    color:white;
+    font-size:1.9rem;
+    font-weight:800;
+    line-height:1.2;
+    margin-bottom:10px;
+}
+
+.post-card:hover .post-title{
+    color:var(--accent);
+}
+
+/* PREVIEW */
+.post-preview{
+    color:var(--muted);
+    font-size:1rem;
+    line-height:1.7;
+}
+
+/* AUTHOR */
 .author-avatar{
-    transition:.2s;
+    border:2px solid var(--border);
+    transition:.2s ease;
 }
 
 .author-avatar:hover{
-    transform:scale(1.05);
+    transform:scale(1.08);
+    border-color:var(--accent);
 }
 
 .author-name{
     color:white;
-    text-decoration:none;
     font-weight:700;
 }
 
@@ -131,32 +167,16 @@ body{
     color:var(--accent);
 }
 
-.post-title{
-    color:white;
-    font-size:1.8rem;
-    font-weight:800;
-    transition:.2s;
-}
-
-.post-card:hover .post-title{
-    color:var(--accent);
-}
-
-.post-preview{
-    color:var(--muted);
-    line-height:1.7;
-    font-size:1rem;
-}
-
 /* =========================================
-   SIDEBAR
+   SIDEBAR (MODERNIZED)
 ========================================= */
 
 .filter-panel{
     background:var(--card);
     border:1px solid var(--border);
-    border-radius:10px;
+    border-radius:var(--radius);
     padding:20px;
+    box-shadow:var(--shadow);
     position:sticky;
     top:20px;
 }
@@ -178,6 +198,7 @@ body{
 .btn-danger{
     background:var(--accent);
     border:none;
+    border-radius:10px;
 }
 
 .btn-danger:hover{
@@ -187,12 +208,12 @@ body{
 .btn-outline-secondary{
     border-color:#505862;
     color:#c6ccd2;
+    border-radius:10px;
 }
 
 .btn-outline-secondary:hover{
     background:#2a313c;
     color:white;
-    border-color:#707884;
 }
 
 /* =========================================
@@ -203,10 +224,12 @@ body{
     position:fixed;
     right:25px;
     bottom:25px;
-    width:48px;
-    height:48px;
+    width:52px;
+    height:52px;
     font-size:20px;
     z-index:999;
+    border-radius:50%;
+    box-shadow:var(--shadow);
 }
 
 /* =========================================
@@ -215,15 +238,7 @@ body{
 
 .alert{
     border:none;
-    border-radius:10px;
-}
-
-/* =========================================
-   LINKS
-========================================= */
-
-a{
-    text-decoration:none;
+    border-radius:12px;
 }
 
 /* =========================================
@@ -248,7 +263,7 @@ a{
 }
 
 /* =========================================
-   MOBILE
+   MOBILE OPTIMIZATION
 ========================================= */
 
 @media(max-width:991px){
@@ -258,15 +273,11 @@ a{
         margin-top:20px;
     }
 
-    .navbar-brand{
+    .post-title{
         font-size:1.5rem;
     }
 
-    .post-title{
+    .navbar-brand{
         font-size:1.4rem;
-    }
-
-    .search-btn{
-        margin-top:10px;
     }
 }

@@ -2,59 +2,147 @@
 
 {% block content %}
 
-<div class="content-section">
+<div class="editor-wrapper">
 
-    <h2 class="mb-4">
-        {% if title == "Edit Post" %}
-            Edit Post
-        {% else %}
-            Create New Post
-        {% endif %}
-    </h2>
+    <!-- HEADER -->
+    <div class="mb-4">
 
-    <form method="POST">
+        <h1 class="fw-bold mb-1">
+            {% if title == "Edit Post" %}
+                Edit Post
+            {% else %}
+                Create New Post
+            {% endif %}
+        </h1>
+
+        <p class="text-secondary mb-0">
+            Write something worth sharing.
+        </p>
+
+    </div>
+
+    <!-- FORM -->
+    <form method="POST" class="editor-form">
 
         {{ form.hidden_tag() }}
 
         <!-- TITLE -->
-        <div class="form-group mb-3">
-            {{ form.title.label(class="form-control-label") }}
+        <div class="mb-4">
+
+            {{ form.title.label(class="form-label text-secondary") }}
 
             {% if form.title.errors %}
-                {{ form.title(class="form-control form-control-lg is-invalid") }}
+                {{ form.title(class="form-control form-control-lg is-invalid editor-input") }}
+
                 <div class="invalid-feedback">
                     {% for error in form.title.errors %}
                         <span>{{ error }}</span>
                     {% endfor %}
                 </div>
+
             {% else %}
-                {{ form.title(class="form-control form-control-lg") }}
+                {{ form.title(class="form-control form-control-lg editor-input", placeholder="Enter a strong title...") }}
             {% endif %}
+
         </div>
 
         <!-- CONTENT -->
-        <div class="form-group mb-3">
-            {{ form.content.label(class="form-control-label") }}
+        <div class="mb-4">
+
+            {{ form.content.label(class="form-label text-secondary") }}
 
             {% if form.content.errors %}
-                {{ form.content(class="form-control form-control-lg is-invalid") }}
+                {{ form.content(class="form-control is-invalid editor-textarea", rows="10") }}
+
                 <div class="invalid-feedback">
                     {% for error in form.content.errors %}
                         <span>{{ error }}</span>
                     {% endfor %}
                 </div>
+
             {% else %}
-                {{ form.content(class="form-control form-control-lg") }}
+                {{ form.content(class="form-control editor-textarea", rows="12", placeholder="Start writing your story...") }}
             {% endif %}
+
         </div>
 
-        <!-- SUBMIT -->
-        <div class="form-group">
-            {{ form.submit(class="btn btn-outline-info") }}
+        <!-- ACTIONS -->
+        <div class="d-flex justify-content-between align-items-center">
+
+            <small class="text-secondary">
+                Tip: Use clear structure and short paragraphs
+            </small>
+
+            <div class="d-flex gap-2">
+
+                <a href="{{ url_for('home') }}"
+                   class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+
+                {{ form.submit(class="btn btn-danger px-4") }}
+
+            </div>
+
         </div>
 
     </form>
 
 </div>
+
+<!-- ========================= -->
+<!-- LOCAL STYLES -->
+<!-- ========================= -->
+<style>
+
+.editor-wrapper{
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* INPUTS */
+.editor-input{
+    border-radius: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.editor-input:focus{
+    background: var(--card);
+    border-color: var(--accent);
+    color: var(--text);
+    box-shadow: none;
+}
+
+/* TEXTAREA */
+.editor-textarea{
+    border-radius: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    min-height: 300px;
+    resize: vertical;
+}
+
+.editor-textarea:focus{
+    background: var(--card);
+    border-color: var(--accent);
+    color: var(--text);
+    box-shadow: none;
+}
+
+/* LABELS */
+.form-label{
+    font-weight: 600;
+}
+
+/* TYPOGRAPHY IMPROVEMENT */
+h1{
+    font-size: 2.2rem;
+    letter-spacing: -0.5px;
+}
+
+</style>
 
 {% endblock %}

@@ -3,19 +3,27 @@
 {% block content %}
 
 <!-- ========================= -->
-<!-- HEADER -->
+<!-- HEADER / HERO FEED -->
 <!-- ========================= -->
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="feed-header mb-4">
 
     <div>
-        <h2 class="fw-bold mb-1">Latest Posts</h2>
-        <small class="text-secondary">
-            Discover recent articles from the community
-        </small>
+        <h1 class="fw-bold mb-1">Latest Posts</h1>
+        <p class="text-secondary mb-0">
+            Discover thoughts, tutorials, and stories from the community
+        </p>
     </div>
 
-    <div class="d-flex gap-2">
+</div>
+
+<!-- ========================= -->
+<!-- SORT CONTROLS -->
+<!-- ========================= -->
+
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+
+    <div class="btn-group">
 
         <a href="{{ url_for('home', sort='latest') }}"
            class="btn btn-sm {% if sort == 'latest' %}btn-danger{% else %}btn-outline-secondary{% endif %}">
@@ -29,34 +37,36 @@
 
     </div>
 
+    <small class="text-secondary">
+        {{ posts.total }} posts
+    </small>
+
 </div>
 
-
-
 <!-- ========================= -->
-<!-- POSTS -->
+<!-- FEED -->
 <!-- ========================= -->
 
 {% for post in posts.items %}
 
-<div class="card post-card mb-4">
+<article class="post-card mb-4">
 
-    <div class="card-body">
+    <div class="post-card-inner">
 
+        <!-- AUTHOR -->
         <div class="d-flex align-items-center mb-3">
 
             <a href="{{ url_for('user_posts', username=post.author.username) }}">
 
-                <img
-                    src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
-                    class="rounded-circle author-avatar"
-                    width="55"
-                    height="55"
-                    style="object-fit:cover;">
+                <img src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
+                     class="rounded-circle me-3 author-avatar"
+                     width="48"
+                     height="48"
+                     style="object-fit: cover;">
 
             </a>
 
-            <div class="ms-3">
+            <div>
 
                 <a href="{{ url_for('user_posts', username=post.author.username) }}"
                    class="author-name">
@@ -67,7 +77,7 @@
 
                 <div class="small text-secondary">
 
-                    {{ post.date_posted.strftime('%B %d, %Y') }}
+                    {{ post.date_posted.strftime('%b %d, %Y') }}
 
                 </div>
 
@@ -75,41 +85,44 @@
 
         </div>
 
+        <!-- TITLE -->
         <a href="{{ url_for('post', post_id=post.id) }}"
            class="text-decoration-none">
 
-            <h3 class="post-title mb-3">
-
+            <h2 class="post-title">
                 {{ post.title }}
-
-            </h3>
+            </h2>
 
         </a>
 
+        <!-- PREVIEW -->
         <p class="post-preview">
 
-            {{ post.content[:250] }}
+            {{ post.content[:180] }}
 
-            {% if post.content|length > 250 %}
+            {% if post.content|length > 180 %}
                 ...
             {% endif %}
 
         </p>
 
-        <div class="mt-3">
+        <!-- FOOTER ACTION -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
 
             <a href="{{ url_for('post', post_id=post.id) }}"
                class="btn btn-sm btn-danger">
-
-                Read More →
-
+                Read →
             </a>
+
+            <small class="text-secondary">
+                {{ (post.content|length // 100) + 1 }} min read
+            </small>
 
         </div>
 
     </div>
 
-</div>
+</article>
 
 {% endfor %}
 
@@ -120,14 +133,10 @@
 <div class="d-flex justify-content-center align-items-center mt-5 mb-4 flex-wrap gap-2">
 
     {% if posts.has_prev %}
-
         <a href="{{ url_for('home', page=posts.prev_num, sort=sort) }}"
            class="btn btn-outline-secondary">
-
             ← Prev
-
         </a>
-
     {% endif %}
 
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
@@ -135,45 +144,27 @@
         {% if page_num %}
 
             {% if page_num == posts.page %}
-
                 <span class="btn btn-danger">
-
                     {{ page_num }}
-
                 </span>
-
             {% else %}
-
                 <a href="{{ url_for('home', page=page_num, sort=sort) }}"
                    class="btn btn-outline-secondary">
-
                     {{ page_num }}
-
                 </a>
-
             {% endif %}
 
         {% else %}
-
-            <span class="text-secondary px-2">
-
-                ...
-
-            </span>
-
+            <span class="text-secondary px-2">...</span>
         {% endif %}
 
     {% endfor %}
 
     {% if posts.has_next %}
-
         <a href="{{ url_for('home', page=posts.next_num, sort=sort) }}"
            class="btn btn-outline-secondary">
-
             Next →
-
         </a>
-
     {% endif %}
 
 </div>
@@ -182,12 +173,9 @@
 <!-- BACK TO TOP -->
 <!-- ========================= -->
 
-<button
-    onclick="window.scrollTo({top:0,behavior:'smooth'})"
-    class="btn btn-danger rounded-circle back-top">
-
+<button onclick="window.scrollTo({top:0, behavior:'smooth'})"
+        class="btn btn-danger back-top rounded-circle">
     ↑
-
 </button>
 
 {% endblock %}

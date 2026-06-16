@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>
+        {% block title %}
+            {% if title %}
+                Knights - {{ title }}
+            {% else %}
+                Knights
+            {% endif %}
+        {% endblock %}
+    </title>
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
@@ -14,22 +24,14 @@
 
     <link rel="icon"
           href="{{ url_for('static', filename='images/OIP.ico') }}">
-
-    <title>
-        {% if title %}
-            Knights - {{ title }}
-        {% else %}
-            Knights
-        {% endif %}
-    </title>
 </head>
 
-<body>
+<body class="app-body">
 
 <!-- ========================= -->
 <!-- NAVBAR -->
 <!-- ========================= -->
-<nav class="navbar navbar-expand-lg topbar">
+<nav class="navbar navbar-expand-lg topbar sticky-top">
 
     <div class="container">
 
@@ -39,22 +41,22 @@
 
         <div class="ms-auto d-flex align-items-center gap-4">
 
-            <a class="nav-link" href="{{ url_for('home') }}">HOME</a>
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
 
             {% if current_user.is_authenticated %}
 
-                <a class="nav-link" href="{{ url_for('new_post') }}">CREATE</a>
-                <a class="nav-link" href="{{ url_for('account') }}">ACCOUNT</a>
-                <a class="nav-link text-danger" href="{{ url_for('logout') }}">LOGOUT</a>
+                <a class="nav-link" href="{{ url_for('new_post') }}">Create</a>
+                <a class="nav-link" href="{{ url_for('account') }}">Account</a>
+                <a class="nav-link text-danger" href="{{ url_for('logout') }}">Logout</a>
 
             {% else %}
 
-                <a class="nav-link" href="{{ url_for('login') }}">LOGIN</a>
-                <a class="nav-link" href="{{ url_for('register') }}">REGISTER</a>
+                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-link" href="{{ url_for('register') }}">Register</a>
 
             {% endif %}
 
-            <button class="btn btn-outline-light btn-sm"
+            <button class="btn btn-sm btn-outline-light"
                     onclick="toggleDarkMode()">
                 🌙
             </button>
@@ -64,90 +66,46 @@
     </div>
 </nav>
 
+<!-- ========================= -->
+<!-- OPTIONAL HERO BLOCK -->
+<!-- (used for homepage upgrades later) -->
+<!-- ========================= -->
+{% block hero %}{% endblock %}
 
 <!-- ========================= -->
-<!-- SEARCH BAR -->
+<!-- SEARCH BAR (OPTIONAL BLOCK) -->
 <!-- ========================= -->
+{% block search %}{% endblock %}
 
-{% if request.endpoint not in ['post'] %}
+<!-- ========================= -->
+<!-- MAIN LAYOUT -->
+<!-- ========================= -->
+<main class="container py-4">
 
-<div class="container mt-4">
-
-    <form action="{{ url_for('home') }}" method="GET">
-
-        <div class="search-panel">
-
-            <div class="row g-2">
-
-                <div class="col-md-9">
-                    <input type="text"
-                           name="q"
-                           class="form-control search-input"
-                           placeholder="Search blog posts..."
-                           value="{{ request.args.get('q', '') }}">
+    <!-- FLASH MESSAGES (GLOBAL ONCE) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
                 </div>
-
-                <div class="col-md-2">
-                    <select class="form-select search-input" name="sort">
-
-                        <option value="latest"
-                            {% if request.args.get('sort') == 'latest' %}selected{% endif %}>
-                            Latest
-                        </option>
-
-                        <option value="oldest"
-                            {% if request.args.get('sort') == 'oldest' %}selected{% endif %}>
-                            Oldest
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="col-md-1">
-                    <button type="submit" class="btn search-btn w-100">
-                        🔍
-                    </button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </form>
-
-</div>
-
-{% endif %}
-
-
-<!-- ========================= -->
-<!-- MAIN CONTENT -->
-<!-- ========================= -->
-
-<main class="container mt-4">
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     <div class="row g-4">
 
-        <!-- LEFT CONTENT -->
+        <!-- MAIN CONTENT -->
         <div class="col-lg-9">
-
-            <!-- FLASH MESSAGES -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
 
             {% block content %}{% endblock %}
 
         </div>
 
-        <!-- SIDEBAR -->
+        <!-- SIDEBAR (OPTIONAL OVERRIDE) -->
         <div class="col-lg-3">
+
+            {% block sidebar %}
 
             <div class="filter-panel">
 
@@ -167,9 +125,9 @@
                 <h6>Quick Tips</h6>
 
                 <ul class="list-unstyled small text-secondary">
-                    <li>• Use the search box.</li>
-                    <li>• Sort newest or oldest.</li>
-                    <li>• Click any author to view their posts.</li>
+                    <li>• Use search to find posts quickly.</li>
+                    <li>• Sort by latest or oldest.</li>
+                    <li>• Click author names to explore posts.</li>
                 </ul>
 
                 <hr>
@@ -180,38 +138,36 @@
 
             </div>
 
+            {% endblock %}
+
         </div>
 
     </div>
-
 </main>
-
 
 <!-- ========================= -->
 <!-- SCRIPTS -->
 <!-- ========================= -->
 <script>
 function toggleDarkMode() {
-
     document.body.classList.toggle("dark-mode");
 
     localStorage.setItem(
         "darkMode",
-        document.body.classList.contains("dark-mode")
-            ? "enabled"
-            : "disabled"
+        document.body.classList.contains("dark-mode") ? "enabled" : "disabled"
     );
 }
 
-window.onload = function () {
-
+window.addEventListener("load", () => {
     if (localStorage.getItem("darkMode") === "enabled") {
         document.body.classList.add("dark-mode");
     }
-};
+});
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{% block scripts %}{% endblock %}
 
 </body>
 </html>
