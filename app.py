@@ -292,8 +292,6 @@ def user_posts(username):
     return render_template("user_posts.html", user=user, posts=posts)
 
 
-with app.app_context():
-    db.create_all()
 
 
 # ---------------- RUN ----------------
