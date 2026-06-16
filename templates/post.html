@@ -1,148 +1,109 @@
+```html
 {% extends "layout.html" %}
 
 {% block content %}
 
-<div class="container py-4">
+<div class="container py-5">
+    <div class="mx-auto" style="max-width: 760px;">
 
-    <article class="post-card">
+        <!-- Author -->
+        <div class="d-flex align-items-center mb-4">
+            <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
+                 class="rounded-circle me-3"
+                 width="50"
+                 height="50"
+                 style="object-fit: cover;">
 
-        <div class="card-body p-4 p-lg-5">
-
-            <!-- ========================= -->
-            <!-- AUTHOR -->
-            <!-- ========================= -->
-
-            <a href="{{ url_for('user_posts', username=post.author.username) }}"
-               class="text-decoration-none">
-
-                <div class="d-flex align-items-center mb-4">
-
-                    <img
-                        src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
-                        class="rounded-circle author-avatar me-3"
-                        width="70"
-                        height="70"
-                        style="object-fit: cover; border:2px solid #3a404a;">
-
-                    <div>
-
-                        <h4 class="mb-1 fw-bold text-white">
-                            {{ post.author.username }}
-                        </h4>
-
-                        <small class="text-secondary">
-                            Published on {{ post.date_posted.strftime('%B %d, %Y') }}
-                        </small>
-
-                    </div>
-
+            <div>
+                <div class="fw-bold text-white">
+                    {{ post.author.username }}
                 </div>
 
+                <small class="text-secondary">
+                    {{ post.date_posted.strftime('%B %d, %Y') }}
+                </small>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="article-title">
+            {{ post.title }}
+        </h1>
+
+        <!-- Content -->
+        <div class="article-content mt-5">
+            {{ post.content }}
+        </div>
+
+        {% if current_user.is_authenticated and post.author == current_user %}
+
+        <hr class="my-5">
+
+        <div class="d-flex justify-content-center gap-3">
+
+            <a href="{{ url_for('edit_post', post_id=post.id) }}"
+               class="btn btn-outline-light">
+                ✏️ Edit
             </a>
 
-            <!-- ========================= -->
-            <!-- TITLE -->
-            <!-- ========================= -->
+            <form action="{{ url_for('delete_post', post_id=post.id) }}"
+                  method="POST"
+                  onsubmit="return confirm('Delete this post permanently?');">
 
-            <h1 class="display-5 fw-bold text-white mb-4">
-                {{ post.title }}
-            </h1>
+                <button class="btn btn-danger">
+                    🗑 Delete
+                </button>
 
-            <hr style="border-color:#343943;">
-
-            <!-- ========================= -->
-            <!-- CONTENT -->
-            <!-- ========================= -->
-
-            <div class="mt-4 mb-4">
-
-                <div class="post-content">
-
-                    {{ post.content }}
-
-                </div>
-
-            </div>
-
-            <!-- ========================= -->
-            <!-- ACTIONS -->
-            <!-- ========================= -->
-
-            {% if current_user.is_authenticated and post.author == current_user %}
-
-            <hr style="border-color:#343943;">
-
-            <div class="d-flex gap-3 flex-wrap">
-
-                <a href="{{ url_for('edit_post', post_id=post.id) }}"
-                   class="btn btn-primary px-4">
-
-                    ✏️ Edit Post
-
-                </a>
-
-                <form action="{{ url_for('delete_post', post_id=post.id) }}"
-                      method="POST"
-                      onsubmit="return confirm('Delete this post permanently?');">
-
-                    <button type="submit"
-                            class="btn btn-danger px-4">
-
-                        🗑 Delete
-
-                    </button>
-
-                </form>
-
-            </div>
-
-            {% endif %}
+            </form>
 
         </div>
 
-    </article>
+        {% endif %}
 
+    </div>
 </div>
 
 <style>
-
-.post-card{
-    background:linear-gradient(180deg,#222831,#1b2028);
-    border:1px solid #343943;
-    border-radius:18px;
-    box-shadow:0 12px 30px rgba(0,0,0,.35);
-    overflow:hidden;
+.article-title{
+    font-size:4rem;
+    font-weight:800;
+    line-height:1.1;
+    color:#fff;
+    margin-bottom:2rem;
 }
 
-.post-content{
+.article-content{
     white-space:pre-wrap;
-    font-size:1.1rem;
+    font-size:1.2rem;
     line-height:2;
     color:#d7dce2;
-    letter-spacing:.2px;
 }
 
-.author-avatar{
-    transition:.2s;
+.article-content p{
+    margin-bottom:1.6rem;
 }
 
-.author-avatar:hover{
-    transform:scale(1.05);
+.article-content h2,
+.article-content h3{
+    margin-top:3rem;
+    margin-bottom:1rem;
+    color:#fff;
 }
 
-.btn-primary{
-    background:#3b82f6;
-    border:none;
+.article-content img{
+    width:100%;
+    border-radius:12px;
+    margin:2rem 0;
 }
 
-.btn-primary:hover{
-    background:#2563eb;
+.article-content blockquote{
+    border-left:4px solid #555;
+    padding-left:1rem;
+    margin:2rem 0;
+    color:#9aa4af;
+    font-style:italic;
 }
-
-.btn-danger{
-    border:none;
-}
-
 </style>
 
 {% endblock %}
+```
