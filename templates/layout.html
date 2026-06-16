@@ -1,142 +1,177 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Blog{% endblock %}</title>
 
-{% block content %}
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<div class="container py-5">
-    <div class="mx-auto" style="max-width: 900px;">
+    <!-- Global Styles -->
+    <style>
 
-        <!-- Author -->
-        <div class="d-flex align-items-center mb-4">
+        body{
+            background-color: #0f1115;
+            color: #e6e6e6;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        }
 
-            <a href="{{ url_for('user_posts', username=post.author.username) }}">
-                <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
-                     class="rounded-circle me-3"
-                     width="56"
-                     height="56"
-                     style="object-fit: cover;">
-            </a>
+        /* Navbar */
+        .navbar{
+            background-color: #0b0d10 !important;
+            border-bottom: 1px solid #1f232b;
+        }
 
-            <div>
-                <div class="fw-bold fs-5 text-white">
-                    {{ post.author.username }}
+        .navbar-brand{
+            font-weight: 700;
+            color: #ffffff !important;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link{
+            color: #cfd6dd !important;
+        }
+
+        .nav-link:hover{
+            color: #ffffff !important;
+        }
+
+        /* Container spacing */
+        .container{
+            max-width: 1100px;
+        }
+
+        /* Buttons polish */
+        .btn{
+            border-radius: 10px;
+        }
+
+        .btn-outline-light:hover{
+            transform: translateY(-2px);
+            transition: 0.2s ease;
+        }
+
+        /* Links */
+        a{
+            color: #d6dbe1;
+        }
+
+        a:hover{
+            color: #ffffff;
+        }
+
+        /* Flash messages */
+        .alert{
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        footer{
+            border-top: 1px solid #1f232b;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: #8b949e;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+    </style>
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark px-3">
+    <div class="container-fluid">
+
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            MyBlog
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                </li>
+
+                {% if current_user.is_authenticated %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('new_post') }}">New Post</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('user_posts', username=current_user.username) }}">
+                            Profile
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{{ url_for('logout') }}">
+                            Logout
+                        </a>
+                    </li>
+
+                {% else %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<!-- FLASH MESSAGES -->
+<div class="container mt-3">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+
+                <div class="alert alert-{{ category }} text-center">
+                    {{ message }}
                 </div>
 
-                <small class="text-secondary">
-                    {{ post.date_posted.strftime('%B %d, %Y') }}
-                </small>
-            </div>
-
-        </div>
-
-        <!-- Title -->
-        <h1 class="article-title">
-            {{ post.title }}
-        </h1>
-
-        <!-- Divider -->
-        <hr class="article-divider">
-
-        <!-- Content -->
-        <div class="article-content">
-
-            {{ post.content }}
-
-        </div>
-
-        {% if current_user.is_authenticated and post.author == current_user %}
-
-        <hr class="article-divider my-5">
-
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-
-            <a href="{{ url_for('edit_post', post_id=post.id) }}"
-               class="btn btn-outline-light px-4 py-2">
-                ✏️ Edit Post
-            </a>
-
-            <form action="{{ url_for('delete_post', post_id=post.id) }}"
-                  method="POST"
-                  onsubmit="return confirm('Delete this post permanently?');">
-
-                <button type="submit"
-                        class="btn btn-danger px-4 py-2">
-                    🗑 Delete
-                </button>
-
-            </form>
-
-        </div>
-
+            {% endfor %}
         {% endif %}
+    {% endwith %}
 
-    </div>
 </div>
 
-<style>
+<!-- MAIN CONTENT -->
+<main>
+    {% block content %}{% endblock %}
+</main>
 
-.article-title{
-    font-size:clamp(3.5rem,6vw,5.5rem);
-    font-weight:900;
-    line-height:1.05;
-    color:#ffffff;
-    margin-bottom:2rem;
-    letter-spacing:-1px;
-}
+<!-- FOOTER -->
+<footer>
+    <div>
+        © {{ current_year if current_year else "2026" }} MyBlog • Built with Flask
+    </div>
+</footer>
 
-.article-divider{
-    border-color:#343943;
-    margin:2rem 0;
-}
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-.article-content{
-    white-space:pre-wrap;
-    font-size:1.3rem;
-    line-height:2.1;
-    color:#dde3ea;
-    max-width:800px;
-    margin:0 auto;
-    word-break:break-word;
-}
+{% block scripts %}{% endblock %}
 
-.article-content p{
-    margin-bottom:1.8rem;
-}
-
-.article-content h1,
-.article-content h2,
-.article-content h3{
-    color:#ffffff;
-    margin-top:3rem;
-    margin-bottom:1rem;
-    font-weight:700;
-}
-
-.article-content img{
-    display:block;
-    max-width:100%;
-    height:auto;
-    margin:2.5rem auto;
-    border-radius:14px;
-}
-
-.article-content blockquote{
-    border-left:4px solid #d94b4b;
-    padding-left:1.25rem;
-    margin:2rem 0;
-    color:#9aa4af;
-    font-style:italic;
-}
-
-.article-content ul,
-.article-content ol{
-    padding-left:2rem;
-    margin-bottom:1.5rem;
-}
-
-.article-content li{
-    margin-bottom:.75rem;
-}
-
-</style>
-
-{% endblock %}
+</body>
+</html>
