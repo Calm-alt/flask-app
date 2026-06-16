@@ -30,39 +30,41 @@ app = Flask(__name__)
 
 # ---------------- CONFIG ----------------
 
-app.config["SECRET_KEY"] = "your_secret_key_here"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-change-this")
+
+# ✅ IMPORTANT FIX: use DATABASE_URL from Render (Postgres)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+
+# Fix for SQLAlchemy + Postgres (Render requirement)
+if app.config["SQLALCHEMY_DATABASE_URI"] and app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
+    app.config["SQLALCHEMY_DATABASE_URI"] = app.config["SQLALCHEMY_DATABASE_URI"].replace("postgres://", "postgresql://", 1)
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # ---------------- DATABASE ----------------
 
 db.init_app(app)
 
-# ---------------- LOGIN MANAGER ----------------
+# ---------------- LOGIN ----------------
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))
 
 
-# ---------------- IMAGE SAVE FUNCTION ----------------
+# ---------------- IMAGE SAVE ----------------
 
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
 
-    picture_path = os.path.join(
-        app.root_path,
-        "static/profile_pics",
-        picture_fn
-    )
+    picture_path = os.path.join(app.root_path, "static/profile_pics", picture_fn)
 
     output_size = (125, 125)
     img = Image.open(form_picture)
@@ -70,6 +72,7 @@ def save_picture(form_picture):
     img.save(picture_path)
 
     return picture_fn
+
 
 # ---------------- HOME ----------------
 
@@ -82,7 +85,6 @@ def home():
 
     query = Post.query
 
-    # Search by title or content
     if q:
         query = query.filter(
             or_(
@@ -91,24 +93,16 @@ def home():
             )
         )
 
-    # Sorting
     if sort == "oldest":
         query = query.order_by(Post.date_posted.asc())
     else:
         query = query.order_by(Post.date_posted.desc())
 
-    posts = query.paginate(
-        page=page,
-        per_page=5,
-        error_out=False
-    )
+    posts = query.paginate(page=page, per_page=5, error_out=False)
 
-    return render_template(
-        "home.html",
-        posts=posts,
-        sort=sort,
-        q=q
-    )
+    return render_template("home.html", posts=posts, sort=sort, q=q)
+
+
 # ---------------- ABOUT ----------------
 
 @app.route("/about")
@@ -128,7 +122,7 @@ def register():
     if form.validate_on_submit():
 
         if User.query.filter_by(email=form.email.data).first():
-            flash("Email already registered. Please log in.", "warning")
+            flash("Email already registered.", "warning")
             return redirect(url_for("login"))
 
         if User.query.filter_by(username=form.username.data).first():
@@ -149,7 +143,7 @@ def register():
         flash("Account created successfully!", "success")
         return redirect(url_for("login"))
 
-    return render_template("register.html", title="Register", form=form)
+    return render_template("register.html", form=form)
 
 
 # ---------------- LOGIN ----------------
@@ -168,14 +162,12 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
 
-            flash(f"Welcome back, {user.username}!", "success")
-
             next_page = request.args.get("next")
             return redirect(next_page) if next_page else redirect(url_for("home"))
 
-        flash("Login unsuccessful. Please check email and password.", "danger")
+        flash("Login failed.", "danger")
 
-    return render_template("login.html", title="Login", form=form)
+    return render_template("login.html", form=form)
 
 
 # ---------------- LOGOUT ----------------
@@ -184,7 +176,6 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("You have been logged out.", "info")
     return redirect(url_for("home"))
 
 
@@ -198,32 +189,23 @@ def account():
     if form.validate_on_submit():
 
         if form.picture.data:
-            picture_file = save_picture(form.picture.data)
-            current_user.image_file = picture_file
+            current_user.image_file = save_picture(form.picture.data)
 
         current_user.username = form.username.data
         current_user.email = form.email.data
 
         db.session.commit()
 
-        flash("Account updated successfully!", "success")
+        flash("Account updated!", "success")
         return redirect(url_for("account"))
 
     elif request.method == "GET":
         form.username.data = current_user.username
         form.email.data = current_user.email
 
-    image_file = url_for(
-        "static",
-        filename="profile_pics/" + (current_user.image_file or "default.jpg")
-    )
+    image_file = url_for("static", filename="profile_pics/" + (current_user.image_file or "default.jpg"))
 
-    return render_template(
-        "account.html",
-        title="Account",
-        image_file=image_file,
-        form=form
-    )
+    return render_template("account.html", form=form, image_file=image_file)
 
 
 # ---------------- CREATE POST ----------------
@@ -231,11 +213,9 @@ def account():
 @app.route("/post/new", methods=["GET", "POST"])
 @login_required
 def new_post():
-
     form = PostForm()
 
     if form.validate_on_submit():
-
         post = Post(
             title=form.title.data,
             content=form.content.data,
@@ -245,23 +225,21 @@ def new_post():
         db.session.add(post)
         db.session.commit()
 
-        flash("Post created successfully!", "success")
         return redirect(url_for("home"))
 
-    return render_template("create_post.html", title="New Post", form=form)
+    return render_template("create_post.html", form=form)
 
 
-# ---------------- VIEW SINGLE POST ----------------
+# ---------------- VIEW POST ----------------
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
     post = db.session.get(Post, post_id)
 
     if not post:
-        flash("Post not found.", "warning")
         return redirect(url_for("home"))
 
-    return render_template("post.html", title=post.title, post=post)
+    return render_template("post.html", post=post)
 
 
 # ---------------- EDIT POST ----------------
@@ -271,12 +249,7 @@ def post(post_id):
 def edit_post(post_id):
     post = db.session.get(Post, post_id)
 
-    if not post:
-        flash("Post not found.", "warning")
-        return redirect(url_for("home"))
-
-    if post.author != current_user:
-        flash("You are not allowed to edit this post.", "danger")
+    if not post or post.author != current_user:
         return redirect(url_for("home"))
 
     form = PostForm()
@@ -286,14 +259,12 @@ def edit_post(post_id):
         post.content = form.content.data
         db.session.commit()
 
-        flash("Post updated successfully!", "success")
         return redirect(url_for("post", post_id=post.id))
 
-    elif request.method == "GET":
-        form.title.data = post.title
-        form.content.data = post.content
+    form.title.data = post.title
+    form.content.data = post.content
 
-    return render_template("create_post.html", title="Edit Post", form=form)
+    return render_template("create_post.html", form=form)
 
 
 # ---------------- DELETE POST ----------------
@@ -303,18 +274,10 @@ def edit_post(post_id):
 def delete_post(post_id):
     post = db.session.get(Post, post_id)
 
-    if not post:
-        flash("Post not found.", "warning")
-        return redirect(url_for("home"))
+    if post and post.author == current_user:
+        db.session.delete(post)
+        db.session.commit()
 
-    if post.author != current_user:
-        flash("You are not allowed to delete this post.", "danger")
-        return redirect(url_for("home"))
-
-    db.session.delete(post)
-    db.session.commit()
-
-    flash("Post deleted successfully!", "success")
     return redirect(url_for("home"))
 
 
@@ -324,29 +287,10 @@ def delete_post(post_id):
 def user_posts(username):
     user = User.query.filter_by(username=username).first_or_404()
 
-    posts = (
-        Post.query
-        .filter_by(user_id=user.id)
-        .order_by(Post.date_posted.desc())
-        .all()
-    )
+    posts = Post.query.filter_by(user_id=user.id).order_by(Post.date_posted.desc()).all()
 
-    return render_template(
-        "user_posts.html",
-        title=f"{user.username}'s Profile",
-        user=user,
-        posts=posts
-    )
+    return render_template("user_posts.html", user=user, posts=posts)
 
-
-# ---------------- RESET PASSWORD ----------------
-
-@app.route("/reset_password")
-def reset_request():
-    return render_template("reset_request.html", title="Reset Password")
-
-
-# ---------------- DB INIT ----------------
 
 with app.app_context():
     db.create_all()
@@ -355,4 +299,4 @@ with app.app_context():
 # ---------------- RUN ----------------
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
