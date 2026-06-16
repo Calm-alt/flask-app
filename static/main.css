@@ -1,18 +1,18 @@
 /* =========================================
-   DESIGN SYSTEM - FOREST MINIMAL EDITION
+   DESIGN SYSTEM - FOREST MINIMAL EDITION (FIXED)
 ========================================= */
 
 :root{
     /* Natural forest palette only */
-    --bg:#0b1510;              /* deep forest shadow */
-    --card:#14231a;            /* moss dark */
-    --card-hover:#1a2d22;      /* leaf shade */
-    --border:#2f4a3a;          /* bark green */
+    --bg:#0b1510;
+    --card:#14231a;
+    --card-hover:#1a2d22;
+    --border:#2f4a3a;
 
-    --text:#e6efe6;            /* soft leaf white */
-    --muted:#a9b8ad;          /* foggy green */
+    --text:#e6efe6;
+    --muted:#a9b8ad;
 
-    --accent:#6f8f73;         /* muted plant green */
+    --accent:#6f8f73;
     --accent-soft:#89a98c;
 }
 
@@ -43,7 +43,7 @@ a{
 }
 
 /* =========================================
-   TOPBAR (SUBTLE, NO HARSH COLORS)
+   TOPBAR
 ========================================= */
 
 .topbar{
@@ -70,7 +70,7 @@ a{
 }
 
 /* =========================================
-   SEARCH (EARTH TONE ONLY)
+   SEARCH
 ========================================= */
 
 .search-panel{
@@ -92,27 +92,27 @@ a{
 }
 
 /* =========================================
-   CONTAINER (SMALLER + TIGHTER FEED)
+   CONTAINER
 ========================================= */
 
 .feed-container{
-    max-width:680px;   /* smaller like clean blog */
+    max-width:680px;
     margin:0 auto;
     padding:35px 16px;
 }
 
 /* =========================================
-   POST FEED (NO GRID — CLEAN LIST)
+   FEED LIST
 ========================================= */
 
 .post-grid{
     display:flex;
     flex-direction:column;
-    gap:14px;  /* tighter spacing */
+    gap:14px;
 }
 
 /* =========================================
-   POST CARD (SMALLER, CLEANER)
+   POST CARD
 ========================================= */
 
 .post-card{
@@ -128,7 +128,7 @@ a{
 }
 
 /* =========================================
-   CARD INNER
+   INNER
 ========================================= */
 
 .post-card-inner{
@@ -139,7 +139,7 @@ a{
 }
 
 /* =========================================
-   TITLE (SOFT + NATURAL)
+   TITLE
 ========================================= */
 
 .post-title{
@@ -156,7 +156,7 @@ a{
 }
 
 /* =========================================
-   PREVIEW (CLEAN, NATURAL READABILITY)
+   PREVIEW
 ========================================= */
 
 .post-preview{
@@ -169,7 +169,7 @@ a{
     display:-webkit-box;
     -webkit-box-orient:vertical;
     -webkit-line-clamp:3;
-    line-clamp:3;
+    line-clamp :3;
     overflow:hidden;
 
     word-break:break-word;
@@ -177,7 +177,7 @@ a{
 }
 
 /* =========================================
-   META (SUBTLE FOREST TEXT)
+   META
 ========================================= */
 
 .post-meta{
@@ -188,7 +188,7 @@ a{
 }
 
 /* =========================================
-   ARTICLE PAGE
+   ARTICLE
 ========================================= */
 
 .article-wrapper{
@@ -204,7 +204,7 @@ a{
 }
 
 /* =========================================
-   SIDEBAR (OPTIONAL CLEAN STYLE)
+   SIDEBAR
 ========================================= */
 
 .filter-panel{
@@ -217,13 +217,42 @@ a{
 }
 
 /* =========================================
-   BUTTONS (NO HARSH COLORS)
+   BUTTONS (FIXED - NO BLUE ANYMORE)
 ========================================= */
 
+/* override Bootstrap primary buttons */
+.btn-primary,
+.btn-edit,
+button.primary,
+a.primary{
+    background:var(--accent) !important;
+    border:1px solid var(--border) !important;
+    color:#0b1510 !important;
+    font-weight:700;
+}
+
+.btn-primary:hover,
+.btn-edit:hover{
+    background:var(--accent-soft) !important;
+}
+
+/* secondary subtle buttons */
+.btn-secondary{
+    background:transparent !important;
+    border:1px solid var(--border) !important;
+    color:var(--muted) !important;
+}
+
+.btn-secondary:hover{
+    border-color:var(--accent) !important;
+    color:var(--accent-soft) !important;
+}
+
+/* danger = safe forest version */
 .btn-danger{
-    background:var(--accent);
-    border:none;
-    color:#0b1510;
+    background:var(--accent) !important;
+    border:none !important;
+    color:#0b1510 !important;
     font-weight:700;
 }
 
