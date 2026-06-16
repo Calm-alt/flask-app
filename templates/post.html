@@ -3,19 +3,20 @@
 {% block content %}
 
 <div class="container py-5">
-    <div class="mx-auto" style="max-width: 760px;">
 
-        <!-- Author -->
+    <div class="mx-auto article-wrapper">
+
+        <!-- AUTHOR INFO -->
         <a href="{{ url_for('user_posts', username=post.author.username) }}"
            class="text-decoration-none">
 
             <div class="d-flex align-items-center mb-4">
 
-                <img src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"
+                <img src="{{ url_for('static', filename='profile_pics/' ~ (post.author.image_file or 'default.png')) }}"
                      class="rounded-circle me-3"
                      width="48"
                      height="48"
-                     style="object-fit:cover;">
+                     style="object-fit: cover;">
 
                 <div>
                     <div class="fw-bold text-white">
@@ -31,89 +32,122 @@
 
         </a>
 
-        <!-- Title -->
-        <h1 class="article-title mb-5">
+        <!-- TITLE -->
+        <h1 class="article-title">
             {{ post.title }}
         </h1>
 
-        <!-- Content -->
+        <!-- CONTENT -->
         <div class="article-content">
-            {{ post.content }}
+            {{ post.content | safe }}
         </div>
 
-        <!-- Buttons -->
-        {% if current_user.is_authenticated and post.author == current_user %}
+        <!-- AUTHOR ACTIONS -->
+        {% if current_user.is_authenticated and post.author.id == current_user.id %}
 
-        <hr class="my-5">
+            <hr class="article-divider">
 
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
 
-            <a href="{{ url_for('edit_post', post_id=post.id) }}"
-               class="btn btn-outline-light px-4">
-                ✏️ Edit
-            </a>
+                <a href="{{ url_for('edit_post', post_id=post.id) }}"
+                   class="btn btn-outline-light px-4 py-2">
+                    ✏️ Edit
+                </a>
 
-            <form action="{{ url_for('delete_post', post_id=post.id) }}"
-                  method="POST"
-                  onsubmit="return confirm('Delete this post permanently?');">
+                <form action="{{ url_for('delete_post', post_id=post.id) }}"
+                      method="POST"
+                      onsubmit="return confirm('Delete this post permanently?');">
 
-                <button class="btn btn-danger px-4">
-                    🗑 Delete
-                </button>
+                    <!-- CSRF (if using Flask-WTF) -->
+                    {% if csrf_token %}
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    {% endif %}
 
-            </form>
+                    <button type="submit"
+                            class="btn btn-danger px-4 py-2">
+                        🗑 Delete
+                    </button>
 
-        </div>
+                </form>
+
+            </div>
 
         {% endif %}
 
     </div>
+
 </div>
 
+<!-- ========================= -->
+<!-- STYLES -->
+<!-- ========================= -->
 <style>
 
-.article-title{
-    font-size:clamp(2.8rem,5vw,4.5rem);
-    font-weight:800;
-    line-height:1.1;
-    color:#fff;
+.article-wrapper {
+    max-width: 800px;
 }
 
-.article-content{
-    white-space:pre-wrap;
-    font-size:1.2rem;
-    line-height:2;
-    color:#d6dbe1;
+/* TITLE */
+.article-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 2rem;
 }
 
-.article-content p{
-    margin-bottom:1.6rem;
+/* CONTENT */
+.article-content {
+    font-size: 1.2rem;
+    line-height: 2;
+    color: #d6dbe1;
+    margin-top: 2rem;
+    word-break: break-word;
 }
 
+/* PARAGRAPHS */
+.article-content p {
+    margin-bottom: 1.6rem;
+}
+
+/* HEADINGS */
 .article-content h2,
-.article-content h3{
-    margin-top:3rem;
-    margin-bottom:1rem;
-    font-weight:700;
-    color:#fff;
+.article-content h3 {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #fff;
 }
 
-.article-content img{
-    width:100%;
-    border-radius:12px;
-    margin:2rem 0;
+/* IMAGES */
+.article-content img {
+    width: 100%;
+    border-radius: 12px;
+    margin: 2rem 0;
 }
 
-.article-content blockquote{
-    border-left:4px solid #555;
-    padding-left:1rem;
-    color:#9aa4af;
-    font-style:italic;
-    margin:2rem 0;
+/* BLOCKQUOTE */
+.article-content blockquote {
+    border-left: 4px solid #d94b4b;
+    padding-left: 1rem;
+    color: #9aa4af;
+    font-style: italic;
+    margin: 2rem 0;
 }
 
-hr{
-    border-color:#343943;
+/* DIVIDER */
+.article-divider {
+    border-color: #343943;
+    margin: 3rem 0;
+}
+
+/* BUTTON HOVER FIX */
+.btn-outline-light {
+    transition: 0.2s ease;
+}
+
+.btn-outline-light:hover {
+    transform: translateY(-2px);
 }
 
 </style>
