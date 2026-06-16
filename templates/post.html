@@ -126,7 +126,7 @@
 
 <main class="container mt-4">
 
-    {% if request.endpoint == 'post' %}
+    {% if request.path.startswith('/post/') %}
 
         <!-- ========================= -->
         <!-- POST FULL WIDTH VIEW -->
