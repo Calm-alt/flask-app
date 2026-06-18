@@ -2,86 +2,167 @@
 
 {% block content %}
 
-<!-- 🔔 FLASH MESSAGES -->
-{% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+<div class="auth-wrapper">
 
-<div class="content-section">
-    <form method="POST" action="{{ url_for('register') }}">
-        {{ form.hidden_tag() }}
+    <div class="auth-card">
 
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Join Today</legend>
+        <div class="auth-header">
 
-            <!-- USERNAME -->
-            <div class="form-group mb-3">
-                {{ form.username.label(class="form-control-label") }}
-                {% if form.username.errors %}
-                    {{ form.username(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.username.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.username(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
+            <p class="auth-label">
+                JOIN KNIGHTS
+            </p>
 
-            <!-- EMAIL -->
-            <div class="form-group mb-3">
-                {{ form.email.label(class="form-control-label") }}
-                {% if form.email.errors %}
-                    {{ form.email(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.email.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.email(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
+            <h1 class="auth-title">
+                Create your account
+            </h1>
 
-            <!-- PASSWORD -->
-            <div class="form-group mb-3">
-                {{ form.password.label(class="form-control-label") }}
-                {% if form.password.errors %}
-                    {{ form.password(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.password.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.password(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
+            <p class="auth-subtitle">
+                Publish thoughtful writing and become part of the community.
+            </p>
 
-        </fieldset>
-
-        <!-- SUBMIT -->
-        <div class="form-group mb-3">
-            {{ form.submit(class="btn btn-outline-info w-100") }}
         </div>
 
-    </form>
+        <form method="POST" action="{{ url_for('register') }}">
+
+            {{ form.hidden_tag() }}
+
+            <div class="editor-group">
+
+                {{ form.username.label(class="form-label") }}
+
+                {% if form.username.errors %}
+
+                    {{ form.username(class="editor-input is-invalid") }}
+
+                    <div class="invalid-feedback">
+
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    {{ form.username(
+                        class="editor-input",
+                        placeholder="Choose a username"
+                    ) }}
+
+                {% endif %}
+
+            </div>
+
+            <div class="editor-group">
+
+                {{ form.email.label(class="form-label") }}
+
+                {% if form.email.errors %}
+
+                    {{ form.email(class="editor-input is-invalid") }}
+
+                    <div class="invalid-feedback">
+
+                        {% for error in form.email.errors %}
+                            {{ error }}
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    {{ form.email(
+                        class="editor-input",
+                        placeholder="Email address"
+                    ) }}
+
+                {% endif %}
+
+            </div>
+
+            <div class="editor-group">
+
+                {{ form.password.label(class="form-label") }}
+
+                {% if form.password.errors %}
+
+                    {{ form.password(class="editor-input is-invalid") }}
+
+                    <div class="invalid-feedback">
+
+                        {% for error in form.password.errors %}
+                            {{ error }}
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    {{ form.password(
+                        class="editor-input",
+                        placeholder="Create a password"
+                    ) }}
+
+                {% endif %}
+
+            </div>
+
+            {{ form.submit(class="btn btn-primary") }}
+
+        </form>
+
+        <div style="margin-top:30px;color:var(--muted);">
+
+            Already have an account?
+
+            <a href="{{ url_for('login') }}">
+                Sign in
+            </a>
+
+        </div>
+
+    </div>
+
 </div>
 
-<!-- LOGIN LINK -->
-<div class="border-top pt-3">
-    <small class="text-muted">
-        Already have an account?
-        <a class="ms-2" href="{{ url_for('login') }}">Sign In</a>
-    </small>
-</div>
+<style>
 
-{% endblock content %}
+.auth-wrapper{
+    max-width:520px;
+    margin:40px auto;
+}
+
+.auth-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:40px;
+}
+
+.auth-label{
+    color:var(--accent);
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    font-size:.75rem;
+    margin-bottom:10px;
+}
+
+.auth-title{
+    margin:0;
+    font-size:2.3rem;
+    font-weight:900;
+}
+
+.auth-subtitle{
+    margin-top:10px;
+    margin-bottom:34px;
+    color:var(--muted);
+}
+
+.editor-group{
+    margin-bottom:24px;
+}
+
+</style>
+
+{% endblock %}

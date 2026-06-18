@@ -1,234 +1,667 @@
-/* =========================================
-   DESIGN SYSTEM - FOREST MINIMAL EDITION (AUTHOR UPGRADE)
-========================================= */
+/* ==========================================================
+   KNIGHTS — MAIN.CSS (PART 1)
+   Foundation + Layout + Navigation + Search + Sidebar
+   ========================================================== */
+
+/* =========================
+   DESIGN TOKENS
+========================= */
 
 :root{
-    --bg:#0b1510;
-    --card:#14231a;
-    --card-hover:#1a2d22;
-    --border:#2f4a3a;
+    --bg:#08110d;
+    --surface:#101b15;
+    --surface-2:#15231b;
 
-    --text:#e6efe6;
-    --muted:#a9b8ad;
+    --border:#263a2f;
+    --border-light:#345144;
 
-    --accent:#6f8f73;
-    --accent-soft:#89a98c;
+    --text:#f5fcf6;
+    --text-soft:#d6e3d8;
+    --muted:#98ab9c;
+
+    --accent:#8db68f;
+    --accent-hover:#a5caa7;
+
+    --danger:#d96b6b;
+
+    --radius:14px;
+
+    --shadow:
+        0 12px 36px rgba(0,0,0,.18);
+
+    --transition:.18s ease;
 }
+
+/* Dark mode tweak */
 
 body.dark-mode{
-    --bg:#070f0c;
-    --card:#101c14;
-    --card-hover:#16261c;
-    --border:#284235;
-    --muted:#93a896;
+
+    --bg:#050c09;
+
+    --surface:#0c1712;
+
+    --surface-2:#122019;
+
 }
 
-/* =========================================
-   GLOBAL RESET
-========================================= */
+/* =========================
+   RESET
+========================= */
 
-*{
+*,
+*::before,
+*::after{
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
+
     margin:0;
-    padding:0;
+
     background:var(--bg);
-    color:var(--text);
-    font-family:Inter, system-ui, Arial, sans-serif;
-    line-height:1.65;
-    letter-spacing:-0.1px;
+
+    color:var(--text-soft);
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    font-size:16px;
+
+    line-height:1.75;
+
+    -webkit-font-smoothing:antialiased;
 }
 
-a, button{
-    font-family:inherit;
+img{
+    max-width:100%;
+    display:block;
+}
+
+a{
+
     color:inherit;
+
     text-decoration:none;
+
+    transition:color var(--transition);
 }
 
-/* =========================================
-   FEED CONTAINER
-========================================= */
+button,
+input,
+select,
+textarea{
+
+    font:inherit;
+}
+
+/* =========================
+   TYPOGRAPHY
+========================= */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+
+    margin:0;
+
+    color:var(--text);
+
+    font-weight:900;
+
+    letter-spacing:-0.03em;
+
+    line-height:1.15;
+}
+
+p{
+    margin-top:0;
+}
+
+small{
+    color:var(--muted);
+}
+
+/* =========================
+   GLOBAL WRAPPER
+========================= */
+
+.site-container{
+
+    width:min(1220px,calc(100% - 40px));
+
+    margin-inline:auto;
+}
+
+.main-content{
+
+    padding-top:30px;
+
+    padding-bottom:60px;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.topbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    backdrop-filter:blur(14px);
+
+    background:rgba(8,17,13,.84);
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.nav-container{
+
+    min-height:74px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:30px;
+}
+
+/* =========================
+   LOGO
+========================= */
+
+.site-logo{
+
+    font-size:2rem;
+
+    font-weight:900;
+
+    letter-spacing:-0.03em;
+
+    color:var(--text);
+
+    transition:all var(--transition);
+}
+
+.site-logo:hover{
+
+    color:var(--accent);
+}
+
+/* =========================
+   NAV LINKS
+========================= */
+
+.nav-menu{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:22px;
+
+    flex-wrap:wrap;
+}
+
+.nav-menu a{
+
+    color:var(--muted);
+
+    font-weight:700;
+
+    font-size:.95rem;
+}
+
+.nav-menu a:hover{
+
+    color:var(--text);
+}
+
+.danger-link:hover{
+
+    color:var(--danger);
+}
+
+/* =========================
+   THEME BUTTON
+========================= */
+
+.theme-toggle{
+
+    width:42px;
+
+    height:42px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:var(--surface);
+
+    color:var(--text);
+
+    cursor:pointer;
+
+    transition:all var(--transition);
+}
+
+.theme-toggle:hover{
+
+    transform:translateY(-1px);
+
+    background:var(--surface-2);
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-section{
+
+    margin-top:28px;
+}
+
+.search-panel{
+
+    display:grid;
+
+    grid-template-columns:1fr 170px 110px;
+
+    gap:12px;
+
+    padding:18px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+}
+
+.search-input,
+.search-select{
+
+    width:100%;
+
+    padding:13px 16px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    outline:none;
+
+    transition:border-color var(--transition);
+}
+
+.search-input:focus,
+.search-select:focus{
+
+    border-color:var(--accent);
+}
+
+.search-input::placeholder{
+
+    color:var(--muted);
+}
+
+/* =========================
+   MAIN GRID
+========================= */
+
+.main-layout{
+
+    display:grid;
+
+    grid-template-columns:minmax(0,720px) 300px;
+
+    justify-content:space-between;
+
+    gap:42px;
+}
+
+.reading-layout{
+
+    max-width:760px;
+
+    margin-inline:auto;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.filter-panel{
+
+    position:sticky;
+
+    top:96px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:24px;
+}
+
+.filter-panel h3{
+
+    font-size:1.2rem;
+
+    margin-bottom:4px;
+}
+
+.filter-panel h4{
+
+    margin-bottom:12px;
+
+    font-size:.95rem;
+}
+
+.divider{
+
+    height:1px;
+
+    background:rgba(255,255,255,.06);
+
+    margin:18px 0;
+}
+
+/* =========================
+   TAGS
+========================= */
+
+.tag-list{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+}
+
+.tag{
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    background:var(--surface-2);
+
+    border:1px solid var(--border);
+
+    color:var(--text-soft);
+
+    font-size:.82rem;
+
+    font-weight:600;
+}
+
+/* =========================
+   TIPS
+========================= */
+
+.tip-list{
+
+    margin:0;
+
+    padding-left:18px;
+
+    color:var(--muted);
+}
+
+.sidebar-note{
+
+    color:var(--muted);
+
+    font-size:.92rem;
+
+    margin:0;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+input,
+textarea,
+select{
+
+    background:var(--surface);
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:12px 14px;
+
+    outline:none;
+
+    transition:border-color var(--transition);
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+
+    border-color:var(--accent);
+}
+
+textarea{
+
+    resize:vertical;
+
+    min-height:180px;
+}
+/* ==========================================================
+   KNIGHTS — MAIN.CSS (PART 2)
+   Feed + Cards + Buttons + Alerts + Mobile
+   ========================================================== */
+
+/* =========================
+   FEED
+========================= */
 
 .feed-container{
-    max-width:620px;
+    max-width:760px;
     margin:0 auto;
-    padding:30px 14px;
+    padding:12px 0 40px;
 }
 
-/* =========================================
-   FEED LIST
-========================================= */
+.feed-header{
+    margin-bottom:2rem;
+}
+
+.feed-title{
+    font-size:2.8rem;
+    font-weight:900;
+    color:var(--text);
+    letter-spacing:-0.04em;
+}
+
+.feed-subtitle{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:1.05rem;
+}
+
+.feed-controls{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:1rem;
+    flex-wrap:wrap;
+    margin-bottom:2rem;
+}
+
+/* =========================
+   POST LIST
+========================= */
 
 .post-grid{
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:18px;
 }
 
-/* =========================================
+/* =========================
    POST CARD
-========================================= */
+========================= */
 
 .post-card{
-    background:transparent;
-    border:none;
-    border-bottom:1px solid rgba(169,184,173,0.12);
-    padding:12px 0;
-    cursor:pointer;
-    transition:all .18s ease;
     display:block;
+    padding:24px 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    transition:all var(--transition);
 }
 
 .post-card:hover{
+    transform:translateY(-2px);
     border-color:var(--accent);
 }
-
-/* =========================================
-   INNER
-========================================= */
 
 .post-card-inner{
     display:flex;
     flex-direction:column;
-    gap:6px;
+    gap:10px;
     min-width:0;
 }
 
-/* =========================================
-   🧠 TITLE (MORE PRONOUNCED / EDITORIAL STYLE)
-========================================= */
-
-.post-title{
-    color:var(--text);
-    font-size:1.55rem;
-    font-weight:850;
-    line-height:1.2;
-    margin:0;
-    letter-spacing:-0.3px;
-
-    /* subtle premium feel */
-    text-rendering:optimizeLegibility;
-}
-
-.post-card:hover .post-title{
-    color:var(--accent-soft);
-}
-
-/* =========================================
-   AUTHOR ROW (NEW ✨)
-========================================= */
+/* =========================
+   AUTHOR ROW
+========================= */
 
 .post-author{
     display:flex;
     align-items:center;
-    gap:8px;
-    margin-top:2px;
-    font-size:0.85rem;
+    gap:10px;
     color:var(--muted);
+    font-size:.88rem;
 }
 
 .post-author img{
-    width:22px;
-    height:22px;
+    width:28px;
+    height:28px;
     border-radius:50%;
     object-fit:cover;
     border:1px solid var(--border);
 }
 
 .post-author-name{
-    font-weight:600;
-    color:var(--muted);
+    font-weight:700;
+    color:var(--text-soft);
 }
 
-/* =========================================
-   PREVIEW TEXT
-========================================= */
+.post-meta{
+    color:var(--muted);
+    font-size:.82rem;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.post-title{
+    font-size:2rem;
+    font-weight:900;
+    line-height:1.15;
+    color:var(--text);
+    letter-spacing:-0.04em;
+    margin:0;
+    transition:color var(--transition);
+}
+
+.post-card:hover .post-title{
+    color:var(--accent);
+}
+
+/* =========================
+   PREVIEW
+========================= */
 
 .post-preview{
     color:var(--muted);
-    font-size:0.98rem;
-    line-height:1.55;
-
-    white-space:pre-line;
+    line-height:1.7;
+    font-size:1rem;
 
     display:-webkit-box;
+    -webkit-line-clamp:3;
+    line-clamp:3;
     -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
-    line-clamp:2;
-    overflow:hidden;
 
-    word-break:break-word;
-    overflow-wrap:break-word;
+    overflow:hidden;
 }
 
-/* =========================================
-   READ CTA
-========================================= */
+/* =========================
+   READ LINK
+========================= */
 
 .post-read{
-    font-size:0.85rem;
-    color:var(--accent-soft);
-    margin-top:2px;
-    display:inline-flex;
-    align-items:center;
-    gap:4px;
-    font-weight:600;
+    margin-top:4px;
+    font-weight:700;
+    color:var(--accent);
+    transition:all var(--transition);
 }
 
 .post-card:hover .post-read{
-    color:var(--text);
+    transform:translateX(4px);
 }
 
-/* =========================================
-   META
-========================================= */
-
-.post-meta{
-    font-size:0.78rem;
-    color:var(--muted);
-    display:flex;
-    gap:8px;
-}
-
-/* =========================================
-   ARTICLE PAGE
-========================================= */
+/* =========================
+   ARTICLE
+========================= */
 
 .article-wrapper{
-    max-width:620px;
+    max-width:760px;
     margin:0 auto;
-    padding:30px 14px;
+    padding:20px 0 60px;
 }
 
-/* 🧠 ARTICLE TITLE (more elegant) */
 .article-title{
-    font-size:2.2rem;
-    font-weight:900;
+    font-size:3rem;
+    line-height:1.1;
+    margin-bottom:18px;
     color:var(--text);
-    letter-spacing:-0.4px;
-    line-height:1.2;
 }
-
-/* =========================================
-   ARTICLE AUTHOR HEADER (NEW ✨)
-========================================= */
 
 .article-author{
     display:flex;
     align-items:center;
-    gap:10px;
-    margin:14px 0 24px 0;
-    color:var(--muted);
+    gap:12px;
+    margin-bottom:30px;
 }
 
 .article-author img{
-    width:34px;
-    height:34px;
+    width:42px;
+    height:42px;
     border-radius:50%;
-    border:1px solid var(--border);
     object-fit:cover;
+    border:1px solid var(--border);
 }
 
 .article-author-name{
@@ -237,150 +670,273 @@ a, button{
 }
 
 .article-author-meta{
-    font-size:0.85rem;
     color:var(--muted);
+    font-size:.9rem;
 }
 
-/* =========================================
-   SIDEBAR
-========================================= */
+/* =========================
+   BUTTONS
+========================= */
 
-.filter-panel{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:16px;
-    position:sticky;
-    top:20px;
-}
-
-/* =========================================
-   BUTTON SYSTEM
-========================================= */
-
-button,
 .btn,
-.btn-primary,
-.btn-secondary,
-.btn-danger,
-.btn-edit{
+button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:.75rem 1.1rem;
+
     border:none;
-    font-family:inherit;
+
+    border-radius:12px;
+
     cursor:pointer;
-    transition:all .2s ease;
+
+    transition:all var(--transition);
+
+    font-weight:700;
 }
 
-/* PRIMARY */
 .btn-primary,
-.btn-edit{
-    background:var(--accent) !important;
-    color:#0b1510 !important;
-    padding:8px 14px;
-    border-radius:8px;
-    font-weight:700;
+.search-btn{
+
+    background:var(--accent);
+
+    color:#08110d;
 }
 
 .btn-primary:hover,
-.btn-edit:hover{
-    background:var(--accent-soft) !important;
+.search-btn:hover{
+
+    background:var(--accent-hover);
+
+    transform:translateY(-1px);
 }
 
-/* SECONDARY */
 .btn-secondary{
-    background:transparent !important;
-    border:1px solid var(--border) !important;
-    color:var(--muted) !important;
-    padding:8px 14px;
-    border-radius:8px;
+
+    background:transparent;
+
+    border:1px solid var(--border-light);
+
+    color:var(--text-soft);
 }
 
 .btn-secondary:hover{
-    border-color:var(--accent) !important;
-    color:var(--accent-soft) !important;
+
+    border-color:var(--accent);
+
+    color:var(--text);
 }
 
-/* SAFE ACTION */
 .btn-danger{
-    background:var(--accent) !important;
-    color:#0b1510 !important;
-    padding:8px 14px;
-    border-radius:8px;
-    font-weight:700;
+
+    background:var(--danger);
+
+    color:white;
 }
 
-/* =========================================
+.btn-edit{
+
+    background:var(--accent);
+
+    color:#08110d;
+}
+
+/* =========================
+   ALERTS
+========================= */
+
+.alert{
+
+    padding:14px 18px;
+
+    border-radius:12px;
+
+    margin-bottom:12px;
+
+    border-left:4px solid;
+}
+
+.alert-success{
+
+    background:rgba(80,180,120,.14);
+
+    border-color:#57c07b;
+}
+
+.alert-danger{
+
+    background:rgba(210,80,80,.14);
+
+    border-color:#d85d5d;
+}
+
+.alert-warning{
+
+    background:rgba(220,180,80,.14);
+
+    border-color:#d9b04d;
+}
+
+.alert-info{
+
+    background:rgba(90,140,220,.14);
+
+    border-color:#6d9df2;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pagination,
+.pagination-group{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+/* =========================
    BACK TO TOP
-========================================= */
+========================= */
 
 .back-top{
+
     position:fixed;
-    right:18px;
-    bottom:18px;
-    width:42px;
-    height:42px;
-    background:var(--accent);
-    color:#0b1510;
+
+    right:24px;
+
+    bottom:24px;
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
     border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+
+    background:var(--accent);
+
+    color:#08110d;
+
+    cursor:pointer;
+
+    box-shadow:var(--shadow);
+
+    transition:all var(--transition);
 }
 
-/* =========================================
+.back-top:hover{
+
+    transform:translateY(-3px);
+}
+
+/* =========================
+   FLASH STACK
+========================= */
+
+.flash-stack{
+    margin-bottom:20px;
+}
+
+/* =========================
+   SMOOTH SELECTION
+========================= */
+
+::selection{
+    background:rgba(141,182,143,.28);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar{
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+    background:var(--bg);
+}
+
+::-webkit-scrollbar-thumb{
+    background:var(--border-light);
+    border-radius:999px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:var(--accent);
+}
+
+/* =========================
    MOBILE
-========================================= */
+========================= */
 
-@media(max-width:991px){
+@media (max-width:1000px){
+
+    .main-layout{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar-column{
+        order:2;
+    }
+
+    .filter-panel{
+        position:static;
+    }
+
+    .search-panel{
+        grid-template-columns:1fr;
+    }
+
+    .nav-container{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:18px 0;
+    }
+
+    .nav-menu{
+        width:100%;
+        gap:14px;
+    }
+
+    .feed-title{
+        font-size:2.2rem;
+    }
+
+    .article-title{
+        font-size:2.3rem;
+    }
+
     .post-title{
-        font-size:1.3rem;
-    }
-
-    .feed-container{
-        padding:22px 12px;
+        font-size:1.6rem;
     }
 }
-/* =========================================
-   KNIGHTS BRANDING (PREMIUM LOGO)
-========================================= */
 
-.site-logo{
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 2.2rem;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+@media (max-width:640px){
 
-    color: #dbe8d8 !important;
+    .site-container{
+        width:min(100% - 24px,100%);
+    }
 
-    text-shadow:
-        0 1px 0 rgba(255,255,255,0.05),
-        0 3px 12px rgba(0,0,0,0.35);
+    .feed-title{
+        font-size:1.9rem;
+    }
 
-    transition:
-        color 0.25s ease,
-        transform 0.25s ease,
-        text-shadow 0.25s ease;
-}
+    .article-title{
+        font-size:2rem;
+    }
 
-.site-logo:hover{
-    color: var(--accent-soft) !important;
-    transform: scale(1.03);
-    text-shadow:
-        0 2px 16px rgba(111,143,115,0.35);
-}
+    .post-title{
+        font-size:1.4rem;
+    }
 
-.site-logo::after{
-    content: "";
-    display: block;
-    width: 55%;
-    height: 2px;
-    margin: 4px auto 0;
-    border-radius: 999px;
-    background: linear-gradient(
-        to right,
-        transparent,
-        var(--accent-soft),
-        transparent
-    );
-    opacity: 0.75;
+    .post-card{
+        padding:18px 0;
+    }
 }

@@ -2,87 +2,204 @@
 
 {% block content %}
 
+<section class="account-page">
 
-    <!-- PROFILE HEADER -->
-    <div class="media d-flex align-items-center mb-4">
+    <!-- ========================= -->
+    <!-- PROFILE HERO -->
+    <!-- ========================= -->
 
-        <!-- CLICKABLE PROFILE IMAGE -->
-        <label for="picture-upload" style="cursor: pointer;">
+    <header class="account-hero">
+
+        <label for="picture-upload" class="account-avatar-link">
+
             <img
-                class="rounded-circle account-img me-3"
                 src="{{ image_file }}"
                 alt="Profile Picture"
-                style="width: 125px; height: 125px; object-fit: cover;"
-            >
+                class="account-avatar">
+
         </label>
 
-        <div class="media-body">
-            <h2 class="account-heading">
-                {{ current_user.username }}
-            </h2>
+        <div class="account-info">
 
-            <p class="text-secondary">
+            <p class="account-label">
+                KNIGHTS PROFILE
+            </p>
+
+            <h1 class="account-name">
+                {{ current_user.username }}
+            </h1>
+
+            <p class="account-email">
                 {{ current_user.email }}
             </p>
+
+            <p class="account-hint">
+                Click your profile picture to upload a new one.
+            </p>
+
         </div>
 
-    </div>
+    </header>
 
-    <!-- FORM -->
-    <div class="content-section">
+    <!-- ========================= -->
+    <!-- SETTINGS -->
+    <!-- ========================= -->
 
-        <form method="POST" action="{{ url_for('account') }}" enctype="multipart/form-data">
+    <section class="account-card">
+
+        <h2 class="account-card-title">
+            Account Settings
+        </h2>
+
+        <form
+            method="POST"
+            action="{{ url_for('account') }}"
+            enctype="multipart/form-data">
+
             {{ form.hidden_tag() }}
 
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Account Settings</legend>
+            <!-- USERNAME -->
 
-                <!-- USERNAME -->
-                <div class="form-group mb-3">
-                    {{ form.username.label(class="form-control-label") }}
+            <div class="editor-group">
 
-                    {% if form.username.errors %}
-                        {{ form.username(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.username.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.username(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
+                {{ form.username.label(class="form-label") }}
 
-                <!-- EMAIL -->
-                <div class="form-group mb-3">
-                    {{ form.email.label(class="form-control-label") }}
+                {% if form.username.errors %}
 
-                    {% if form.email.errors %}
-                        {{ form.email(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.email.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.email(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
+                    {{ form.username(class="editor-input is-invalid") }}
 
-                <!-- HIDDEN FILE INPUT (CLICK IMAGE TRIGGERS THIS) -->
-                <div style="display: none;">
-                    {{ form.picture(id="picture-upload") }}
-                </div>
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
 
-            </fieldset>
+                {% else %}
 
-            <!-- SUBMIT -->
-            <div class="form-group mb-3">
-                {{ form.submit(class="btn btn-outline-info w-100") }}
+                    {{ form.username(class="editor-input") }}
+
+                {% endif %}
+
+            </div>
+
+            <!-- EMAIL -->
+
+            <div class="editor-group">
+
+                {{ form.email.label(class="form-label") }}
+
+                {% if form.email.errors %}
+
+                    {{ form.email(class="editor-input is-invalid") }}
+
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                {% else %}
+
+                    {{ form.email(class="editor-input") }}
+
+                {% endif %}
+
+            </div>
+
+            <!-- HIDDEN FILE INPUT -->
+
+            <div style="display:none;">
+
+                {{ form.picture(id="picture-upload") }}
+
+            </div>
+
+            <!-- SAVE -->
+
+            <div style="margin-top:32px;">
+
+                {{ form.submit(class="btn btn-primary") }}
+
             </div>
 
         </form>
 
-</div>
+    </section>
 
-{% endblock content %}
+</section>
+
+<style>
+
+.account-page{
+    max-width:900px;
+    margin:0 auto;
+}
+
+.account-hero{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    flex-wrap:wrap;
+    margin-bottom:48px;
+}
+
+.account-avatar-link{
+    cursor:pointer;
+}
+
+.account-avatar{
+    width:140px;
+    height:140px;
+    object-fit:cover;
+    border-radius:50%;
+    border:3px solid var(--border);
+    transition:transform .2s ease,border-color .2s ease;
+}
+
+.account-avatar:hover{
+    transform:scale(1.03);
+    border-color:var(--accent);
+}
+
+.account-label{
+    text-transform:uppercase;
+    letter-spacing:.18em;
+    font-size:.75rem;
+    color:var(--accent);
+    margin-bottom:8px;
+}
+
+.account-name{
+    font-size:2.4rem;
+    margin:0 0 8px 0;
+    font-weight:900;
+    color:var(--text);
+}
+
+.account-email{
+    color:var(--muted);
+    margin-bottom:8px;
+}
+
+.account-hint{
+    color:var(--muted);
+    font-size:.9rem;
+}
+
+.account-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:32px;
+}
+
+.account-card-title{
+    margin-top:0;
+    margin-bottom:28px;
+    font-size:1.4rem;
+    color:var(--text);
+}
+
+</style>
+
+{% endblock %}

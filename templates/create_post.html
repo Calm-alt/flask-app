@@ -2,37 +2,49 @@
 
 {% block content %}
 
-<div class="editor-wrapper">
+<section class="editor-wrapper">
 
+    <!-- ========================= -->
     <!-- HEADER -->
-    <div class="mb-4">
+    <!-- ========================= -->
 
-        <h1 class="fw-bold mb-1">
+    <header class="editor-header">
+
+        <p class="editor-eyebrow">
+            KNIGHTS EDITOR
+        </p>
+
+        <h1 class="editor-title">
             {% if title == "Edit Post" %}
-                Edit Post
+                Refine your story.
             {% else %}
-                Create New Post
+                Write something worth reading.
             {% endif %}
         </h1>
 
-        <p class="text-secondary mb-0">
-            Write something worth sharing.
+        <p class="editor-subtitle">
+            Clear ideas, thoughtful writing, and meaningful conversations begin here.
         </p>
 
-    </div>
+    </header>
 
+    <!-- ========================= -->
     <!-- FORM -->
+    <!-- ========================= -->
+
     <form method="POST" class="editor-form">
 
         {{ form.hidden_tag() }}
 
         <!-- TITLE -->
-        <div class="mb-4">
 
-            {{ form.title.label(class="form-label text-secondary") }}
+        <div class="editor-group">
+
+            {{ form.title.label(class="form-label") }}
 
             {% if form.title.errors %}
-                {{ form.title(class="form-control form-control-lg is-invalid editor-input") }}
+
+                {{ form.title(class="editor-input is-invalid", placeholder="A memorable title") }}
 
                 <div class="invalid-feedback">
                     {% for error in form.title.errors %}
@@ -41,18 +53,25 @@
                 </div>
 
             {% else %}
-                {{ form.title(class="form-control form-control-lg editor-input", placeholder="Enter a strong title...") }}
+
+                {{ form.title(
+                    class="editor-input",
+                    placeholder="Give your article a title..."
+                ) }}
+
             {% endif %}
 
         </div>
 
         <!-- CONTENT -->
-        <div class="mb-4">
 
-            {{ form.content.label(class="form-label text-secondary") }}
+        <div class="editor-group">
+
+            {{ form.content.label(class="form-label") }}
 
             {% if form.content.errors %}
-                {{ form.content(class="form-control is-invalid editor-textarea", rows="10") }}
+
+                {{ form.content(class="editor-textarea is-invalid") }}
 
                 <div class="invalid-feedback">
                     {% for error in form.content.errors %}
@@ -61,26 +80,35 @@
                 </div>
 
             {% else %}
-                {{ form.content(class="form-control editor-textarea", rows="8", placeholder="Start writing your story...") }}
+
+                {{ form.content(
+                    class="editor-textarea",
+                    placeholder="Start writing..."
+                ) }}
+
             {% endif %}
 
         </div>
 
-        <!-- ACTIONS -->
-        <div class="d-flex justify-content-between align-items-center">
+        <!-- FOOTER -->
 
-            <small class="text-secondary">
-                Tip: Use clear structure and short paragraphs
-            </small>
+        <div class="editor-footer">
 
-            <div class="d-flex gap-2">
+            <p class="editor-tip">
+                Short paragraphs and descriptive titles improve readability.
+            </p>
 
-                <a href="{{ url_for('home') }}"
-                   class="btn btn-outline-secondary">
+            <div class="editor-actions">
+
+                <a
+                    href="{{ url_for('home') }}"
+                    class="btn btn-secondary">
+
                     Cancel
+
                 </a>
 
-                {{ form.submit(class="btn btn-danger px-4") }}
+                {{ form.submit(class="btn btn-primary") }}
 
             </div>
 
@@ -88,59 +116,103 @@
 
     </form>
 
-</div>
+</section>
 
-<!-- ========================= -->
-<!-- LOCAL STYLES -->
-<!-- ========================= -->
 <style>
 
 .editor-wrapper{
-    max-width: 800px;
-    margin: 0 auto;
+    max-width:860px;
+    margin:0 auto;
 }
 
-/* INPUTS */
+.editor-header{
+    margin-bottom:40px;
+}
+
+.editor-eyebrow{
+    font-size:.78rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:10px;
+}
+
+.editor-title{
+    font-size:2.7rem;
+    line-height:1.1;
+    margin-bottom:12px;
+    font-weight:900;
+    color:var(--text);
+}
+
+.editor-subtitle{
+    color:var(--muted);
+    max-width:640px;
+    line-height:1.7;
+}
+
+.editor-group{
+    margin-bottom:30px;
+}
+
+.form-label{
+    display:block;
+    margin-bottom:10px;
+    font-weight:700;
+    color:var(--text);
+}
+
 .editor-input{
-    border-radius: 12px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--text);
+    width:100%;
+    padding:18px;
+    font-size:1.15rem;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
 }
 
 .editor-input:focus{
-    background: var(--card);
-    border-color: var(--accent);
-    color: var(--text);
-    box-shadow: none;
+    outline:none;
+    border-color:var(--accent);
 }
 
-/* TEXTAREA */
 .editor-textarea{
-    border-radius: 12px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--text);
-    min-height: 300px;
-    resize: vertical;
+    width:100%;
+    min-height:420px;
+    padding:20px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+    resize:vertical;
+    font-size:1.05rem;
+    line-height:1.9;
 }
 
 .editor-textarea:focus{
-    background: var(--card);
-    border-color: var(--accent);
-    color: var(--text);
-    box-shadow: none;
+    outline:none;
+    border-color:var(--accent);
 }
 
-/* LABELS */
-.form-label{
-    font-weight: 600;
+.editor-footer{
+    margin-top:40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
-/* TYPOGRAPHY IMPROVEMENT */
-h1{
-    font-size: 2.2rem;
-    letter-spacing: -0.5px;
+.editor-tip{
+    color:var(--muted);
+    font-size:.92rem;
+    margin:0;
+}
+
+.editor-actions{
+    display:flex;
+    gap:12px;
 }
 
 </style>

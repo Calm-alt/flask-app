@@ -1,310 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "layout.html" %}
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+{% block content %}
 
-    <!-- Main CSS -->
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='main.css') }}">
+<article class="article-wrapper">
 
-    <link rel="icon"
-          href="{{ url_for('static', filename='images/OIP.ico') }}">
+    <!-- ========================= -->
+    <!-- ARTICLE HEADER -->
+    <!-- ========================= -->
 
-    <title>
-        {% if title %}
-            Knights - {{ title }}
-        {% else %}
-            Knights
-        {% endif %}
-    </title>
-</head>
+    <header>
 
-<body>
+        <h1 class="article-title">
+            {{ post.title }}
+        </h1>
 
-<!-- ========================= -->
-<!-- NAVBAR -->
-<!-- ========================= -->
+        <a
+            href="{{ url_for('user_posts', username=post.author.username) }}"
+            class="article-author">
 
-<nav class="navbar navbar-expand-lg topbar">
+            <img
+                src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
+                alt="{{ post.author.username }}">
 
-    <div class="container">
+            <div>
 
-        <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">
-            Knights
+                <div class="article-author-name">
+                    {{ post.author.username }}
+                </div>
+
+                <div class="article-author-meta">
+                    Published on {{ post.date_posted.strftime('%B %d, %Y') }}
+                </div>
+
+            </div>
+
         </a>
 
-        <div class="ms-auto d-flex align-items-center gap-4">
+    </header>
 
-            <a class="nav-link" href="{{ url_for('home') }}">HOME</a>
+    <!-- ========================= -->
+    <!-- AUTHOR ACTIONS -->
+    <!-- ========================= -->
 
-            {% if current_user.is_authenticated %}
+    {% if current_user.is_authenticated and current_user == post.author %}
 
-                <a class="nav-link" href="{{ url_for('new_post') }}">CREATE</a>
-                <a class="nav-link" href="{{ url_for('account') }}">ACCOUNT</a>
-                <a class="nav-link text-danger" href="{{ url_for('logout') }}">LOGOUT</a>
+    <section
+        style="
+            display:flex;
+            gap:12px;
+            margin:32px 0;
+            flex-wrap:wrap;
+        ">
 
-            {% else %}
+        <a
+            href="{{ url_for('edit_post', post_id=post.id) }}"
+            class="btn btn-primary">
 
-                <a class="nav-link" href="{{ url_for('login') }}">LOGIN</a>
-                <a class="nav-link" href="{{ url_for('register') }}">REGISTER</a>
+            ✏️ Edit Article
 
-            {% endif %}
+        </a>
 
-            <button class="btn btn-outline-light btn-sm"
-                    onclick="toggleDarkMode()">
-                🌙
+        <form
+            action="{{ url_for('delete_post', post_id=post.id) }}"
+            method="POST">
+
+            <button
+                class="btn btn-danger"
+                onclick="return confirm('Delete this article?');">
+
+                🗑 Delete
+
             </button>
 
-        </div>
+        </form>
 
-    </div>
-</nav>
+    </section>
 
-<!-- ========================= -->
-<!-- SEARCH BAR -->
-<!-- ========================= -->
+    {% endif %}
 
-{% if request.endpoint != 'post' %}
+    <hr
+        style="
+            border:none;
+            height:1px;
+            background:rgba(255,255,255,.08);
+            margin:40px 0;
+        ">
 
-<div class="container mt-4">
+    <!-- ========================= -->
+    <!-- ARTICLE BODY -->
+    <!-- ========================= -->
 
-    <form action="{{ url_for('home') }}" method="GET">
+    <section
+        class="post-content"
+        style="
+            font-size:1.08rem;
+            line-height:2;
+            color:var(--text-soft);
+        ">
 
-        <div class="search-panel">
+        {{ post.content | replace('\n', '<br><br>') | safe }}
 
-            <div class="row g-2">
+    </section>
 
-                <div class="col-md-9">
-                    <input type="text"
-                           name="q"
-                           class="form-control search-input"
-                           placeholder="Search blog posts..."
-                           value="{{ request.args.get('q', '') }}">
-                </div>
+</article>
 
-                <div class="col-md-2">
-                    <select class="form-select search-input" name="sort">
-
-                        <option value="latest"
-                            {% if request.args.get('sort') == 'latest' %}selected{% endif %}>
-                            Latest
-                        </option>
-
-                        <option value="oldest"
-                            {% if request.args.get('sort') == 'oldest' %}selected{% endif %}>
-                            Oldest
-                        </option>
-
-                    </select>
-                </div>
-
-                <div class="col-md-1">
-                    <button type="submit" class="btn search-btn w-100">
-                        🔍
-                    </button>
-                </div>
-
-            </div>
-
-        </div>
-
-    </form>
-
-</div>
-
-{% endif %}
-
-<!-- ========================= -->
-<!-- MAIN CONTENT -->
-<!-- ========================= -->
-
-<main class="container mt-4">
-
-{% if request.path.startswith('/post/') %}
-
-<div class="row justify-content-center">
-
-    <div class="col-12 d-flex justify-content-center">
-
-        <div class="reading-panel">
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            <!-- ========================= -->
-            <!-- TITLE -->
-            <!-- ========================= -->
-
-            <h1 class="article-title text-center mb-3">
-                {{ post.title }}
-            </h1>
-
-            <!-- ========================= -->
-            <!-- 👤 AUTHOR (FIXED CLICKABLE) -->
-            <!-- ========================= -->
-
-            <a href="{{ url_for('user_posts', username=post.author.username) }}"
-               class="article-author d-flex justify-content-center align-items-center text-center mb-4 text-decoration-none">
-
-                <img src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
-                     alt="author"
-                     style="width:48px;height:48px;border-radius:50%;object-fit:cover;">
-
-                <div class="ms-3">
-
-                    <div class="article-author-name fw-bold">
-                        {{ post.author.username }}
-                    </div>
-
-                    <div class="article-author-meta text-secondary small">
-                        {{ post.date_posted.strftime('%b %d, %Y') }}
-                    </div>
-
-                </div>
-
-            </a>
-
-            <!-- ========================= -->
-            <!-- EDIT / DELETE -->
-            <!-- ========================= -->
-
-            {% if current_user.is_authenticated and current_user == post.author %}
-
-            <div class="text-center mb-4">
-
-                <a href="{{ url_for('edit_post', post_id=post.id) }}"
-                   class="btn btn-primary btn-sm">
-                    ✏️ Edit
-                </a>
-
-                <form action="{{ url_for('delete_post', post_id=post.id) }}"
-                      method="POST"
-                      style="display:inline;">
-
-                    <button type="submit"
-                            class="btn btn-danger btn-sm"
-                            onclick="return confirm('Delete this post?');">
-                        🗑 Delete
-                    </button>
-
-                </form>
-
-            </div>
-
-            {% endif %}
-
-            <hr>
-
-            <!-- ========================= -->
-            <!-- CONTENT -->
-            <!-- ========================= -->
-
-            <div class="post-content">
-                {{ post.content | replace('\n', '<br><br>') | safe }}
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-{% else %}
-
-<div class="row g-4">
-
-    <div class="col-lg-9">
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-    </div>
-
-    <div class="col-lg-3">
-
-        <div class="filter-panel">
-
-            <h5 class="mb-3">Explore</h5>
-
-            <hr>
-
-            <h6>Categories</h6>
-
-            <div class="mb-3">
-                <span class="badge bg-secondary">Python</span>
-                <span class="badge bg-secondary">Flask</span>
-                <span class="badge bg-secondary">Web</span>
-            </div>
-
-            <hr>
-
-            <h6>Quick Tips</h6>
-
-            <ul class="list-unstyled small text-secondary">
-                <li>• Use the search box.</li>
-                <li>• Sort newest or oldest.</li>
-                <li>• Click any author to view posts.</li>
-            </ul>
-
-            <hr>
-
-            <p class="small text-secondary mb-0">
-                Built with Love
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-{% endif %}
-
-</main>
-
-<!-- ========================= -->
-<!-- SCRIPTS -->
-<!-- ========================= -->
-
-<script>
-function toggleDarkMode() {
-    document.body.classList.toggle("dark-mode");
-
-    localStorage.setItem(
-        "darkMode",
-        document.body.classList.contains("dark-mode")
-            ? "enabled"
-            : "disabled"
-    );
-}
-
-window.onload = function () {
-    if (localStorage.getItem("darkMode") === "enabled") {
-        document.body.classList.add("dark-mode");
-    }
-};
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
+{% endblock %}

@@ -2,156 +2,210 @@
 
 {% block content %}
 
-<!-- ========================= -->
-<!-- HEADER / HERO FEED -->
-<!-- ========================= -->
+<section class="feed-container">
 
-<div class="feed-container">
+    <!-- ========================= -->
+    <!-- HERO -->
+    <!-- ========================= -->
 
-    <div class="feed-header mb-4">
+    <header class="feed-header">
 
-        <h1 class="feed-title">Latest Posts</h1>
+        <h1 class="feed-title">
+            Stories worth reading.
+        </h1>
 
         <p class="feed-subtitle">
-            Discover thoughts, tutorials, and stories from the community
+            A quiet place for ideas, tutorials, reflections, and thoughtful writing.
         </p>
 
-    </div>
+    </header>
 
     <!-- ========================= -->
-    <!-- SORT CONTROLS -->
+    <!-- FEED TOOLBAR -->
     <!-- ========================= -->
 
-    <div class="feed-controls mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <section class="feed-controls">
 
-        <div class="btn-group">
+        <div class="sort-buttons">
 
-            <a href="{{ url_for('home', sort='latest') }}"
-               class="btn btn-sm {% if sort == 'latest' %}btn-primary{% else %}btn-secondary{% endif %}">
+            <a
+                href="{{ url_for('home', sort='latest') }}"
+                class="btn {% if sort == 'latest' %}btn-primary{% else %}btn-secondary{% endif %}">
                 Latest
             </a>
 
-            <a href="{{ url_for('home', sort='oldest') }}"
-               class="btn btn-sm {% if sort == 'oldest' %}btn-primary{% else %}btn-secondary{% endif %}">
+            <a
+                href="{{ url_for('home', sort='oldest') }}"
+                class="btn {% if sort == 'oldest' %}btn-primary{% else %}btn-secondary{% endif %}">
                 Oldest
             </a>
 
         </div>
 
-        <small class="text-secondary">
-            {{ posts.total }} posts
-        </small>
+        <div class="feed-count">
 
-    </div>
+            {{ posts.total }} article{% if posts.total != 1 %}s{% endif %}
+
+        </div>
+
+    </section>
 
     <!-- ========================= -->
-    <!-- FEED -->
+    <!-- POSTS -->
     <!-- ========================= -->
 
-    <div class="post-grid">
+    <section class="post-grid">
 
-    {% for post in posts.items %}
+        {% for post in posts.items %}
 
-        <!-- FULL CLICKABLE CARD WRAPPER -->
-        <a href="{{ url_for('post', post_id=post.id) }}" class="post-card">
+        <article class="post-card">
 
-            <div class="post-card-inner">
+            <a
+                href="{{ url_for('post', post_id=post.id) }}"
+                class="post-card-inner">
 
-                <!-- AUTHOR ROW (NEW SYSTEM) -->
+                <!-- Author -->
+
                 <div class="post-author">
 
-                    <img src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
-                         alt="author">
+                    <img
+                        src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
+                        alt="{{ post.author.username }}">
 
                     <span class="post-author-name">
                         {{ post.author.username }}
                     </span>
 
                     <span class="post-meta">
-                        · {{ post.date_posted.strftime('%b %d') }}
+                        · {{ post.date_posted.strftime('%B %d, %Y') }}
                     </span>
 
                 </div>
 
-                <!-- TITLE (STRONG VISUAL HIERARCHY) -->
+                <!-- Title -->
+
                 <h2 class="post-title">
+
                     {{ post.title }}
+
                 </h2>
 
-                <!-- OPTIONAL SPACING CONTROL -->
-                <div class="post-title-space"></div>
+                <!-- Preview -->
 
-                <!-- PREVIEW (AUTO TRIMMED) -->
-                <div class="post-preview">
-                    {{ post.content[:220] }}
-                    {% if post.content|length > 220 %}...{% endif %}
-                </div>
+                <p class="post-preview">
 
-                <!-- READ CTA -->
+                    {{ post.content[:260] }}
+                    {% if post.content|length > 260 %}...{% endif %}
+
+                </p>
+
+                <!-- Footer -->
+
                 <div class="post-read">
-                    Read →
+
+                    Continue reading →
+
                 </div>
 
-            </div>
+            </a>
 
-        </a>
+        </article>
 
-    {% endfor %}
+        {% endfor %}
 
-    </div>
+    </section>
 
     <!-- ========================= -->
     <!-- PAGINATION -->
     <!-- ========================= -->
 
-    <div class="d-flex justify-content-center align-items-center mt-5 mb-4 flex-wrap gap-2">
+    <nav class="pagination-group">
 
         {% if posts.has_prev %}
-            <a href="{{ url_for('home', page=posts.prev_num, sort=sort) }}"
-               class="btn btn-secondary">
-                ← Prev
+
+            <a
+                href="{{ url_for('home',
+                    page=posts.prev_num,
+                    sort=sort) }}"
+                class="btn btn-secondary">
+
+                ← Previous
+
             </a>
+
         {% endif %}
 
-        {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+        {% for page_num in posts.iter_pages(
+            left_edge=1,
+            right_edge=1,
+            left_current=2,
+            right_current=2
+        ) %}
 
             {% if page_num %}
 
                 {% if page_num == posts.page %}
+
                     <span class="btn btn-primary">
+
                         {{ page_num }}
+
                     </span>
+
                 {% else %}
-                    <a href="{{ url_for('home', page=page_num, sort=sort) }}"
-                       class="btn btn-secondary">
+
+                    <a
+                        href="{{ url_for(
+                            'home',
+                            page=page_num,
+                            sort=sort
+                        ) }}"
+                        class="btn btn-secondary">
+
                         {{ page_num }}
+
                     </a>
+
                 {% endif %}
 
             {% else %}
-                <span class="text-secondary px-2">...</span>
+
+                <span class="pagination-gap">
+
+                    •••
+
+                </span>
+
             {% endif %}
 
         {% endfor %}
 
         {% if posts.has_next %}
-            <a href="{{ url_for('home', page=posts.next_num, sort=sort) }}"
-               class="btn btn-secondary">
+
+            <a
+                href="{{ url_for(
+                    'home',
+                    page=posts.next_num,
+                    sort=sort
+                ) }}"
+                class="btn btn-secondary">
+
                 Next →
+
             </a>
+
         {% endif %}
 
-    </div>
+    </nav>
 
-</div>
+</section>
 
-<!-- ========================= -->
-<!-- BACK TO TOP -->
-<!-- ========================= -->
+<button
+    class="back-top"
+    onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
 
-<button onclick="window.scrollTo({top:0, behavior:'smooth'})"
-        class="back-top">
     ↑
+
 </button>
 
 {% endblock %}
