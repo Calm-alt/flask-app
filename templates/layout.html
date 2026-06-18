@@ -22,12 +22,14 @@
 
 <body>
 
+<!-- =========================
+     TOP NAVBAR
+========================= -->
 <header class="topbar">
 
     <div class="site-container nav-container">
 
-        <a class="site-logo"
-           href="{{ url_for('home') }}">
+        <a class="site-logo" href="{{ url_for('home') }}">
             ⚔︎ Knights
         </a>
 
@@ -39,8 +41,14 @@
 
                 <a href="{{ url_for('new_post') }}">Create</a>
                 <a href="{{ url_for('account') }}">Account</a>
-                <a class="danger-link"
-                   href="{{ url_for('logout') }}">
+
+                <!-- 🔍 SEARCH BUTTON RESTORED -->
+                <form class="nav-search" action="{{ url_for('home') }}" method="GET">
+                    <input type="text" name="q" placeholder="Search...">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+
+                <a class="danger-link" href="{{ url_for('logout') }}">
                     Logout
                 </a>
 
@@ -49,22 +57,26 @@
                 <a href="{{ url_for('login') }}">Login</a>
                 <a href="{{ url_for('register') }}">Register</a>
 
+                <!-- guest search -->
+                <form class="nav-search" action="{{ url_for('home') }}" method="GET">
+                    <input type="text" name="q" placeholder="Search...">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+
             {% endif %}
 
-            <button
-                class="theme-toggle"
-                type="button"
-                onclick="toggleDarkMode()">
+            <button class="theme-toggle" type="button" onclick="toggleDarkMode()">
                 🌙
             </button>
 
         </nav>
 
     </div>
-
 </header>
 
-
+<!-- =========================
+     SEARCH BAR (MAIN PAGE)
+========================= -->
 {% if request.endpoint != "post" %}
 
 <section class="site-container search-section">
@@ -94,7 +106,7 @@
 
             </select>
 
-            <button class="search-btn" type="submit">
+            <button class="search-btn btn btn-primary" type="submit">
                 Search
             </button>
 
@@ -106,7 +118,9 @@
 
 {% endif %}
 
-
+<!-- =========================
+     MAIN APP LAYOUT (FIXED)
+========================= -->
 <main class="site-container main-content">
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -115,11 +129,9 @@
             <div class="flash-stack">
 
                 {% for category, message in messages %}
-
                     <div class="alert alert-{{ category }}">
                         {{ message }}
                     </div>
-
                 {% endfor %}
 
             </div>
@@ -127,63 +139,70 @@
         {% endif %}
     {% endwith %}
 
-
     {% block layout %}
 
-    <section class="{% if request.endpoint == 'post' %}reading-layout{% else %}main-layout{% endif %}">
+    <div class="main-layout">
 
-        {% if request.endpoint != "post" %}
+        <!-- =========================
+             LEFT COLUMN (CONTENT)
+        ========================== -->
         <section class="content-column">
-        {% endif %}
 
             {% block content %}{% endblock %}
 
-        {% if request.endpoint != "post" %}
         </section>
 
-        <aside class="sidebar-column">
+        <!-- =========================
+             RIGHT SIDEBAR DASHBOARD
+        ========================== -->
+        <aside class="dashboard-sidebar">
 
-            <div class="filter-panel">
+            <div class="sidebar-card">
+                <h3>📊 Dashboard</h3>
+                <p>Overview of your activity</p>
+            </div>
 
-                <h3>Explore</h3>
-                <div class="divider"></div>
-
-                <h4>Categories</h4>
-
-                <div class="tag-list">
-                    <span class="tag">Python</span>
-                    <span class="tag">Flask</span>
-                    <span class="tag">Web</span>
-                </div>
-
-                <div class="divider"></div>
-
-                <h4>Quick Tips</h4>
-
-                <ul class="tip-list">
-                    <li>Use search to find topics.</li>
-                    <li>Sort by latest or oldest.</li>
-                    <li>Browse writers and profiles.</li>
+            <div class="sidebar-card">
+                <h4>🔥 Trending</h4>
+                <ul>
+                    <li>Popular posts</li>
+                    <li>Most read topics</li>
+                    <li>Community picks</li>
                 </ul>
+            </div>
 
-                <div class="divider"></div>
+            <div class="sidebar-card">
+                <h4>⚡ Quick Actions</h4>
 
-                <p class="sidebar-note">
-                    Crafted with patience, curiosity, and care.
-                </p>
+                <a href="{{ url_for('new_post') }}" class="btn btn-primary">
+                    + New Post
+                </a>
 
+                <a href="{{ url_for('home') }}" class="btn btn-secondary">
+                    Refresh Feed
+                </a>
+            </div>
+
+            <div class="sidebar-card">
+                <h4>🧭 Tips</h4>
+                <ul class="tip-list">
+                    <li>Use search to find posts</li>
+                    <li>Sort by latest or oldest</li>
+                    <li>Explore author profiles</li>
+                </ul>
             </div>
 
         </aside>
-        {% endif %}
 
-    </section>
+    </div>
 
     {% endblock %}
 
 </main>
 
-
+<!-- =========================
+     DARK MODE TOGGLE
+========================= -->
 <script>
 function toggleDarkMode() {
 
@@ -198,11 +217,9 @@ function toggleDarkMode() {
 }
 
 window.addEventListener("load", () => {
-
     if (localStorage.getItem("darkMode") === "enabled") {
         document.body.classList.add("dark-mode");
     }
-
 });
 </script>
 
