@@ -139,12 +139,12 @@
         {% endif %}
     {% endwith %}
 
+   {% block layout %}
+
     {% if request.endpoint == "post" %}
 
         <section class="reading-layout">
-
             {% block content %}{% endblock %}
-
         </section>
 
     {% else %}
@@ -152,9 +152,7 @@
         <section class="main-layout">
 
             <section class="content-column">
-
                 {% block content %}{% endblock %}
-
             </section>
 
             <aside class="sidebar-column">
@@ -162,17 +160,14 @@
                 <div class="filter-panel">
 
                     <h3>Explore</h3>
-
                     <div class="divider"></div>
 
                     <h4>Categories</h4>
 
                     <div class="tag-list">
-
                         <span class="tag">Python</span>
                         <span class="tag">Flask</span>
                         <span class="tag">Web</span>
-
                     </div>
 
                     <div class="divider"></div>
@@ -198,6 +193,8 @@
         </section>
 
     {% endif %}
+
+{% endblock %}
 
 </main>
 
