@@ -160,7 +160,7 @@ a{
 .search-input,
 .search-select{
     padding:12px;
-    border-radius:10px;
+    border-radius:999px;
     border:1px solid var(--border);
     background:var(--bg);
     color:var(--text);

@@ -14,27 +14,23 @@
             {{ post.title }}
         </h1>
 
-        <a
-            href="{{ url_for('user_posts', username=post.author.username) }}"
-            class="article-author">
-
+       
+    <div class="post-author">
+        <a href="{{ url_for('user_posts', username=post.author.username) }}"
+                class="author-link">
             <img
                 src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
                 alt="{{ post.author.username }}">
 
-            <div>
-
-                <div class="article-author-name">
-                    {{ post.author.username }}
-                </div>
-
-                <div class="article-author-meta">
-                    Published on {{ post.date_posted.strftime('%B %d, %Y') }}
-                </div>
-
-            </div>
-
+            <span class="post-author-name">
+                {{ post.author.username }}
+            </span>
         </a>
+
+        <span class="post-meta">
+            · {{ post.date_posted.strftime('%B %d, %Y') }}
+        </span>
+    </div>
 
     </header>
 
