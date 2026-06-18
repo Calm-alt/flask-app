@@ -34,7 +34,13 @@
             {% endif %}
 
             <!-- THEME -->
-            <button class="theme-toggle" type="button" onclick="toggleDarkMode()">🌙</button>
+            <button
+                  id="themeToggle"
+                 class="theme-toggle"
+                 type="button"
+                 onclick="toggleDarkMode()">
+                🌙
+           </button>
 
         </nav>
 
@@ -133,18 +139,35 @@
 
 <!-- ================= DARK MODE ================= -->
 <script>
-function toggleDarkMode(){
+function updateThemeButton() {
+    const btn = document.getElementById("themeToggle");
+
+    if (document.body.classList.contains("dark-mode")) {
+        btn.textContent = "☀️";
+    } else {
+        btn.textContent = "🌙";
+    }
+}
+
+function toggleDarkMode() {
     document.body.classList.toggle("dark-mode");
+
     localStorage.setItem(
         "darkMode",
-        document.body.classList.contains("dark-mode") ? "enabled" : "disabled"
+        document.body.classList.contains("dark-mode")
+            ? "enabled"
+            : "disabled"
     );
+
+    updateThemeButton();
 }
 
 window.addEventListener("load", () => {
-    if(localStorage.getItem("darkMode")==="enabled"){
+    if (localStorage.getItem("darkMode") === "enabled") {
         document.body.classList.add("dark-mode");
     }
+
+    updateThemeButton();
 });
 </script>
 

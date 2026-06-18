@@ -67,20 +67,20 @@
                 <!-- Author -->
 
                 <div class="post-author">
+    <a href="/account" class="author-link">
+        <img
+            src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
+            alt="{{ post.author.username }}">
 
-                    <img
-                        src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
-                        alt="{{ post.author.username }}">
+        <span class="post-author-name">
+            {{ post.author.username }}
+        </span>
+    </a>
 
-                    <span class="post-author-name">
-                        {{ post.author.username }}
-                    </span>
-
-                    <span class="post-meta">
-                        · {{ post.date_posted.strftime('%B %d, %Y') }}
-                    </span>
-
-                </div>
+    <span class="post-meta">
+        · {{ post.date_posted.strftime('%B %d, %Y') }}
+    </span>
+</div>
 
                 <!-- Title -->
 
@@ -204,7 +204,14 @@
     class="back-top"
     onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">
 
-    ↑
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+            d="M12 17V7M12 7L8 11M12 7L16 11"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+    </svg>
 
 </button>
 
