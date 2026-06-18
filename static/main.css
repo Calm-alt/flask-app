@@ -337,3 +337,26 @@ a{
         grid-template-columns:1fr;
     }
 }
+.dark-mode-toggle{
+    background:var(--surface);
+    color:var(--text-soft);
+    border:1px solid var(--border);
+    padding:8px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:var(--transition);
+}
+body.dark-mode .dark-mode-toggle{
+    background:var(--accent);
+    color:#08110d;
+    border-color:var(--accent);
+}
+body.dark-mode .dark-mode-toggle{
+    box-shadow:0 0 20px rgba(141,182,143,.35);
+}
+.author-page .post-card-inner{
+    align-items:center;
+}
+.author-page .post-author{
+    justify-content:center;
+}
