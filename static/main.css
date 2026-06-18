@@ -25,6 +25,17 @@
 }
 
 /* =========================
+   DARK MODE (RESTORED)
+========================= */
+
+body.dark-mode{
+    --bg:#050c09;
+    --surface:#0c1712;
+    --surface-2:#122019;
+    --border:rgba(52,81,68,.7);
+}
+
+/* =========================
    BASE
 ========================= */
 
@@ -38,6 +49,7 @@ body{
     color:var(--text-soft);
     font-family:Inter,system-ui,sans-serif;
     line-height:1.7;
+    transition:background .3s ease, color .3s ease;
 }
 
 a{
@@ -58,6 +70,7 @@ a{
     padding:30px 0 80px;
 }
 
+/* 2 COLUMN LAYOUT (FIXED SIDEBAR DASHBOARD) */
 .main-layout{
     display:grid;
     grid-template-columns: 1fr 300px;
@@ -89,10 +102,15 @@ a{
     font-weight:900;
 }
 
+/* =========================
+   NAV LINKS + SEARCH BUTTON FIX
+========================= */
+
 .nav-menu{
     display:flex;
     gap:16px;
     align-items:center;
+    flex-wrap:wrap;
 }
 
 .nav-menu a{
@@ -104,8 +122,25 @@ a{
     color:var(--text);
 }
 
+/* small nav search (your restored button works now) */
+.nav-search{
+    display:flex;
+    gap:6px;
+    align-items:center;
+}
+
+.nav-search input{
+    padding:6px 10px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+    outline:none;
+    width:120px;
+}
+
 /* =========================
-   SEARCH
+   SEARCH SECTION (MAIN PAGE)
 ========================= */
 
 .search-section{
@@ -170,51 +205,33 @@ a{
 }
 
 /* =========================
-   ⭐ AUTHOR ROW (MEDIUM STYLE UPGRADE)
+   ⭐ AUTHOR ROW (FIXED AVATAR)
 ========================= */
 
 .post-author{
     display:flex;
     align-items:center;
     gap:10px;
-
     font-size:.85rem;
     color:var(--muted);
-
-    padding:4px 0;
 }
 
-/* 👇 SMALL ROUND AVATAR (FIXED + PERFECT CIRCLE) */
+/* 🔥 SMALL ROUND PROFILE IMAGE (FIXED PROPERLY) */
 .post-author img{
-    width:22px;
-    height:22px;
-
+    width:20px;
+    height:20px;
     border-radius:50%;
     object-fit:cover;
-
     border:1px solid var(--border);
-
-    transition:transform .2s ease;
 }
 
-/* hover avatar pop */
-.post-author img:hover{
-    transform:scale(1.15);
-}
-
-/* username stronger like Medium */
+/* username */
 .post-author-name{
     font-weight:700;
     color:var(--text-soft);
-    transition:color .2s ease;
 }
 
-.post-author-name:hover{
-    color:var(--accent);
-    text-decoration:underline;
-}
-
-/* date softer */
+/* date */
 .post-meta{
     font-size:.78rem;
     color:var(--muted);
@@ -251,7 +268,7 @@ a{
 }
 
 /* =========================
-   SIDEBAR DASHBOARD
+   SIDEBAR DASHBOARD (WORKING)
 ========================= */
 
 .dashboard-sidebar{
@@ -279,6 +296,7 @@ a{
     border-radius:10px;
     font-weight:700;
     transition:var(--transition);
+    cursor:pointer;
 }
 
 .btn-primary{
@@ -302,7 +320,7 @@ a{
 }
 
 /* =========================
-   MOBILE
+   MOBILE FIX
 ========================= */
 
 @media(max-width:1000px){
