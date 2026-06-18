@@ -58,58 +58,33 @@
 
         {% for post in posts.items %}
 
-        <article class="post-card">
+        
+<article class="post-card">
 
-            <a
-                href="{{ url_for('post', post_id=post.id) }}"
-                class="post-card-inner">
+    <div class="post-author">
+        <a href="/account" class="author-link">
+            <img
+                src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
+                alt="{{ post.author.username }}">
 
-                <!-- Author -->
+            <span class="post-author-name">
+                {{ post.author.username }}
+            </span>
+        </a>
 
-                <div class="post-author">
-    <a href="/account" class="author-link">
-        <img
-            src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
-            alt="{{ post.author.username }}">
-
-        <span class="post-author-name">
-            {{ post.author.username }}
+        <span class="post-meta">
+            · {{ post.date_posted.strftime('%B %d, %Y') }}
         </span>
+    </div>
+
+    <a href="{{ url_for('post', post_id=post.id) }}" class="post-card-inner">
+        <h2 class="post-title">{{ post.title }}</h2>
+        <p class="post-preview">{{ post.content[:200] }}...</p>
+        <div class="post-read">Continue reading →</div>
     </a>
 
-    <span class="post-meta">
-        · {{ post.date_posted.strftime('%B %d, %Y') }}
-    </span>
-</div>
+</article>
 
-                <!-- Title -->
-
-                <h2 class="post-title">
-
-                    {{ post.title }}
-
-                </h2>
-
-                <!-- Preview -->
-
-                <p class="post-preview">
-
-                    {{ post.content[:260] }}
-                    {% if post.content|length > 260 %}...{% endif %}
-
-                </p>
-
-                <!-- Footer -->
-
-                <div class="post-read">
-
-                    Continue reading →
-
-                </div>
-
-            </a>
-
-        </article>
 
         {% endfor %}
 
