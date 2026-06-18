@@ -439,3 +439,8 @@ body.dark-mode .dark-mode-toggle{
 .post-page .main-layout {
     grid-template-columns: 1fr;
 }
+.post-page .content-column {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
