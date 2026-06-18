@@ -139,21 +139,33 @@
         {% endif %}
     {% endwith %}
 
-   {% block layout %}
+  {% block layout %}
 
     {% if request.endpoint == "post" %}
 
         <section class="reading-layout">
-            {% block content %}{% endblock %}
-        </section>
 
     {% else %}
 
         <section class="main-layout">
 
             <section class="content-column">
+
+    {% endif %}
+
                 {% block content %}{% endblock %}
+
             </section>
+
+            {% if request.endpoint != "post" %}
+            <aside class="sidebar-column">
+                ...
+            </aside>
+            {% endif %}
+
+        </section>
+
+{% endblock %}
 
             <aside class="sidebar-column">
 
