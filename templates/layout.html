@@ -37,9 +37,7 @@
                 <a href="{{ url_for('register') }}">Register</a>
             {% endif %}
 
-            <button class="theme-toggle" type="button" onclick="toggleDarkMode()">
-                🌙
-            </button>
+            <button class="theme-toggle" onclick="toggleDarkMode()">🌙</button>
         </nav>
 
     </div>
@@ -49,24 +47,22 @@
 <section class="site-container search-section">
     <form action="{{ url_for('home') }}" method="GET">
 
-        <div class="search-panel">
-            <input type="text"
-                   name="q"
-                   class="search-input"
-                   placeholder="Search articles..."
-                   value="{{ request.args.get('q','') }}">
+        <input type="text"
+               name="q"
+               class="search-input"
+               placeholder="Search articles..."
+               value="{{ request.args.get('q','') }}">
 
-            <select name="sort" class="search-select">
-                <option value="latest" {% if request.args.get('sort') == 'latest' %}selected{% endif %}>
-                    Latest
-                </option>
-                <option value="oldest" {% if request.args.get('sort') == 'oldest' %}selected{% endif %}>
-                    Oldest
-                </option>
-            </select>
+        <select name="sort" class="search-select">
+            <option value="latest" {% if request.args.get('sort') == 'latest' %}selected{% endif %}>
+                Latest
+            </option>
+            <option value="oldest" {% if request.args.get('sort') == 'oldest' %}selected{% endif %}>
+                Oldest
+            </option>
+        </select>
 
-            <button class="search-btn" type="submit">Search</button>
-        </div>
+        <button type="submit">Search</button>
 
     </form>
 </section>
@@ -87,55 +83,38 @@
         {% endif %}
     {% endwith %}
 
-    {% block layout %}
+    {% if request.endpoint == "post" %}
+        <section class="reading-layout">
+            {% block content %}{% endblock %}
+        </section>
 
-        {% if request.endpoint == "post" %}
-            <section class="reading-layout">
+    {% else %}
+        <section class="main-layout">
+
+            <section class="content-column">
                 {% block content %}{% endblock %}
             </section>
 
-        {% else %}
-            <section class="main-layout">
+            <aside class="sidebar-column">
+                <div class="filter-panel">
+                    <h3>Explore</h3>
 
-                <section class="content-column">
-                    {% block content %}{% endblock %}
-                </section>
+                    <h4>Categories</h4>
+                    <span>Python</span>
+                    <span>Flask</span>
+                    <span>Web</span>
 
-                <aside class="sidebar-column">
-                    <div class="filter-panel">
+                    <h4>Tips</h4>
+                    <ul>
+                        <li>Search articles</li>
+                        <li>Sort results</li>
+                        <li>Browse content</li>
+                    </ul>
+                </div>
+            </aside>
 
-                        <h3>Explore</h3>
-                        <div class="divider"></div>
-
-                        <h4>Categories</h4>
-                        <div class="tag-list">
-                            <span class="tag">Python</span>
-                            <span class="tag">Flask</span>
-                            <span class="tag">Web</span>
-                        </div>
-
-                        <div class="divider"></div>
-
-                        <h4>Quick Tips</h4>
-                        <ul class="tip-list">
-                            <li>Use search to find topics.</li>
-                            <li>Sort by latest or oldest.</li>
-                            <li>Browse writers and profiles.</li>
-                        </ul>
-
-                        <div class="divider"></div>
-
-                        <p class="sidebar-note">
-                            Crafted with patience, curiosity, and care.
-                        </p>
-
-                    </div>
-                </aside>
-
-            </section>
-        {% endif %}
-
-    {% endblock %}
+        </section>
+    {% endif %}
 
 </main>
 
