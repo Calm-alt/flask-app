@@ -69,9 +69,7 @@
 
 <section class="site-container search-section">
 
-    <form
-        action="{{ url_for('home') }}"
-        method="GET">
+    <form action="{{ url_for('home') }}" method="GET">
 
         <div class="search-panel">
 
@@ -82,31 +80,21 @@
                 placeholder="Search articles..."
                 value="{{ request.args.get('q','') }}">
 
-            <select
-                name="sort"
-                class="search-select">
+            <select name="sort" class="search-select">
 
-                <option
-                    value="latest"
-                    {% if request.args.get('sort') == 'latest' %}
-                    selected
-                    {% endif %}>
+                <option value="latest"
+                    {% if request.args.get('sort') == 'latest' %}selected{% endif %}>
                     Latest
                 </option>
 
-                <option
-                    value="oldest"
-                    {% if request.args.get('sort') == 'oldest' %}
-                    selected
-                    {% endif %}>
+                <option value="oldest"
+                    {% if request.args.get('sort') == 'oldest' %}selected{% endif %}>
                     Oldest
                 </option>
 
             </select>
 
-            <button
-                class="search-btn"
-                type="submit">
+            <button class="search-btn" type="submit">
                 Search
             </button>
 
@@ -127,84 +115,75 @@
             <div class="flash-stack">
 
                 {% for category, message in messages %}
-
                     <div class="alert alert-{{ category }}">
                         {{ message }}
                     </div>
-
                 {% endfor %}
 
             </div>
 
         {% endif %}
     {% endwith %}
+        {% block layout %}
 
-  {% block layout %}
+        {% if request.endpoint == "post" %}
 
-    {% if request.endpoint == "post" %}
+            <section class="reading-layout">
 
-        <section class="reading-layout">
-
-    {% else %}
-
-        <section class="main-layout">
-
-            <section class="content-column">
-
-    {% endif %}
+                {% block content %}{% endblock %}
 
             </section>
 
-            {% if request.endpoint != "post" %}
-            <aside class="sidebar-column">
-                ...
-            </aside>
-            {% endif %}
+        {% else %}
 
-        </section>
+            <section class="main-layout">
 
-{% endblock %}
+                <section class="content-column">
 
-            <aside class="sidebar-column">
+                    {% block content %}{% endblock %}
 
-                <div class="filter-panel">
+                </section>
 
-                    <h3>Explore</h3>
-                    <div class="divider"></div>
+                <aside class="sidebar-column">
 
-                    <h4>Categories</h4>
+                    <div class="filter-panel">
 
-                    <div class="tag-list">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">Web</span>
+                        <h3>Explore</h3>
+                        <div class="divider"></div>
+
+                        <h4>Categories</h4>
+
+                        <div class="tag-list">
+                            <span class="tag">Python</span>
+                            <span class="tag">Flask</span>
+                            <span class="tag">Web</span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <h4>Quick Tips</h4>
+
+                        <ul class="tip-list">
+                            <li>Use search to find topics.</li>
+                            <li>Sort by latest or oldest.</li>
+                            <li>Browse writers and profiles.</li>
+                        </ul>
+
+                        <div class="divider"></div>
+
+                        <p class="sidebar-note">
+                            Crafted with patience, curiosity, and care.
+                        </p>
+
                     </div>
 
-                    <div class="divider"></div>
+                </aside>
 
-                    <h4>Quick Tips</h4>
+            </section>
 
-                    <ul class="tip-list">
-                        <li>Use search to find topics.</li>
-                        <li>Sort by latest or oldest.</li>
-                        <li>Browse writers and profiles.</li>
-                    </ul>
+        {% endif %}
 
-                    <div class="divider"></div>
-
-                    <p class="sidebar-note">
-                        Crafted with patience, curiosity, and care.
-                    </p>
-
-                </div>
-
-            </aside>
-
-        </section>
-
-    {% endif %}
-
-{% endblock %}
+    {% endblock %}
 
 </main>
 
@@ -225,9 +204,7 @@ function toggleDarkMode() {
 window.addEventListener("load", () => {
 
     if (localStorage.getItem("darkMode") === "enabled") {
-
         document.body.classList.add("dark-mode");
-
     }
 
 });
