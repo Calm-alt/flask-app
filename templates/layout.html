@@ -69,9 +69,7 @@
 
 <section class="site-container search-section">
 
-    <form
-        action="{{ url_for('home') }}"
-        method="GET">
+    <form action="{{ url_for('home') }}" method="GET">
 
         <div class="search-panel">
 
@@ -82,31 +80,21 @@
                 placeholder="Search articles..."
                 value="{{ request.args.get('q','') }}">
 
-            <select
-                name="sort"
-                class="search-select">
+            <select name="sort" class="search-select">
 
-                <option
-                    value="latest"
-                    {% if request.args.get('sort') == 'latest' %}
-                    selected
-                    {% endif %}>
+                <option value="latest"
+                    {% if request.args.get('sort') == 'latest' %}selected{% endif %}>
                     Latest
                 </option>
 
-                <option
-                    value="oldest"
-                    {% if request.args.get('sort') == 'oldest' %}
-                    selected
-                    {% endif %}>
+                <option value="oldest"
+                    {% if request.args.get('sort') == 'oldest' %}selected{% endif %}>
                     Oldest
                 </option>
 
             </select>
 
-            <button
-                class="search-btn"
-                type="submit">
+            <button class="search-btn" type="submit">
                 Search
             </button>
 
@@ -139,70 +127,59 @@
         {% endif %}
     {% endwith %}
 
-  {% block layout %}
 
-    {% if request.endpoint == "post" %}
+    {% block layout %}
 
-        <section class="reading-layout">
+    <section class="{% if request.endpoint == 'post' %}reading-layout{% else %}main-layout{% endif %}">
 
-    {% else %}
+        {% if request.endpoint != "post" %}
+        <section class="content-column">
+        {% endif %}
 
-        <section class="main-layout">
+            {% block content %}{% endblock %}
 
-            <section class="content-column">
-
-    {% endif %}
-
-            </section>
-
-            {% if request.endpoint != "post" %}
-            <aside class="sidebar-column">
-                ...
-            </aside>
-            {% endif %}
-
+        {% if request.endpoint != "post" %}
         </section>
 
-{% endblock %}
+        <aside class="sidebar-column">
 
-            <aside class="sidebar-column">
+            <div class="filter-panel">
 
-                <div class="filter-panel">
+                <h3>Explore</h3>
+                <div class="divider"></div>
 
-                    <h3>Explore</h3>
-                    <div class="divider"></div>
+                <h4>Categories</h4>
 
-                    <h4>Categories</h4>
-
-                    <div class="tag-list">
-                        <span class="tag">Python</span>
-                        <span class="tag">Flask</span>
-                        <span class="tag">Web</span>
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <h4>Quick Tips</h4>
-
-                    <ul class="tip-list">
-                        <li>Use search to find topics.</li>
-                        <li>Sort by latest or oldest.</li>
-                        <li>Browse writers and profiles.</li>
-                    </ul>
-
-                    <div class="divider"></div>
-
-                    <p class="sidebar-note">
-                        Crafted with patience, curiosity, and care.
-                    </p>
-
+                <div class="tag-list">
+                    <span class="tag">Python</span>
+                    <span class="tag">Flask</span>
+                    <span class="tag">Web</span>
                 </div>
 
-            </aside>
+                <div class="divider"></div>
 
-        </section>
+                <h4>Quick Tips</h4>
 
-{% endblock %}
+                <ul class="tip-list">
+                    <li>Use search to find topics.</li>
+                    <li>Sort by latest or oldest.</li>
+                    <li>Browse writers and profiles.</li>
+                </ul>
+
+                <div class="divider"></div>
+
+                <p class="sidebar-note">
+                    Crafted with patience, curiosity, and care.
+                </p>
+
+            </div>
+
+        </aside>
+        {% endif %}
+
+    </section>
+
+    {% endblock %}
 
 </main>
 
@@ -223,9 +200,7 @@ function toggleDarkMode() {
 window.addEventListener("load", () => {
 
     if (localStorage.getItem("darkMode") === "enabled") {
-
         document.body.classList.add("dark-mode");
-
     }
 
 });
