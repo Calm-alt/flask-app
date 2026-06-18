@@ -160,10 +160,13 @@ a{
 .search-input,
 .search-select{
     padding:12px;
-    border-radius:999px;
+    border-radius:10px;
     border:1px solid var(--border);
     background:var(--bg);
     color:var(--text);
+}
+.search-select{
+    border-radius:9999px;
 }
 
 /* =========================
