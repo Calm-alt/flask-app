@@ -530,54 +530,54 @@ body.dark-mode .btn-secondary {
     background: rgba(255,255,255,0.08);
 }
 .search-select {
-    /* Layout */
-    padding: 10px 40px 10px 14px;
-    min-width: 180px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-
-    /* Colors */
-    background-color: #111827;
-    color: #f9fafb;
-
-    /* Typography */
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-
-    /* Remove default browser styling */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
 
-    /* Custom arrow */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 6 8 11 13 6'/%3E%3C/svg%3E");
+    padding: 12px 42px 12px 16px;
+    border-radius: 9999px;
+
+    background-color: var(--surface);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+
+    transition:
+        background-color var(--transition),
+        border-color var(--transition),
+        box-shadow var(--transition),
+        transform var(--transition);
+
+    /* custom arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%238db68f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 7l5 5 5-5'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
+    background-size: 16px;
     background-position: right 14px center;
 
-    /* Effects */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: all 0.25s ease;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.03),
+        0 4px 12px rgba(0,0,0,0.15);
 }
 
 .search-select:hover {
-    border-color: #3b82f6;
-    background-color: #1f2937;
+    background: var(--surface-2);
+    border-color: var(--border-light);
+    transform: translateY(-1px);
 }
 
 .search-select:focus {
     outline: none;
-    border-color: #60a5fa;
+    border-color: var(--accent);
     box-shadow:
-        0 0 0 3px rgba(96, 165, 250, 0.25),
-        0 6px 16px rgba(0, 0, 0, 0.25);
+        0 0 0 3px rgba(141, 182, 143, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .search-select option {
-    background-color: #111827;
-    color: #f9fafb;
+    background: var(--surface);
+    color: var(--text);
 }
-background: rgba(31, 41, 55, 0.8);
-backdrop-filter: blur(10px);
--webkit-backdrop-filter: blur(10px);
-border: 1px solid rgba(255, 255, 255, 0.1);
