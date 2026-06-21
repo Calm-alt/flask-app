@@ -97,6 +97,11 @@ a{
 .site-logo{
     font-size:1.8rem;
     font-weight:900;
+    letter-spacing:.5px;
+    background:linear-gradient(90deg,var(--text),var(--accent));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
 .nav-menu{
