@@ -99,12 +99,12 @@ a{
     font-weight:900;
     letter-spacing:.5px;
 
-    background:linear-gradient(90deg,#ffb86b,#ff6b6b);
+    background:linear-gradient(90deg,#f6d365,#ffb86b,#8db68f);
     -webkit-background-clip:text;
     background-clip:text;
     -webkit-text-fill-color:transparent;
 
-    text-shadow: 0 2px 10px rgba(255, 107, 107, 0.15);
+    text-shadow:0 2px 12px rgba(246,211,101,.12);
 }
 
 .nav-menu{
