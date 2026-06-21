@@ -20,6 +20,9 @@
 
         <a class="site-logo" href="{{ url_for('home') }}">⚔︎ Knights</a>
 
+        <button class="nav-toggle" onclick="toggleNav()">☰</button>
+
+
         <nav class="nav-menu">
 
             <a href="{{ url_for('home') }}">Home</a>
@@ -107,20 +110,23 @@
         <!-- RIGHT SIDEBAR -->
         <aside class="dashboard-sidebar">
 
+         <a href="{{ url_for('user_posts', username=current_user.username) }}" class="sidebar-card-link">
+             <div class="sidebar-card">
+                 <h3>👤 Profile</h3>
+                 <p>Overview of your profile</p>
+             </div>
+         </a>
+        
+         <a href="{{ url_for('about') }}" class="sidebar-card-link">
             <div class="sidebar-card">
-                <h3>📊 Dashboard</h3>
-                <p>Overview of your activity</p>
-            </div>
-
-            <div class="sidebar-card">
-                <h4>🔥 Explore</h4>
+                <h4>ℹ️ About</h4>
                 <ul>
-                    <li>Popular posts</li>
-                    <li>Trending topics</li>
-                    <li>Writers</li>
+                     <li>About Knights</li>
+                     <li>Our purpose</li>
+                     <li>Community</li>
                 </ul>
             </div>
-
+         </a>
             <div class="sidebar-card">
                 <h4>⚡ Quick Actions</h4>
 
@@ -169,6 +175,9 @@ window.addEventListener("load", () => {
 
     updateThemeButton();
 });
+function toggleNav() {
+    document.querySelector(".nav-menu").classList.toggle("active");
+}
 </script>
 
 </body>

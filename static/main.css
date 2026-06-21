@@ -452,3 +452,65 @@ body.dark-mode .dark-mode-toggle{
     display: block;
     margin: 0 auto;
 }
+.sidebar-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.sidebar-card-link:hover .sidebar-card {
+    transform: translateY(-3px);
+    transition: 0.2s ease;
+}
+/* =========================
+   MOBILE NAVBAR FIX
+========================= */
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1.4rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .nav-container {
+        position: relative;
+    }
+
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        left: 0;
+
+        flex-direction: column;
+        gap: 12px;
+
+        background: var(--surface);
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+        z-index: 1000;
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-menu a,
+    .nav-menu button {
+        width: 100%;
+        text-align: left;
+    }
+}
