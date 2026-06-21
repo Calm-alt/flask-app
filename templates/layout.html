@@ -110,7 +110,12 @@
         <!-- RIGHT SIDEBAR -->
         <aside class="dashboard-sidebar">
 
+        {% if current_user.is_authenticated %}
          <a href="{{ url_for('user_posts', username=current_user.username) }}" class="sidebar-card-link">
+        {% else %}
+         <a href="{{ url_for('register') }}" class="sidebar-card-link">
+        {% endif %}
+        
              <div class="sidebar-card">
                  <h3>✳️ Profile</h3>
                  <p>Overview of your profile</p>
