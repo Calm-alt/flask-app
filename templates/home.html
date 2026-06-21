@@ -62,7 +62,8 @@
 <article class="post-card">
 
     <div class="post-author">
-        <a href="/account" class="author-link">
+        <a href="{{ url_for('user_posts', username=post.author.username) }}"
+                class="author-link">
             <img
                 src="{{ url_for('static', filename='profile_pics/' ~ post.author.image_file) }}"
                 alt="{{ post.author.username }}">

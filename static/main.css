@@ -444,3 +444,11 @@ body.dark-mode .dark-mode-toggle{
     max-width: 900px;
     margin: 0 auto;
 }
+.text-center img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
