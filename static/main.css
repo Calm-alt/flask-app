@@ -577,3 +577,41 @@ body.dark-mode .dark-mode-toggle{
         text-align: left;
     }
 }
+.search-select {
+    padding: 12px 14px;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--surface), var(--surface-2));
+    color: var(--text-soft);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    appearance: none;
+}
+
+/* hover effect */
+.search-select:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    transform: translateY(-1px);
+}
+
+/* focus (IMPORTANT FIX BELOW) */
+.search-select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(141, 182, 143, 0.25);
+}
+.search-input:focus,
+.search-select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(141, 182, 143, 0.25);
+}
+.search-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(141, 182, 143, 0.35);
+}
+.search-btn:active {
+    transform: scale(0.97);
+}
