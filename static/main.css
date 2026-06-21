@@ -530,20 +530,54 @@ body.dark-mode .btn-secondary {
     background: rgba(255,255,255,0.08);
 }
 .search-select {
-    background-color: #1f2937; /* or your site's background */
-    color: #fff;
-    border: 1px solid #444;
-    border-radius: 6px;
-    padding: 8px 12px;
+    /* Layout */
+    padding: 10px 40px 10px 14px;
+    min-width: 180px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 
-    /* Remove the browser's default styling */
+    /* Colors */
+    background-color: #111827;
+    color: #f9fafb;
+
+    /* Typography */
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+
+    /* Remove default browser styling */
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
 
-    /* Custom dropdown arrow */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6'/%3E%3C/svg%3E");
+    /* Custom arrow */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='3 6 8 11 13 6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 10px center;
-    padding-right: 32px;
+    background-position: right 14px center;
+
+    /* Effects */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.25s ease;
 }
+
+.search-select:hover {
+    border-color: #3b82f6;
+    background-color: #1f2937;
+}
+
+.search-select:focus {
+    outline: none;
+    border-color: #60a5fa;
+    box-shadow:
+        0 0 0 3px rgba(96, 165, 250, 0.25),
+        0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.search-select option {
+    background-color: #111827;
+    color: #f9fafb;
+}
+background: rgba(31, 41, 55, 0.8);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border: 1px solid rgba(255, 255, 255, 0.1);
