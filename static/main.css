@@ -149,11 +149,13 @@ a{
 ========================= */
 
 .site-logo{
+    display:inline-block;
     font-size:1.8rem;
     font-weight:900;
 
     background:linear-gradient(135deg,var(--text),var(--accent));
     -webkit-background-clip:text;
+    background-clip:text;
     -webkit-text-fill-color:transparent;
 
     transition:var(--transition);
