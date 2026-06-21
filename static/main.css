@@ -165,6 +165,12 @@ a{
     background:var(--bg);
     color:var(--text);
 }
+.search-input:focus,
+.search-select:focus {
+    outline: none;              /* removes white browser outline */
+    box-shadow: none;          /* removes glow */
+    border-color: var(--accent); /* optional nice highlight */
+}
 .search-select{
     border-radius:9999px;
 }
