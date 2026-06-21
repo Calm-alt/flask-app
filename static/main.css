@@ -39,9 +39,7 @@ body.dark-mode{
    BASE
 ========================= */
 
-*{
-    box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
 body{
     margin:0;
@@ -52,10 +50,7 @@ body{
     transition:background .3s ease, color .3s ease;
 }
 
-a{
-    color:inherit;
-    text-decoration:none;
-}
+a{ color:inherit; text-decoration:none; }
 
 /* =========================
    LAYOUT
@@ -66,11 +61,8 @@ a{
     margin:auto;
 }
 
-.main-content{
-    padding:30px 0 80px;
-}
+.main-content{ padding:30px 0 80px; }
 
-/* 2 COLUMN LAYOUT (FIXED SIDEBAR DASHBOARD) */
 .main-layout{
     display:grid;
     grid-template-columns: 1fr 300px;
@@ -102,10 +94,6 @@ a{
     font-weight:900;
 }
 
-/* =========================
-   NAV LINKS + SEARCH BUTTON FIX
-========================= */
-
 .nav-menu{
     display:flex;
     gap:16px;
@@ -118,11 +106,12 @@ a{
     font-weight:600;
 }
 
-.nav-menu a:hover{
-    color:var(--text);
-}
+.nav-menu a:hover{ color:var(--text); }
 
-/* small nav search (your restored button works now) */
+/* =========================
+   NAV SEARCH
+========================= */
+
 .nav-search{
     display:flex;
     gap:6px;
@@ -135,57 +124,254 @@ a{
     border:1px solid var(--border);
     background:var(--surface);
     color:var(--text);
-    outline:none;
     width:120px;
+    outline:none;
 }
 
 /* =========================
-   SEARCH SECTION (MAIN PAGE)
+   MODERN SEARCH PANEL
 ========================= */
 
-.search-section{
-    margin:20px auto;
-}
+.search-section{ margin:20px auto; }
 
 .search-panel{
     display:grid;
-    grid-template-columns:1fr 160px 120px;
-    gap:10px;
-    padding:16px;
-    border-radius:var(--radius);
-    background:var(--surface);
+    grid-template-columns: 1fr 180px 140px;
+    gap:12px;
+    padding:18px;
+    border-radius:18px;
+
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
     border:1px solid var(--border);
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    backdrop-filter: blur(14px);
 }
 
-.search-input,
-.search-select{
-    padding:12px;
-    border-radius:10px;
+.search-input{
+    padding:12px 14px;
+    border-radius:12px;
     border:1px solid var(--border);
-    background:var(--bg);
+    background:var(--surface-2);
+    color:var(--text);
+    outline:none;
+    transition:var(--transition);
+}
+
+.search-input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(141,182,143,.15);
+}
+
+/* =========================
+   MODERN "LATEST" DROPDOWN
+========================= */
+
+/* base select upgrade */
+.search-select{
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+
+    padding:12px 38px 12px 14px;
+    border-radius:9999px;
+
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--text);
+
+    cursor:pointer;
+    outline:none;
+    transition:var(--transition);
+
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+        linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position:
+        calc(100% - 18px) 50%,
+        calc(100% - 12px) 50%;
+    background-size:6px 6px, 6px 6px;
+    background-repeat:no-repeat;
+}
+
+.search-select:hover{
+    border-color:var(--border-light);
+}
+
+.search-select:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(141,182,143,.15);
+}
+
+/* =========================
+   CUSTOM DROPDOWN (MODERN LATEST)
+========================= */
+
+.dropdown-wrapper{
+    position:relative;
+}
+
+.dropdown-button{
+    width:100%;
+    padding:12px 14px;
+    border-radius:9999px;
+
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text-soft);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    cursor:pointer;
+    transition:var(--transition);
+}
+
+.dropdown-button:hover{
+    border-color:var(--accent);
+}
+
+.dropdown-menu{
+    position:absolute;
+    top:110%;
+    right:0;
+    left:0;
+
+    background:rgba(16,27,21,.95);
+    border:1px solid var(--border);
+    border-radius:14px;
+
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(16px);
+
+    opacity:0;
+    transform:translateY(-8px);
+    pointer-events:none;
+
+    transition:var(--transition);
+    z-index:1000;
+}
+
+.dropdown-wrapper.open .dropdown-menu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+.dropdown-item{
+    padding:10px 12px;
+    cursor:pointer;
+    color:var(--text-soft);
+    transition:var(--transition);
+}
+
+.dropdown-item:hover{
+    background:rgba(141,182,143,.12);
     color:var(--text);
 }
-.search-select{
-    border-radius:9999px;
+
+/* =========================
+   SEARCH SUGGESTIONS
+========================= */
+
+.suggestions{
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+
+    margin-top:8px;
+    background:rgba(16,27,21,.98);
+    border:1px solid var(--border);
+    border-radius:14px;
+
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(14px);
+
+    overflow:hidden;
+    z-index:999;
+}
+
+.suggestion-item{
+    padding:10px 12px;
+    cursor:pointer;
+    color:var(--text-soft);
+    transition:var(--transition);
+}
+
+.suggestion-item:hover{
+    background:rgba(141,182,143,.12);
+    color:var(--text);
+}
+
+/* =========================
+   COMMAND PALETTE (CTRL + K)
+========================= */
+
+.command-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+
+    padding-top:120px;
+    z-index:2000;
+}
+
+.command-overlay.active{
+    display:flex;
+}
+
+.command-palette{
+    width:min(600px,92%);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+
+    box-shadow:var(--shadow);
+    overflow:hidden;
+}
+
+.command-input{
+    width:100%;
+    padding:14px;
+    border:none;
+    outline:none;
+
+    background:var(--surface-2);
+    color:var(--text);
+}
+
+.command-list{
+    max-height:300px;
+    overflow:auto;
+}
+
+.command-item{
+    padding:12px;
+    cursor:pointer;
+    color:var(--text-soft);
+    transition:var(--transition);
+}
+
+.command-item:hover,
+.command-item.active{
+    background:rgba(141,182,143,.12);
+    color:var(--text);
 }
 
 /* =========================
    FEED
 ========================= */
 
-.feed-container{
-    max-width:760px;
-    margin:auto;
-}
+.feed-container{ max-width:760px; margin:auto; }
 
-.feed-title{
-    font-size:2.8rem;
-    font-weight:900;
-}
+.feed-title{ font-size:2.8rem; font-weight:900; }
 
-.feed-subtitle{
-    color:var(--muted);
-}
+.feed-subtitle{ color:var(--muted); }
 
 /* =========================
    POST CARD
@@ -197,9 +383,7 @@ a{
     transition:var(--transition);
 }
 
-.post-card:hover{
-    transform:translateY(-3px);
-}
+.post-card:hover{ transform:translateY(-3px); }
 
 .post-card-inner{
     display:flex;
@@ -207,10 +391,7 @@ a{
     gap:10px;
 }
 
-/* =========================
-   ⭐ AUTHOR ROW (FIXED AVATAR)
-========================= */
-
+/* AUTHOR */
 .post-author{
     display:flex;
     align-items:center;
@@ -219,7 +400,6 @@ a{
     color:var(--muted);
 }
 
-/* 🔥 SMALL ROUND PROFILE IMAGE (FIXED PROPERLY) */
 .post-author img{
     width:20px;
     height:20px;
@@ -228,50 +408,23 @@ a{
     border:1px solid var(--border);
 }
 
-/* username */
 .post-author-name{
     font-weight:700;
     color:var(--text-soft);
 }
 
-/* date */
-.post-meta{
-    font-size:.78rem;
-    color:var(--muted);
-}
+.post-meta{ font-size:.78rem; color:var(--muted); }
+
+.post-title{ font-size:1.7rem; font-weight:900; }
+
+.post-card:hover .post-title{ color:var(--accent); }
+
+.post-preview{ color:var(--muted); }
+
+.post-read{ color:var(--accent); font-weight:700; }
 
 /* =========================
-   TITLE
-========================= */
-
-.post-title{
-    font-size:1.7rem;
-    font-weight:900;
-}
-
-.post-card:hover .post-title{
-    color:var(--accent);
-}
-
-/* =========================
-   PREVIEW
-========================= */
-
-.post-preview{
-    color:var(--muted);
-}
-
-/* =========================
-   READ LINK
-========================= */
-
-.post-read{
-    color:var(--accent);
-    font-weight:700;
-}
-
-/* =========================
-   SIDEBAR DASHBOARD (WORKING)
+   SIDEBAR
 ========================= */
 
 .dashboard-sidebar{
@@ -327,19 +480,15 @@ a{
 ========================= */
 
 @media(max-width:1000px){
-
-    .main-layout{
-        grid-template-columns:1fr;
-    }
-
-    .dashboard-sidebar{
-        display:none;
-    }
-
-    .search-panel{
-        grid-template-columns:1fr;
-    }
+    .main-layout{ grid-template-columns:1fr; }
+    .dashboard-sidebar{ display:none; }
+    .search-panel{ grid-template-columns:1fr; }
 }
+
+/* =========================
+   UTILITIES
+========================= */
+
 .dark-mode-toggle{
     background:var(--surface);
     color:var(--text-soft);
@@ -347,170 +496,24 @@ a{
     padding:8px 12px;
     border-radius:10px;
     cursor:pointer;
-    transition:var(--transition);
 }
+
 body.dark-mode .dark-mode-toggle{
     background:var(--accent);
     color:#08110d;
-    border-color:var(--accent);
-}
-body.dark-mode .dark-mode-toggle{
     box-shadow:0 0 20px rgba(141,182,143,.35);
 }
-.author-page .post-card-inner{
-    align-items:center;
-}
-.author-page .post-author{
-    justify-content:center;
-}
-.back-top {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
 
-    width: 56px;
-    height: 56px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-
-    background: var(--accent);
-    color: #08110d;
-
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    z-index: 999;
-}
-
-.back-top:hover {
-    background: var(--accent-hover);
-    transform: translateY(-3px) scale(1.05);
-}
-
-.back-top svg {
-    width: 24px;
-    height: 24px;
-}
-.sort-buttons .btn{
-    border-radius:9999px;
-}
-.content-column {
-    display: flex;
-    justify-content: center;
-}
-
-.article-wrapper {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.article-title,
-.post-content {
-    text-align: center;
-}
-.theme-toggle {
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    width: 42px;
-    height: 42px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.theme-toggle:hover {
-    background: var(--surface-2);
-    transform: scale(1.05);
-}
-.post-page .dashboard-sidebar {
-    display: none;
-}
-
-.post-page .main-layout {
-    grid-template-columns: 1fr;
-}
-.post-page .content-column {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-}
-.text-center img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    display: block;
-    margin: 0 auto;
-}
-.sidebar-card-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-
-.sidebar-card-link:hover .sidebar-card {
-    transform: translateY(-3px);
-    transition: 0.2s ease;
-}
-/* =========================
-   MOBILE NAVBAR FIX
-========================= */
-
-.nav-toggle {
-    display: none;
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-size: 1.4rem;
-    padding: 6px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-
-    .nav-container {
-        position: relative;
-    }
-
-    .nav-toggle {
-        display: block;
-    }
-
-    .nav-menu {
-        display: none;
-        position: absolute;
-        top: 70px;
-        right: 0;
-        left: 0;
-
-        flex-direction: column;
-        gap: 12px;
-
-        background: var(--surface);
-        padding: 16px;
-        border-bottom: 1px solid var(--border);
-        z-index: 1000;
-    }
-
-    .nav-menu.active {
-        display: flex;
-    }
-
-    .nav-menu a,
-    .nav-menu button {
-        width: 100%;
-        text-align: left;
-    }
+.back-top{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    width:56px;
+    height:56px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#08110d;
+    box-shadow:var(--shadow);
+    border:none;
+    cursor:pointer;
 }
