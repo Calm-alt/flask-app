@@ -109,7 +109,6 @@ a{
 .nav-menu a{
     color:var(--muted);
     font-weight:600;
-    position:relative;
 }
 
 .nav-menu a:hover{
@@ -117,7 +116,7 @@ a{
 }
 
 /* =========================
-   NOTIFICATION BADGES (NEW)
+   NOTIFICATION BADGES
 ========================= */
 
 .badge{
@@ -131,12 +130,12 @@ a{
     font-weight:800;
     border-radius:999px;
     background:var(--danger);
-    color:white;
+    color:#fff;
     margin-left:6px;
     box-shadow:0 6px 18px rgba(217,107,107,.25);
 }
 
-/* floating nav badge (dot style) */
+/* small dot badge */
 .nav-dot{
     position:absolute;
     top:-4px;
@@ -254,7 +253,7 @@ a{
 }
 
 /* =========================
-   FEED
+   FEED (UNCHANGED)
 ========================= */
 
 .feed-container{
@@ -275,7 +274,7 @@ a{
 }
 
 /* =========================
-   POST CARD
+   POSTS (UNCHANGED — DO NOT TOUCH)
 ========================= */
 
 .post-card{
@@ -294,8 +293,53 @@ a{
     gap:10px;
 }
 
+.post-author{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:.85rem;
+    color:var(--muted);
+}
+
+.post-author img{
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    object-fit:cover;
+    border:1px solid var(--border);
+}
+
+.post-author-name{
+    font-weight:700;
+    color:var(--text-soft);
+}
+
+.post-meta{
+    font-size:.78rem;
+    color:var(--muted);
+}
+
+.post-title{
+    font-size:1.6rem;
+    font-weight:900;
+    line-height:1.3;
+}
+
+.post-card:hover .post-title{
+    color:var(--accent);
+}
+
+.post-preview{
+    color:var(--muted);
+}
+
+.post-read{
+    color:var(--accent);
+    font-weight:700;
+}
+
 /* =========================
-   SIDEBAR (UPGRADED + FLOATING GLASS)
+   SIDEBAR (ONLY UPGRADE SECTION)
 ========================= */
 
 .dashboard-sidebar{
@@ -325,16 +369,15 @@ a{
     transition:all .25s ease;
 }
 
-/* FLOATING GLASS TILES */
+/* floating glass tiles */
 .sidebar-card::before,
 .sidebar-card::after{
     content:"";
     position:absolute;
-    width:120px;
-    height:120px;
-    background:rgba(141,182,143,.08);
+    width:110px;
+    height:110px;
     border-radius:24px;
-    filter:blur(0.5px);
+    background:rgba(141,182,143,.08);
     animation:floatTiles 8s ease-in-out infinite;
 }
 
@@ -351,19 +394,17 @@ a{
     animation-duration:10s;
 }
 
-/* glow hover layer */
+@keyframes floatTiles{
+    0%,100%{ transform:translateY(0) rotate(18deg); }
+    50%{ transform:translateY(12px) rotate(24deg); }
+}
+
 .sidebar-card:hover{
     transform:translateY(-4px);
     border-color:rgba(141,182,143,.35);
     box-shadow:
         0 18px 50px rgba(0,0,0,.45),
         0 0 25px rgba(141,182,143,.08);
-}
-
-/* floating animation */
-@keyframes floatTiles{
-    0%,100%{ transform:translateY(0) rotate(18deg); }
-    50%{ transform:translateY(12px) rotate(24deg); }
 }
 
 /* =========================
