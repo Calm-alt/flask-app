@@ -18,7 +18,26 @@
 <header class="topbar">
     <div class="site-container nav-container">
 
-        <a class="site-logo" href="{{ url_for('home') }}">⚔︎ Knights</a>
+        <a class="site-logo" href="{{ url_for('home') }}">
+    <svg class="logo-vine" viewBox="0 0 120 40" aria-hidden="true">
+        <path
+            d="M2 20 C20 5, 35 35, 55 20 S90 5, 118 20"
+            fill="none"
+            stroke="#62d86f"
+            stroke-width="3"
+            stroke-linecap="round"
+        />
+        <path
+            d="M18 14 l6 -6 M42 26 l6 6 M72 12 l7 -5 M98 27 l6 5"
+            fill="none"
+            stroke="#8ef59a"
+            stroke-width="2"
+            stroke-linecap="round"
+        />
+    </svg>
+
+    <span>⚔︎ Knights</span>
+</a>
 
         <button class="nav-toggle" onclick="toggleNav()">☰</button>
 

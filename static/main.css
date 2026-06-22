@@ -95,43 +95,21 @@ a{
 }
 
 .site-logo{
-    position: relative;
-    display: inline-block;
-
-    font-size: 1.9rem;
-    font-weight: 900;
-    letter-spacing: .5px;
-
-    color: #b8f5b1;
-    text-shadow:
-        0 0 8px rgba(120, 255, 120, .35),
-        0 0 18px rgba(80, 200, 120, .18);
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    color:#c7ffd0;
+    font-weight:900;
+    font-size:1.9rem;
 }
 
-/* Left vine */
-.site-logo::before{
-    content: "❦";
-    position: absolute;
-    left: -28px;
-    top: 50%;
-    transform: translateY(-50%) rotate(-20deg);
-
-    font-size: 1.4rem;
-    color: #69d66f;
-    opacity: .95;
-}
-
-/* Right vine */
-.site-logo::after{
-    content: "❧";
-    position: absolute;
-    right: -28px;
-    top: 50%;
-    transform: translateY(-50%) rotate(15deg);
-
-    font-size: 1.4rem;
-    color: #69d66f;
-    opacity: .95;
+.logo-vine{
+    position:absolute;
+    inset:-10px -18px;
+    width:calc(100% + 36px);
+    height:calc(100% + 20px);
+    pointer-events:none;
+    opacity:.9;
 }
 
 .nav-menu{
