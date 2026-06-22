@@ -94,19 +94,73 @@ a{
     min-height:70px;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica+SC&display=swap');
+
 .site-logo{
-    font-family: "Marcellus", serif;
+    font-family: "IM Fell DW Pica SC", serif;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    font-weight: 400;
 
-    font-size: 2rem;        /* key fix: give it presence */
-    font-weight: 500;       /* Marcellus needs a bit more weight */
-    letter-spacing: 1px;
+    color: #d9e7d0;
 
-    background: linear-gradient(90deg,#e6d2a2,#9cc7a0,#6f9b7a);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    position: relative;
+    display: inline-block;
 
-    text-shadow: 0 6px 18px rgba(0,0,0,.25);
+    /* carved / forest ink depth */
+    text-shadow:
+        0 1px 0 #1b2a1f,
+        0 2px 0 #132019,
+        0 6px 14px rgba(0,0,0,.55),
+        0 0 18px rgba(141,182,143,.15);
+
+    /* subtle “alive” motion */
+    animation: lanternFlicker 4s infinite ease-in-out;
+}
+
+/* optional soft glow layer */
+.site-logo::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background: linear-gradient(90deg, transparent, rgba(141,182,143,.12), transparent);
+    filter: blur(6px);
+    opacity: .35;
+}
+
+/* lantern / ink flicker */
+@keyframes lanternFlicker {
+    0% {
+        opacity: 1;
+        text-shadow:
+            0 1px 0 #1b2a1f,
+            0 2px 0 #132019,
+            0 6px 14px rgba(0,0,0,.55),
+            0 0 18px rgba(141,182,143,.12);
+    }
+
+    40% {
+        opacity: 0.98;
+    }
+
+    55% {
+        opacity: 0.95;
+        text-shadow:
+            0 1px 0 #1b2a1f,
+            0 2px 0 #132019,
+            0 8px 20px rgba(0,0,0,.6),
+            0 0 22px rgba(141,182,143,.18);
+    }
+
+    70% {
+        opacity: 0.97;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .nav-menu{
