@@ -14,7 +14,6 @@
 
 <body class="{% block body_class %}{% endblock %}">
 
-<!-- ================= NAVBAR ================= -->
 <header class="topbar">
     <div class="site-container nav-container">
 
@@ -51,7 +50,6 @@
     </div>
 </header>
 
-<!-- ================= SEARCH ================= -->
 {% if request.endpoint != "post" %}
 <section class="site-container search-section">
 
@@ -79,7 +77,6 @@
 </section>
 {% endif %}
 
-<!-- ================= MAIN LAYOUT ================= -->
 <main class="site-container main-content">
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -140,16 +137,10 @@
     </section>
 </main>
 
-<!-- ================= DARK MODE ================= -->
 <script>
 function updateThemeButton() {
     const btn = document.getElementById("themeToggle");
-
-    if (document.body.classList.contains("dark-mode")) {
-        btn.textContent = "☀️";
-    } else {
-        btn.textContent = "🌙";
-    }
+    btn.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
 }
 
 function toggleDarkMode() {
@@ -157,9 +148,7 @@ function toggleDarkMode() {
 
     localStorage.setItem(
         "darkMode",
-        document.body.classList.contains("dark-mode")
-            ? "enabled"
-            : "disabled"
+        document.body.classList.contains("dark-mode") ? "enabled" : "disabled"
     );
 
     updateThemeButton();
@@ -177,7 +166,6 @@ function toggleNav() {
 }
 </script>
 
-<!-- ================= LOGO HORROR SYSTEM (UPGRADED) ================= -->
 <script>
 const logo = document.querySelector(".site-logo");
 const eye = document.querySelector(".skull-eye");
@@ -189,26 +177,49 @@ popup.className = "watch-popup";
 popup.textContent = "IT’S WATCHING";
 document.body.appendChild(popup);
 
-let lastMove = Date.now();
 let tx = 0, ty = 0;
 let cx = 0, cy = 0;
+let lastMove = Date.now();
 let watchTimer;
 
-/* whisper sound */
+/* audio */
 const whisper = new Audio("https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3");
 whisper.volume = 0.25;
 
+/* ESCALATION SYSTEM */
+let horrorStage = 0;
+
+function escalateHorror() {
+    if (!horrorMode) return;
+
+    horrorStage++;
+
+    if (horrorStage === 3) {
+        popup.textContent = "IT NOTICES YOU";
+        popup.classList.add("show");
+    }
+
+    if (horrorStage === 6) {
+        popup.textContent = "IT IS WATCHING";
+        popup.classList.add("show");
+    }
+}
+
+/* popup */
 function showPopup() {
     if (!horrorMode) return;
     popup.classList.add("show");
     setTimeout(() => popup.classList.remove("show"), 2000);
 }
 
+/* reset */
 function resetHorror() {
     document.body.classList.remove("logo-active");
     popup.classList.remove("show");
+    horrorStage = 0;
 }
 
+/* MAIN ANIMATION LOOP */
 function animate() {
     const idle = Date.now() - lastMove > 900;
 
@@ -223,31 +234,23 @@ function animate() {
         `;
     }
 
+    /* ALWAYS ACTIVE EYE (UPGRADED PUPIL EFFECT) */
     if (eye) {
-        if (!horrorMode) {
-            eye.style.height = "8px";
-            eye.style.opacity = "1";
-            eye.style.transform = `translate(-50%,-50%)`;
-        } else if (idle) {
-            eye.style.height = "1px";
-            eye.style.opacity = "0.3";
-        } else {
-            eye.style.height = "8px";
-            eye.style.opacity = "1";
+        eye.style.height = horrorMode ? "6px" : "8px";
+        eye.style.opacity = horrorMode && idle ? "0.4" : "1";
 
-            eye.style.transform = `
-                translate(-50%,-50%)
-                translate(${cx}px, ${cy}px)
-            `;
-        }
+        eye.style.transform = `
+            translate(-50%,-50%)
+            translate(${cx * (horrorMode ? 1.5 : 1)}px,
+                      ${cy * (horrorMode ? 1.5 : 1)}px)
+        `;
     }
 
     requestAnimationFrame(animate);
 }
-
 animate();
 
-/* mouse tracking only affects horror mode */
+/* mouse movement (NO MODE CONTROL HERE ANYMORE) */
 document.addEventListener("mousemove", (e) => {
     if (!logo) return;
 
@@ -262,44 +265,32 @@ document.addEventListener("mousemove", (e) => {
     document.body.style.setProperty("--x", e.clientX + "px");
     document.body.style.setProperty("--y", e.clientY + "px");
 
-    if (horrorMode) {
-        document.body.classList.add("logo-active");
-    } else {
-        document.body.classList.remove("logo-active");
-    }
-
     lastMove = Date.now();
 
     if (horrorMode) {
         clearTimeout(watchTimer);
         watchTimer = setTimeout(() => {
             showPopup();
-        }, 2500);
+            escalateHorror();
+        }, 2000);
     }
 });
 
-/* CLICK TO TOGGLE HORROR MODE */
+/* TOGGLE HORROR MODE */
 if (logo) {
     logo.addEventListener("click", () => {
         horrorMode = !horrorMode;
 
         document.body.classList.toggle("logo-active", horrorMode);
 
-        if (!horrorMode) {
-            resetHorror();
-        }
+        if (!horrorMode) resetHorror();
+        else whisper.play().catch(() => {});
     });
 
     logo.addEventListener("mouseenter", () => {
         if (!horrorMode) {
             whisper.currentTime = 0;
             whisper.play().catch(() => {});
-        }
-    });
-
-    logo.addEventListener("mouseleave", () => {
-        if (!horrorMode) {
-            document.body.classList.remove("logo-active");
         }
     });
 }
