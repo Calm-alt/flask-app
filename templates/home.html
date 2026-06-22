@@ -26,21 +26,15 @@
 
     <section class="feed-controls">
 
-        <div class="sort-buttons">
+       <div class="segmented">
+    <a href="/home?sort=latest" class="{% if request.args.get('sort') != 'oldest' %}active{% endif %}">
+        Latest
+    </a>
 
-            <a
-                href="{{ url_for('home', sort='latest') }}"
-                class="btn {% if sort == 'latest' %}btn-primary{% else %}btn-secondary{% endif %}">
-                Latest
-            </a>
-
-            <a
-                href="{{ url_for('home', sort='oldest') }}"
-                class="btn {% if sort == 'oldest' %}btn-primary{% else %}btn-secondary{% endif %}">
-                Oldest
-            </a>
-
-        </div>
+    <a href="/home?sort=oldest" class="{% if request.args.get('sort') == 'oldest' %}active{% endif %}">
+        Oldest
+    </a>
+</div>
 
         <div class="feed-count">
 
