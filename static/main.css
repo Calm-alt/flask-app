@@ -683,3 +683,123 @@ body.dark-mode .dark-mode-toggle{
         text-align:left;
     }
 }
+/* =========================
+   LOGO HORROR UPGRADE PACK
+========================= */
+
+/* whisper text already exists (enhanced) */
+.site-logo::after{
+    content:"IT SEES YOU";
+    position:absolute;
+    left:50%;
+    top:-32px;
+    transform:translateX(-50%) translateY(6px);
+
+    font-size:0.65rem;
+    letter-spacing:4px;
+    font-weight:700;
+
+    color:rgba(0,255,210,.85);
+    text-shadow:0 0 12px rgba(0,255,210,.6);
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:all .25s ease;
+    white-space:nowrap;
+}
+
+.site-logo:hover::after{
+    opacity:1;
+    transform:translateX(-50%) translateY(0px);
+    animation:whisperFlicker 1.1s infinite;
+}
+
+@keyframes whisperFlicker{
+    0%{opacity:.6; filter:blur(0px);}
+    25%{opacity:1;}
+    50%{opacity:.5; filter:blur(.5px);}
+    75%{opacity:1;}
+    100%{opacity:.7;}
+}
+
+/* =========================
+   SCREEN DIM / VIGNETTE
+========================= */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .25s ease;
+
+    background:radial-gradient(
+        circle at var(--x,50%) var(--y,50%),
+        transparent 0%,
+        rgba(0,0,0,.35) 40%,
+        rgba(0,0,0,.85) 100%
+    );
+
+    z-index:9998;
+}
+
+body.logo-active::before{
+    opacity:1;
+}
+
+/* =========================
+   SURVEILLANCE NOISE
+========================= */
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    opacity:0;
+
+    background-image:url("https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif");
+    background-size:300px;
+    mix-blend-mode:overlay;
+
+    transition:opacity .2s ease;
+    z-index:9999;
+}
+
+body.logo-active::after{
+    opacity:.05;
+}
+
+/* =========================
+   IT’S WATCHING POPUP
+========================= */
+
+.watch-popup{
+    position:fixed;
+    top:20px;
+    right:20px;
+    padding:10px 14px;
+
+    font-size:0.75rem;
+    letter-spacing:3px;
+
+    color:rgba(0,255,210,.9);
+    background:rgba(10,20,16,.8);
+    border:1px solid rgba(0,255,210,.4);
+
+    border-radius:10px;
+    box-shadow:0 0 20px rgba(0,255,210,.15);
+
+    opacity:0;
+    transform:translateY(-10px);
+
+    transition:all .3s ease;
+    z-index:10000;
+}
+
+.watch-popup.show{
+    opacity:1;
+    transform:translateY(0);
+}

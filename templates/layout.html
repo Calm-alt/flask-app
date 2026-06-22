@@ -177,13 +177,30 @@ function toggleNav() {
 }
 </script>
 
+<!-- ================= LOGO HORROR SYSTEM ================= -->
 <script>
 const logo = document.querySelector(".site-logo");
 const eye = document.querySelector(".skull-eye");
 
+/* popup */
+const popup = document.createElement("div");
+popup.className = "watch-popup";
+popup.textContent = "IT’S WATCHING";
+document.body.appendChild(popup);
+
 let lastMove = Date.now();
 let tx = 0, ty = 0;
 let cx = 0, cy = 0;
+let watchTimer;
+
+/* whisper sound */
+const whisper = new Audio("https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3");
+whisper.volume = 0.25;
+
+function showPopup() {
+    popup.classList.add("show");
+    setTimeout(() => popup.classList.remove("show"), 2000);
+}
 
 function animate() {
     const idle = Date.now() - lastMove > 900;
@@ -230,8 +247,29 @@ document.addEventListener("mousemove", (e) => {
     tx = (dx / window.innerWidth) * 10;
     ty = (dy / window.innerHeight) * 10;
 
+    document.body.style.setProperty("--x", e.clientX + "px");
+    document.body.style.setProperty("--y", e.clientY + "px");
+    document.body.classList.add("logo-active");
+
     lastMove = Date.now();
+
+    clearTimeout(watchTimer);
+    watchTimer = setTimeout(() => {
+        showPopup();
+    }, 2500);
 });
+
+/* hover sound */
+if (logo) {
+    logo.addEventListener("mouseenter", () => {
+        whisper.currentTime = 0;
+        whisper.play().catch(() => {});
+    });
+
+    logo.addEventListener("mouseleave", () => {
+        document.body.classList.remove("logo-active");
+    });
+}
 </script>
 
 </body>
