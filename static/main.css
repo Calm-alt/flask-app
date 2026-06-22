@@ -95,28 +95,81 @@ a{
 }
 
 .site-logo{
-    display:flex;
-    align-items:center;
-    gap:2px;
+    position: relative;
+    display: inline-block;
 
-    font-size:1.8rem;
-    font-weight:900;
-    text-decoration:none;
-    color:#e8f6e8;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-decoration: none;
+
+    /* Forest bark colors */
+    background: linear-gradient(
+        180deg,
+        #e8f5d0 0%,
+        #b8d98a 35%,
+        #7d9f58 65%,
+        #4b5f36 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* Mossy depth */
+    text-shadow:
+        0 1px 0 rgba(255,255,255,.08),
+        0 2px 4px rgba(0,0,0,.35),
+        0 0 18px rgba(110,180,90,.15);
+
+    transition: .3s ease;
 }
 
-.forest-k{
-    width:42px;
-    height:48px;
-    overflow:visible;
+/* Thick "branch" growing under the logo */
+.site-logo::after{
+    content: "";
+    position: absolute;
 
-    filter: drop-shadow(0 0 8px rgba(90,180,90,.25));
+    left: 5%;
+    bottom: -10px;
+
+    width: 90%;
+    height: 8px;
+
+    background: linear-gradient(
+        90deg,
+        #3f5a32,
+        #5b7d45,
+        #3f5a32
+    );
+
+    border-radius: 999px;
+    transform: rotate(-1.5deg);
+
+    box-shadow:
+        0 0 10px rgba(120,180,90,.2);
 }
 
-.logo-text{
-    margin-left:-2px;
-    letter-spacing:.5px;
-    color:#eef8ef;
+/* Little leaf clusters */
+.site-logo::before{
+    content: "❦  ❦";
+    position: absolute;
+
+    top: -12px;
+    right: -6px;
+
+    color: #8fd17c;
+    font-size: 0.9rem;
+    letter-spacing: 8px;
+
+    transform: rotate(12deg);
+    opacity: .9;
+}
+
+.site-logo:hover{
+    transform: translateY(-1px) scale(1.02);
+
+    filter: drop-shadow(0 0 10px rgba(120,200,120,.2));
 }
 
 .nav-menu{
