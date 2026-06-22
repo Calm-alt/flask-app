@@ -18,7 +18,8 @@
 <header class="topbar">
     <div class="site-container nav-container">
 
-        <a class="site-logo" href="#" onclick="return false;" data-whisper="IT SEES YOU">
+        <!-- LOGO (NOW NORMAL NAVIGATION AGAIN) -->
+        <a class="site-logo" href="{{ url_for('home') }}" data-whisper="IT SEES YOU">
 
             <span class="logo-skull">
                 <span class="skull-eye"></span>
@@ -219,7 +220,6 @@ function animate() {
         `;
     }
 
-    /* ALWAYS WORKING EYE */
     if (eye) {
         eye.style.height = horrorMode ? "6px" : "8px";
         eye.style.opacity = horrorMode && idle ? "0.4" : "1";
@@ -235,7 +235,7 @@ function animate() {
 }
 animate();
 
-/* mouse tracking (DOES NOT CONTROL MODE) */
+/* mouse tracking */
 document.addEventListener("mousemove", (e) => {
     if (!logo) return;
 
@@ -260,9 +260,10 @@ document.addEventListener("mousemove", (e) => {
     }
 });
 
-/* HOVER TO ACTIVATE + CLICK TO DEACTIVATE */
+/* ================= HORROR TRIGGERS ================= */
 if (logo) {
 
+    /* hover → enable after 3s */
     logo.addEventListener("mouseenter", () => {
         hoverTimer = setTimeout(() => {
             horrorMode = true;
@@ -277,6 +278,7 @@ if (logo) {
         clearTimeout(hoverTimer);
     });
 
+    /* click → disable but allow normal navigation (refresh) */
     logo.addEventListener("click", () => {
         horrorMode = false;
         document.body.classList.remove("logo-active");
