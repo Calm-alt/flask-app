@@ -94,24 +94,20 @@ a{
     min-height:70px;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Marcellus&display=swap');
-
 .site-logo{
     font-family: "Marcellus", serif;
-    letter-spacing: 0.5px;
-    font-weight: 400; /* important for Marcellus */
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-}
 
-.site-logo{
+    font-size: 2rem;        /* key fix: give it presence */
+    font-weight: 500;       /* Marcellus needs a bit more weight */
+    letter-spacing: 1px;
+
     background: linear-gradient(90deg,#e6d2a2,#9cc7a0,#6f9b7a);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    text-shadow: 0 6px 18px rgba(0,0,0,.25);
 }
-
-
 
 .nav-menu{
     display:flex;
