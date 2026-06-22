@@ -99,12 +99,57 @@ a{
     font-weight:900;
     letter-spacing:.5px;
 
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    position:relative;
+
     background:linear-gradient(90deg,#f6d365,#ffb86b,#8db68f);
-    -webkit-background-clip:text;
     background-clip:text;
+    -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 
     text-shadow:0 2px 12px rgba(246,211,101,.12);
+}
+
+/* ===== Helmet Icon (no extra HTML) ===== */
+.site-logo::before{
+    content:"";
+    width:22px;
+    height:22px;
+    display:inline-block;
+    position:relative;
+
+    border:2px solid var(--accent);
+    border-bottom-left-radius:12px;
+    border-bottom-right-radius:12px;
+    border-top-left-radius:10px;
+    border-top-right-radius:10px;
+
+    background:linear-gradient(180deg, rgba(141,182,143,.25), transparent);
+
+    box-shadow:0 0 18px rgba(141,182,143,.25);
+}
+
+/* visor line */
+.site-logo::after{
+    content:"";
+    position:absolute;
+    left:2px;   /* aligns inside helmet */
+    width:22px;
+    height:22px;
+
+    background:
+        linear-gradient(var(--accent), var(--accent)) center 10px / 14px 2px no-repeat;
+
+    opacity:.9;
+    pointer-events:none;
+}
+
+.site-logo:hover::before{
+    box-shadow:0 0 25px rgba(141,182,143,.45);
+    transform:translateY(-1px);
+    transition:.25s ease;
 }
 
 .nav-menu{
