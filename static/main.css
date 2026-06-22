@@ -99,13 +99,14 @@ a{
     font-weight:900;
     letter-spacing:.5px;
 
-    background:linear-gradient(90deg,#6fbf8a,#a5caa7);
+    background:linear-gradient(90deg,#6fbf8a,#a5caa7,#3e6b4f);
     -webkit-background-clip:text;
     background-clip:text;
     -webkit-text-fill-color:transparent;
 
-    position:relative;
-    text-shadow:0 0 10px rgba(111,191,138,.12);
+    text-shadow:
+        0 1px 0 rgba(0,0,0,.2),
+        0 0 12px rgba(111,191,138,.15);
 }
 
 .site-logo::after{
