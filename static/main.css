@@ -94,22 +94,20 @@ a{
     min-height:70px;
 }
 
-.site-logo{
-    position:relative;
-    display:inline-flex;
-    align-items:center;
-    color:#c7ffd0;
-    font-weight:900;
-    font-size:1.9rem;
+.site-logo {
+    position: relative;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #d8f7d8;
 }
 
-.logo-vine{
-    position:absolute;
-    inset:-10px -18px;
-    width:calc(100% + 36px);
-    height:calc(100% + 20px);
-    pointer-events:none;
-    opacity:.9;
+.site-logo::after {
+    content: "🌿";
+    position: absolute;
+    right: -14px;
+    top: -6px;
+    font-size: 1rem;
+    transform: rotate(18deg);
 }
 
 .nav-menu{
