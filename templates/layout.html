@@ -14,10 +14,11 @@
 
 <body class="{% block body_class %}{% endblock %}">
 
+<!-- ================= NAVBAR ================= -->
 <header class="topbar">
     <div class="site-container nav-container">
 
-        <a class="site-logo" href="{{ url_for('home') }}" data-whisper="IT SEES YOU">
+        <a class="site-logo" href="#" onclick="return false;" data-whisper="IT SEES YOU">
 
             <span class="logo-skull">
                 <span class="skull-eye"></span>
@@ -50,6 +51,7 @@
     </div>
 </header>
 
+<!-- ================= SEARCH ================= -->
 {% if request.endpoint != "post" %}
 <section class="site-container search-section">
 
@@ -77,6 +79,7 @@
 </section>
 {% endif %}
 
+<!-- ================= MAIN LAYOUT ================= -->
 <main class="site-container main-content">
 
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -137,6 +140,7 @@
     </section>
 </main>
 
+<!-- ================= DARK MODE ================= -->
 <script>
 function updateThemeButton() {
     const btn = document.getElementById("themeToggle");
@@ -166,11 +170,13 @@ function toggleNav() {
 }
 </script>
 
+<!-- ================= HORROR MODE SYSTEM ================= -->
 <script>
 const logo = document.querySelector(".site-logo");
 const eye = document.querySelector(".skull-eye");
 
 let horrorMode = false;
+let hoverTimer = null;
 
 const popup = document.createElement("div");
 popup.className = "watch-popup";
@@ -182,28 +188,8 @@ let cx = 0, cy = 0;
 let lastMove = Date.now();
 let watchTimer;
 
-/* audio */
 const whisper = new Audio("https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3");
 whisper.volume = 0.25;
-
-/* ESCALATION SYSTEM */
-let horrorStage = 0;
-
-function escalateHorror() {
-    if (!horrorMode) return;
-
-    horrorStage++;
-
-    if (horrorStage === 3) {
-        popup.textContent = "IT NOTICES YOU";
-        popup.classList.add("show");
-    }
-
-    if (horrorStage === 6) {
-        popup.textContent = "IT IS WATCHING";
-        popup.classList.add("show");
-    }
-}
 
 /* popup */
 function showPopup() {
@@ -216,10 +202,9 @@ function showPopup() {
 function resetHorror() {
     document.body.classList.remove("logo-active");
     popup.classList.remove("show");
-    horrorStage = 0;
 }
 
-/* MAIN ANIMATION LOOP */
+/* animation loop */
 function animate() {
     const idle = Date.now() - lastMove > 900;
 
@@ -234,7 +219,7 @@ function animate() {
         `;
     }
 
-    /* ALWAYS ACTIVE EYE (UPGRADED PUPIL EFFECT) */
+    /* ALWAYS WORKING EYE */
     if (eye) {
         eye.style.height = horrorMode ? "6px" : "8px";
         eye.style.opacity = horrorMode && idle ? "0.4" : "1";
@@ -250,7 +235,7 @@ function animate() {
 }
 animate();
 
-/* mouse movement (NO MODE CONTROL HERE ANYMORE) */
+/* mouse tracking (DOES NOT CONTROL MODE) */
 document.addEventListener("mousemove", (e) => {
     if (!logo) return;
 
@@ -271,27 +256,31 @@ document.addEventListener("mousemove", (e) => {
         clearTimeout(watchTimer);
         watchTimer = setTimeout(() => {
             showPopup();
-            escalateHorror();
         }, 2000);
     }
 });
 
-/* TOGGLE HORROR MODE */
+/* HOVER TO ACTIVATE + CLICK TO DEACTIVATE */
 if (logo) {
-    logo.addEventListener("click", () => {
-        horrorMode = !horrorMode;
-
-        document.body.classList.toggle("logo-active", horrorMode);
-
-        if (!horrorMode) resetHorror();
-        else whisper.play().catch(() => {});
-    });
 
     logo.addEventListener("mouseenter", () => {
-        if (!horrorMode) {
+        hoverTimer = setTimeout(() => {
+            horrorMode = true;
+            document.body.classList.add("logo-active");
+
             whisper.currentTime = 0;
             whisper.play().catch(() => {});
-        }
+        }, 3000);
+    });
+
+    logo.addEventListener("mouseleave", () => {
+        clearTimeout(hoverTimer);
+    });
+
+    logo.addEventListener("click", () => {
+        horrorMode = false;
+        document.body.classList.remove("logo-active");
+        resetHorror();
     });
 }
 </script>
