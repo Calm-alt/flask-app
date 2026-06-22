@@ -94,20 +94,29 @@ a{
     min-height:70px;
 }
 
-.site-logo {
-    position: relative;
-    font-size: 1.8rem;
-    font-weight: 900;
-    color: #d8f7d8;
+.site-logo{
+    display:flex;
+    align-items:center;
+    gap:2px;
+
+    font-size:1.8rem;
+    font-weight:900;
+    text-decoration:none;
+    color:#e8f6e8;
 }
 
-.site-logo::after {
-    content: "🌿";
-    position: absolute;
-    right: -14px;
-    top: -6px;
-    font-size: 1rem;
-    transform: rotate(18deg);
+.forest-k{
+    width:42px;
+    height:48px;
+    overflow:visible;
+
+    filter: drop-shadow(0 0 8px rgba(90,180,90,.25));
+}
+
+.logo-text{
+    margin-left:-2px;
+    letter-spacing:.5px;
+    color:#eef8ef;
 }
 
 .nav-menu{
