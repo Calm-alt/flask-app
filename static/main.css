@@ -95,7 +95,7 @@ a{
 }
 
 /* =========================
-   SITE LOGO — ONE-EYED SKULL + CTHULHU HORROR + CURSOR TRACK + WHISPERS
+   SITE LOGO (FIXED + SKULL SHIELD + 2 SWORDS)
 ========================= */
 
 .site-logo{
@@ -108,19 +108,15 @@ a{
     align-items:center;
     gap:12px;
 
-    transform-style:preserve-3d;
-    will-change:transform, filter;
-
     cursor:pointer;
 
-    /* abyss glow text */
+    /* gradient abyss text */
     background:linear-gradient(90deg,
         #00ffd0,
         #5fffd0,
         #0b2f28,
         #cffff6
     );
-
     background-size:300% 100%;
     animation:logoFlow 6s ease-in-out infinite;
 
@@ -135,114 +131,104 @@ a{
 
     filter:drop-shadow(0 0 18px rgba(0,255,210,.18));
 
-    animation:
-        logoFlow 6s ease-in-out infinite,
-        logoFlicker 4s infinite;
-
-    transition:transform .08s linear, filter .2s ease;
+    transition:transform .08s linear;
 }
 
 /* =========================
-   ONE-EYED SKULL CORE
+   SKULL SHIELD BASE (LEFT ICON)
 ========================= */
 
 .site-logo::before{
     content:"";
-    width:26px;
-    height:26px;
+    width:30px;
+    height:30px;
     display:inline-block;
+    position:relative;
 
     border-radius:14px;
 
-    border:2px solid rgba(0,255,210,.75);
-
-    /* skull face + single glowing eye */
+    /* skull + eye + hollow face */
     background:
         radial-gradient(circle at 50% 45%,
             rgba(0,255,210,.95) 0px,
             rgba(0,255,210,.35) 3px,
-            transparent 7px
+            transparent 8px
         ),
         radial-gradient(circle at 30% 70%,
-            rgba(0,255,210,.2),
+            rgba(0,255,210,.18),
             transparent 70%
+        ),
+        linear-gradient(145deg,
+            rgba(10,20,16,.95),
+            rgba(0,0,0,.65)
         );
 
-    box-shadow:
-        0 0 20px rgba(0,255,210,.25),
-        inset 0 0 10px rgba(0,255,210,.12);
+    border:2px solid rgba(0,255,210,.55);
 
-    animation:
-        skullBreathe 3.2s ease-in-out infinite,
-        skullBlink 5s infinite,
-        skullWobble 6s ease-in-out infinite;
+    box-shadow:
+        inset 0 0 10px rgba(0,255,210,.15),
+        0 0 18px rgba(0,255,210,.18);
+
+    animation:skullPulse 3.5s ease-in-out infinite;
 }
 
 /* =========================
-   CROSS SWORDS BEHIND SKULL
+   TWO CROSSED SWORDS (EMBEDDED BEHIND SKULL)
 ========================= */
 
 .site-logo::after{
     content:"";
     position:absolute;
-    left:-10px;
-    top:-8px;
+    left:-6px;
+    top:-6px;
     width:40px;
     height:40px;
     z-index:-1;
-    pointer-events:none;
 
     background:
+        /* sword 1 */
         linear-gradient(45deg,
-            transparent 46%,
-            rgba(0,255,210,.6) 47%,
+            transparent 45%,
+            rgba(0,255,210,.75) 46%,
             rgba(0,255,210,.15) 50%,
-            transparent 53%
+            transparent 54%
         ),
+        /* sword 2 */
         linear-gradient(-45deg,
-            transparent 46%,
-            rgba(0,255,210,.6) 47%,
+            transparent 45%,
+            rgba(0,255,210,.75) 46%,
             rgba(0,255,210,.15) 50%,
-            transparent 53%
+            transparent 54%
         );
 
-    opacity:.7;
+    opacity:.85;
+    filter:drop-shadow(0 0 8px rgba(0,255,210,.25));
 
-    animation:swordPulse 4s ease-in-out infinite;
+    animation:swordGlow 4s ease-in-out infinite;
 }
 
 /* =========================
-   WHISPER TEXT (JS DRIVEN)
+   WHISPER TEXT (SAFE VERSION)
 ========================= */
 
 .site-logo:hover::after{
     content: attr(data-whisper);
     position:absolute;
     left:0;
-    top:130%;
+    top:140%;
 
     font-size:.7rem;
     letter-spacing:2px;
 
-    color:rgba(0,255,210,.8);
-
-    text-shadow:
-        0 0 10px rgba(0,255,210,.5),
-        0 0 25px rgba(0,255,210,.3);
+    color:rgba(0,255,210,.85);
+    text-shadow:0 0 12px rgba(0,255,210,.4);
 
     animation:whisperGlitch 1s infinite steps(2);
+    background:none;
 }
 
 /* =========================
-   CURSOR TRACKING READY
-========================= */
-
-.site-logo.parallax{
-    transition:transform 0.08s linear;
-}
-
-/* =========================
-   ANIMATIONS
+   ANIMATIONS (NO TRANSFORM CONFLICTS)
 ========================= */
 
 @keyframes logoFlow{
@@ -251,39 +237,34 @@ a{
     100%{ background-position:0% 50%; }
 }
 
-@keyframes logoFlicker{
-    0%,100%{ filter:brightness(1); }
-    50%{ filter:brightness(1.2); }
-    52%{ filter:brightness(.9); }
-}
-
-@keyframes skullBreathe{
-    0%,100%{ transform:scale(1); }
-    50%{ transform:scale(1.06); }
-}
-
-@keyframes skullBlink{
-    0%,92%,100%{ filter:brightness(1); }
-    93%,95%{
-        filter:brightness(0.2);
-        transform:scale(0.95);
+@keyframes skullPulse{
+    0%,100%{
+        box-shadow:
+            inset 0 0 10px rgba(0,255,210,.15),
+            0 0 18px rgba(0,255,210,.18);
+        filter:brightness(1);
+    }
+    50%{
+        box-shadow:
+            inset 0 0 14px rgba(0,255,210,.25),
+            0 0 28px rgba(0,255,210,.35);
+        filter:brightness(1.1);
     }
 }
 
-@keyframes skullWobble{
-    0%,100%{ transform:rotate(0deg); }
-    25%{ transform:rotate(1deg); }
-    50%{ transform:rotate(-1deg); }
-    75%{ transform:rotate(.5deg); }
-}
-
-@keyframes swordPulse{
-    0%,100%{ opacity:.4; transform:scale(1); }
-    50%{ opacity:.9; transform:scale(1.05); }
+@keyframes swordGlow{
+    0%,100%{
+        opacity:.6;
+        transform:scale(1);
+    }
+    50%{
+        opacity:1;
+        transform:scale(1.05);
+    }
 }
 
 @keyframes whisperGlitch{
-    0%{ opacity:.2; transform:translateX(0); }
+    0%{ opacity:.3; transform:translateX(0); }
     25%{ transform:translateX(-1px); }
     50%{ transform:translateX(1px); }
     75%{ opacity:.9; }
