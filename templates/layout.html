@@ -18,7 +18,7 @@
 <header class="topbar">
     <div class="site-container nav-container">
 
-        <a class="site-logo" href="{{ url_for('home') }}">⚔︎ Knights</a>
+        <a class="site-logo" href="{{ url_for('home') }}" data-whisper="IT SEES YOU">Knights</a>
 
         <button class="nav-toggle" onclick="toggleNav()">☰</button>
 
@@ -203,6 +203,49 @@ window.addEventListener("load", () => {
 });
 function toggleNav() {
     document.querySelector(".nav-menu").classList.toggle("active");
+}
+</script>
+
+<script>
+const logo = document.querySelector(".site-logo");
+
+const whispers = [
+    "IT SEES YOU",
+    "DON'T LOOK UP",
+    "THE DEPTH REMEMBERS",
+    "YOU ARE NOT ALONE",
+    "SOMETHING IS LISTENING"
+];
+
+if (logo) {
+
+    // CURSOR TRACKING
+    document.addEventListener("mousemove", (e) => {
+        const rect = logo.getBoundingClientRect();
+
+        const dx = e.clientX - (rect.left + rect.width/2);
+        const dy = e.clientY - (rect.top + rect.height/2);
+
+        const rotateX = (dy / window.innerHeight) * -18;
+        const rotateY = (dx / window.innerWidth) * 18;
+
+        logo.style.transform = `
+            perspective(600px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+            scale(1.03)
+        `;
+    });
+
+    document.addEventListener("mouseleave", () => {
+        logo.style.transform = "";
+    });
+
+    // RANDOM WHISPERS
+    setInterval(() => {
+        const msg = whispers[Math.floor(Math.random() * whispers.length)];
+        logo.setAttribute("data-whisper", msg);
+    }, 3500);
 }
 </script>
 

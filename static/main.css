@@ -95,204 +95,198 @@ a{
 }
 
 /* =========================
-   SITE LOGO — COSMIC HORROR MODE (FULL ELDRITCH AWAKENING)
+   SITE LOGO — ONE-EYED SKULL + CTHULHU HORROR + CURSOR TRACK + WHISPERS
 ========================= */
 
 .site-logo{
-    font-size:1.85rem;
+    font-size:1.9rem;
     font-weight:900;
-    letter-spacing:.7px;
+    letter-spacing:.8px;
 
+    position:relative;
     display:inline-flex;
     align-items:center;
     gap:12px;
-    position:relative;
 
     transform-style:preserve-3d;
     will-change:transform, filter;
 
-    /* abyssal bioluminescent gradient */
+    cursor:pointer;
+
+    /* abyss glow text */
     background:linear-gradient(90deg,
         #00ffd0,
-        #2ee6b8,
-        #0b3b2f,
-        #b6fff1,
-        #00bfa6
+        #5fffd0,
+        #0b2f28,
+        #cffff6
     );
 
     background-size:300% 100%;
-    background-position:0% 50%;
+    animation:logoFlow 6s ease-in-out infinite;
 
     background-clip:text;
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 
-    /* deep “ocean pressure glow” */
     text-shadow:
-        0 0 8px rgba(0,255,210,.25),
-        0 0 18px rgba(0,180,150,.18),
-        0 0 40px rgba(0,80,60,.12),
-        0 2px 12px rgba(0,0,0,.7);
+        0 0 10px rgba(0,255,210,.25),
+        0 0 25px rgba(0,180,150,.2),
+        0 0 40px rgba(0,0,0,.6);
 
-    filter:drop-shadow(0 0 18px rgba(0,255,200,.18));
+    filter:drop-shadow(0 0 18px rgba(0,255,210,.18));
 
     animation:
-        eldritchFlow 6s ease-in-out infinite,
-        eldritchFlicker 4s infinite;
+        logoFlow 6s ease-in-out infinite,
+        logoFlicker 4s infinite;
+
+    transition:transform .08s linear, filter .2s ease;
 }
 
 /* =========================
-   CORE HELMET / ORGANIC CORE
+   ONE-EYED SKULL CORE
 ========================= */
 
 .site-logo::before{
     content:"";
-    width:22px;
-    height:22px;
+    width:26px;
+    height:26px;
     display:inline-block;
-    position:relative;
+
+    border-radius:14px;
 
     border:2px solid rgba(0,255,210,.75);
-    border-radius:14px 14px 18px 18px;
 
-    background:radial-gradient(circle at 30% 30%,
-        rgba(0,255,210,.35),
-        rgba(0,30,25,.6),
-        transparent 70%
-    );
+    /* skull face + single glowing eye */
+    background:
+        radial-gradient(circle at 50% 45%,
+            rgba(0,255,210,.95) 0px,
+            rgba(0,255,210,.35) 3px,
+            transparent 7px
+        ),
+        radial-gradient(circle at 30% 70%,
+            rgba(0,255,210,.2),
+            transparent 70%
+        );
 
     box-shadow:
-        0 0 18px rgba(0,255,210,.25),
-        0 0 40px rgba(0,180,150,.12),
+        0 0 20px rgba(0,255,210,.25),
         inset 0 0 10px rgba(0,255,210,.12);
 
     animation:
-        eldritchPulse 3.2s ease-in-out infinite,
-        eldritchWobble 5.5s ease-in-out infinite;
+        skullBreathe 3.2s ease-in-out infinite,
+        skullBlink 5s infinite,
+        skullWobble 6s ease-in-out infinite;
 }
 
 /* =========================
-   “WATCHING DEPTH EYE” SCAN
+   CROSS SWORDS BEHIND SKULL
 ========================= */
 
 .site-logo::after{
     content:"";
     position:absolute;
-    left:2px;
-    width:22px;
-    height:22px;
+    left:-10px;
+    top:-8px;
+    width:40px;
+    height:40px;
+    z-index:-1;
     pointer-events:none;
 
-    background-image:
-        linear-gradient(rgba(0,255,210,.95), rgba(0,255,210,.95)),
-        linear-gradient(120deg,
-            transparent 0%,
-            rgba(255,255,255,0) 35%,
-            rgba(0,255,210,.35) 50%,
-            rgba(255,255,255,0) 65%,
-            transparent 100%
+    background:
+        linear-gradient(45deg,
+            transparent 46%,
+            rgba(0,255,210,.6) 47%,
+            rgba(0,255,210,.15) 50%,
+            transparent 53%
+        ),
+        linear-gradient(-45deg,
+            transparent 46%,
+            rgba(0,255,210,.6) 47%,
+            rgba(0,255,210,.15) 50%,
+            transparent 53%
         );
 
-    background-size:
-        14px 2px,
-        60px 100%;
+    opacity:.7;
 
-    background-repeat:no-repeat;
-
-    opacity:.85;
-
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 35%, black 65%, transparent 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, black 35%, black 65%, transparent 100%);
-
-    animation:
-        eldritchScan 2.6s infinite ease-in-out,
-        eldritchGlitch 3.8s infinite steps(2);
+    animation:swordPulse 4s ease-in-out infinite;
 }
 
 /* =========================
-   HOVER = “AWAKENING ENTITY”
+   WHISPER TEXT (JS DRIVEN)
 ========================= */
-
-.site-logo:hover{
-    transform:translateY(-2px) scale(1.03);
-    filter:drop-shadow(0 0 30px rgba(0,255,210,.45));
-    animation:none;
-}
-
-.site-logo:hover::before{
-    box-shadow:
-        0 0 45px rgba(0,255,210,.55),
-        0 0 90px rgba(0,180,150,.25),
-        inset 0 0 18px rgba(0,255,210,.2);
-    transform:translateY(-1px) rotate(-2deg);
-}
 
 .site-logo:hover::after{
-    animation:
-        eldritchScan 1.2s infinite linear,
-        eldritchGlitch 0.6s infinite steps(2);
-    opacity:1;
+    content: attr(data-whisper);
+    position:absolute;
+    left:0;
+    top:130%;
+
+    font-size:.7rem;
+    letter-spacing:2px;
+
+    color:rgba(0,255,210,.8);
+
+    text-shadow:
+        0 0 10px rgba(0,255,210,.5),
+        0 0 25px rgba(0,255,210,.3);
+
+    animation:whisperGlitch 1s infinite steps(2);
 }
 
 /* =========================
-   ANIMATIONS — LIVING ABYSS
+   CURSOR TRACKING READY
 ========================= */
 
-/* gradient drift (logo feels alive) */
-@keyframes eldritchFlow{
+.site-logo.parallax{
+    transition:transform 0.08s linear;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes logoFlow{
     0%{ background-position:0% 50%; }
     50%{ background-position:100% 50%; }
     100%{ background-position:0% 50%; }
 }
 
-/* subtle flicker like underwater bioluminescence */
-@keyframes eldritchFlicker{
+@keyframes logoFlicker{
     0%,100%{ filter:brightness(1); }
-    45%{ filter:brightness(1.1); }
-    50%{ filter:brightness(0.9); }
-    55%{ filter:brightness(1.15); }
+    50%{ filter:brightness(1.2); }
+    52%{ filter:brightness(.9); }
 }
 
-/* breathing / organic motion */
-@keyframes eldritchPulse{
-    0%,100%{
-        transform:translateY(0px) scale(1);
-    }
-    50%{
-        transform:translateY(-1px) scale(1.04);
+@keyframes skullBreathe{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.06); }
+}
+
+@keyframes skullBlink{
+    0%,92%,100%{ filter:brightness(1); }
+    93%,95%{
+        filter:brightness(0.2);
+        transform:scale(0.95);
     }
 }
 
-/* slight “non-euclidean wobble” */
-@keyframes eldritchWobble{
+@keyframes skullWobble{
     0%,100%{ transform:rotate(0deg); }
     25%{ transform:rotate(1deg); }
     50%{ transform:rotate(-1deg); }
-    75%{ transform:rotate(0.5deg); }
+    75%{ transform:rotate(.5deg); }
 }
 
-/* scanning horror light */
-@keyframes eldritchScan{
-    0%{
-        background-position:center 10px, -60px 0;
-    }
-    50%{
-        background-position:center 10px, 40px 0;
-    }
-    100%{
-        background-position:center 10px, 100px 0;
-    }
+@keyframes swordPulse{
+    0%,100%{ opacity:.4; transform:scale(1); }
+    50%{ opacity:.9; transform:scale(1.05); }
 }
 
-/* glitch flicker (feels “corrupted signal”) */
-@keyframes eldritchGlitch{
-    0%{ opacity:.9; }
-    20%{ opacity:1; transform:translateX(0px); }
-    21%{ transform:translateX(-1px); }
-    22%{ transform:translateX(1px); }
-    23%{ transform:translateX(0px); }
-    60%{ opacity:.8; }
-    100%{ opacity:.95; }
+@keyframes whisperGlitch{
+    0%{ opacity:.2; transform:translateX(0); }
+    25%{ transform:translateX(-1px); }
+    50%{ transform:translateX(1px); }
+    75%{ opacity:.9; }
 }
 
 .nav-menu{
