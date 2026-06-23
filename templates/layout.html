@@ -174,7 +174,7 @@ function toggleNav() {
 }
 </script>
 
-<!-- ================= HORROR MODE SYSTEM (FIXED) ================= -->
+<!-- ================= HORROR MODE SYSTEM (FINAL FIX) ================= -->
 <script>
 
 const logo = document.querySelector(".site-logo");
@@ -203,8 +203,9 @@ let scareImages = [];
 let spawnTimeout = null;
 let hideTimeout = null;
 
-/* 🔥 TRUE LOCK (fix spam + instant overwrite) */
+/* 🔥 HARD FIX: prevents instant replacement */
 let scareActive = false;
+let scareSession = 0;
 
 /* LOAD IMAGES */
 fetch("/static/images/scares/scares.json")
@@ -220,20 +221,25 @@ function scheduleNextScare() {
     if (scareImages.length === 0) return;
     if (scareActive) return;
 
-    const delay = 3000 + Math.random() * 5000; // slower pacing
-    spawnTimeout = setTimeout(showScare, delay);
+    const mySession = ++scareSession;
+
+    const delay = 4000 + Math.random() * 5000;
+
+    spawnTimeout = setTimeout(() => {
+        if (!horrorMode || mySession !== scareSession) return;
+        showScare(mySession);
+    }, delay);
 }
 
-function showScare() {
+function showScare(session) {
     if (!horrorMode) return;
     if (scareActive) return;
 
     scareActive = true;
 
-    sprite.src = scareImages[Math.floor(Math.random() * scareImages.length)];
+    const size = 80;   // ✅ YOUR REQUEST
 
-    /* SIZE = 50px (as requested) */
-    const size = 50;
+    sprite.src = scareImages[Math.floor(Math.random() * scareImages.length)];
 
     sprite.style.width = size + "px";
     sprite.style.height = "auto";
@@ -255,7 +261,6 @@ function showScare() {
 
     hideTimeout = setTimeout(() => {
 
-        /* FADE OUT */
         sprite.style.opacity = "0";
 
         setTimeout(() => {
@@ -264,7 +269,7 @@ function showScare() {
             scheduleNextScare();
         }, 400);
 
-    }, 2500);
+    }, 3000);
 }
 
 function disappearIntoSmoke() {
@@ -284,14 +289,14 @@ function disappearIntoSmoke() {
     scheduleNextScare();
 }
 
-/* CLICK / TOUCH */
+/* CLICK */
 sprite.addEventListener("click", disappearIntoSmoke);
 sprite.addEventListener("touchstart", (e) => {
     e.preventDefault();
     disappearIntoSmoke();
 });
 
-/* ================= POPUP (UNCHANGED FEATURE) ================= */
+/* ================= POPUP ================= */
 
 function showPopup() {
     if (!horrorMode) return;
@@ -303,6 +308,8 @@ function showPopup() {
 
 function resetHorror() {
     horrorMode = false;
+
+    scareSession++; // kills all pending timers instantly
 
     document.body.classList.remove("logo-active");
     popup.classList.remove("show");
