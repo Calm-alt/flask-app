@@ -174,8 +174,9 @@ function toggleNav() {
 }
 </script>
 
-<!-- ================= HORROR MODE SYSTEM ================= -->
+<!-- ================= HORROR MODE SYSTEM (FIXED) ================= -->
 <script>
+
 const logo = document.querySelector(".site-logo");
 const eye = document.querySelector(".skull-eye");
 
@@ -201,7 +202,9 @@ const smoke = document.getElementById("smoke");
 let scareImages = [];
 let spawnTimeout = null;
 let hideTimeout = null;
-let scareLocked = false;
+
+/* 🔥 TRUE LOCK (fix spam + instant overwrite) */
+let scareActive = false;
 
 /* LOAD IMAGES */
 fetch("/static/images/scares/scares.json")
@@ -210,25 +213,28 @@ fetch("/static/images/scares/scares.json")
         scareImages = data.map(img => `/static/images/scares/${img}`);
     });
 
+/* ================= SCARE SYSTEM ================= */
+
 function scheduleNextScare() {
     if (!horrorMode) return;
     if (scareImages.length === 0) return;
-    if (scareLocked) return;
+    if (scareActive) return;
 
-    scareLocked = true;
-
-    const delay = 3000 + Math.random() * 4000;
-
+    const delay = 3000 + Math.random() * 5000; // slower pacing
     spawnTimeout = setTimeout(showScare, delay);
 }
 
 function showScare() {
     if (!horrorMode) return;
+    if (scareActive) return;
+
+    scareActive = true;
 
     sprite.src = scareImages[Math.floor(Math.random() * scareImages.length)];
 
-    /* HALF SIZE FIX */
-    const size = 80;
+    /* SIZE = 20px (as requested) */
+    const size = 20;
+
     sprite.style.width = size + "px";
     sprite.style.height = "auto";
 
@@ -238,17 +244,27 @@ function showScare() {
     sprite.style.left = Math.random() * maxX + "px";
     sprite.style.top = Math.random() * maxY + "px";
 
+    /* FADE IN */
+    sprite.style.transition = "opacity 400ms ease";
+    sprite.style.opacity = "0";
     sprite.classList.add("show");
 
+    requestAnimationFrame(() => {
+        sprite.style.opacity = "1";
+    });
+
     hideTimeout = setTimeout(() => {
-        sprite.classList.remove("show");
+
+        /* FADE OUT */
+        sprite.style.opacity = "0";
 
         setTimeout(() => {
-            scareLocked = false;
+            sprite.classList.remove("show");
+            scareActive = false;
             scheduleNextScare();
-        }, 1200);
+        }, 400);
 
-    }, 3000);
+    }, 2500);
 }
 
 function disappearIntoSmoke() {
@@ -257,30 +273,34 @@ function disappearIntoSmoke() {
     smoke.style.left = sprite.style.left;
     smoke.style.top = sprite.style.top;
 
+    sprite.style.opacity = "0";
     sprite.classList.remove("show");
 
     smoke.classList.remove("animate");
     void smoke.offsetWidth;
     smoke.classList.add("animate");
 
-    scareLocked = false;
+    scareActive = false;
     scheduleNextScare();
 }
 
+/* CLICK / TOUCH */
 sprite.addEventListener("click", disappearIntoSmoke);
 sprite.addEventListener("touchstart", (e) => {
     e.preventDefault();
     disappearIntoSmoke();
 });
 
-/* POPUP (KEEPED) */
+/* ================= POPUP (UNCHANGED FEATURE) ================= */
+
 function showPopup() {
     if (!horrorMode) return;
     popup.classList.add("show");
     setTimeout(() => popup.classList.remove("show"), 2000);
 }
 
-/* RESET */
+/* ================= RESET ================= */
+
 function resetHorror() {
     horrorMode = false;
 
@@ -291,13 +311,15 @@ function resetHorror() {
     clearTimeout(hideTimeout);
     clearTimeout(watchTimer);
 
-    scareLocked = false;
+    scareActive = false;
 
     sprite.classList.remove("show");
+    sprite.style.opacity = "0";
     smoke.classList.remove("animate");
 }
 
-/* ANIMATION */
+/* ================= ANIMATION ================= */
+
 function animate() {
     const idle = Date.now() - lastMove > 900;
 
@@ -327,7 +349,8 @@ function animate() {
 }
 animate();
 
-/* MOUSE */
+/* ================= MOUSE ================= */
+
 document.addEventListener("mousemove", (e) => {
     if (!logo) return;
 
@@ -344,7 +367,8 @@ document.addEventListener("mousemove", (e) => {
     }
 });
 
-/* TRIGGERS */
+/* ================= TRIGGERS ================= */
+
 if (logo) {
     logo.addEventListener("mouseenter", () => {
         hoverTimer = setTimeout(() => {
@@ -366,6 +390,7 @@ if (logo) {
         resetHorror();
     });
 }
+
 </script>
 
 </body>
