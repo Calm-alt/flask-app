@@ -18,7 +18,6 @@
 <header class="topbar">
     <div class="site-container nav-container">
 
-        <!-- LOGO (NOW NORMAL NAVIGATION AGAIN) -->
         <a class="site-logo" href="{{ url_for('home') }}" data-whisper="IT SEES YOU">
 
             <span class="logo-skull">
@@ -203,6 +202,12 @@ function showPopup() {
 function resetHorror() {
     document.body.classList.remove("logo-active");
     popup.classList.remove("show");
+
+    clearTimeout(spawnTimeout);
+    clearTimeout(hideTimeout);
+
+    sprite.classList.remove("show");
+    smoke.classList.remove("animate");
 }
 
 /* animation loop */
@@ -263,7 +268,6 @@ document.addEventListener("mousemove", (e) => {
 /* ================= HORROR TRIGGERS ================= */
 if (logo) {
 
-    /* hover → enable after 3s */
     logo.addEventListener("mouseenter", () => {
         hoverTimer = setTimeout(() => {
             horrorMode = true;
@@ -271,6 +275,8 @@ if (logo) {
 
             whisper.currentTime = 0;
             whisper.play().catch(() => {});
+
+            scheduleNextScare();
         }, 3000);
     });
 
@@ -278,13 +284,75 @@ if (logo) {
         clearTimeout(hoverTimer);
     });
 
-    /* click → disable but allow normal navigation (refresh) */
     logo.addEventListener("click", () => {
         horrorMode = false;
         document.body.classList.remove("logo-active");
         resetHorror();
     });
 }
+
+/* ================= HORROR SPRITES ================= */
+
+const sprite = document.getElementById("horrorSprite");
+const smoke = document.getElementById("smoke");
+
+let scareImages = [];
+
+fetch("/static/images/scares/scares.json")
+    .then(res => res.json())
+    .then(data => {
+        scareImages = data.map(img => `/static/images/scares/${img}`);
+    });
+
+let spawnTimeout;
+let hideTimeout;
+
+function scheduleNextScare() {
+    if (!horrorMode || scareImages.length === 0) return;
+
+    const delay = 1000 + Math.random() * 2000;
+    spawnTimeout = setTimeout(showScare, delay);
+}
+
+function showScare() {
+    if (!horrorMode) return;
+
+    sprite.src = scareImages[Math.floor(Math.random() * scareImages.length)];
+
+    const maxX = window.innerWidth - 200;
+    const maxY = window.innerHeight - 200;
+
+    sprite.style.left = Math.random() * maxX + "px";
+    sprite.style.top = Math.random() * maxY + "px";
+
+    sprite.classList.add("show");
+
+    hideTimeout = setTimeout(() => {
+        sprite.classList.remove("show");
+        scheduleNextScare();
+    }, 3000);
+}
+
+function disappearIntoSmoke() {
+    clearTimeout(hideTimeout);
+
+    smoke.style.left = sprite.style.left;
+    smoke.style.top = sprite.style.top;
+
+    sprite.classList.remove("show");
+
+    smoke.classList.remove("animate");
+    void smoke.offsetWidth;
+    smoke.classList.add("animate");
+
+    scheduleNextScare();
+}
+
+sprite.addEventListener("click", disappearIntoSmoke);
+sprite.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    disappearIntoSmoke();
+});
 </script>
 
 </body>

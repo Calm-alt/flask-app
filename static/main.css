@@ -831,3 +831,45 @@ body.logo-active::after{
     background: var(--accent, #4f46e5);
     color: white;
 }
+
+.horror-sprite {
+    position: fixed;
+    width: 180px;
+    opacity: 0;
+    pointer-events: auto;
+    z-index: 99999;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.horror-sprite.show {
+    opacity: 1;
+}
+
+.smoke-effect {
+    position: fixed;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(circle,
+        rgba(180,180,180,.7),
+        rgba(100,100,100,.3),
+        transparent);
+}
+
+.smoke-effect.animate {
+    animation: smokePuff 0.8s forwards;
+}
+
+@keyframes smokePuff {
+    from {
+        opacity: 0.8;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
