@@ -873,3 +873,16 @@ body.logo-active::after{
         transform: scale(2);
     }
 }
+
+.flicker-overlay {
+    position: fixed;
+    inset: 0;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+.flicker-overlay.active {
+    opacity: 0.8;
+}

@@ -174,7 +174,7 @@ function toggleNav() {
 }
 </script>
 
-<!-- ================= HORROR MODE SYSTEM (ONLY FIXED PART) ================= -->
+<!-- ================= HORROR MODE SYSTEM ================= -->
 <script>
 const logo = document.querySelector(".site-logo");
 const eye = document.querySelector(".skull-eye");
@@ -184,7 +184,7 @@ let hoverTimer = null;
 
 const popup = document.createElement("div");
 popup.className = "watch-popup";
-popup.textContent = "IT’S WATCHING";
+popup.textContent = "IT’S WATCHING";   // ✅ KEPT EXACT SAME FEATURE
 document.body.appendChild(popup);
 
 let tx = 0, ty = 0;
@@ -195,8 +195,7 @@ let watchTimer;
 const whisper = new Audio("https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3");
 whisper.volume = 0.25;
 
-/* ================= SPRITES ================= */
-
+/* ================= ELEMENTS ================= */
 const sprite = document.getElementById("horrorSprite");
 const smoke = document.getElementById("smoke");
 
@@ -204,18 +203,20 @@ let scareImages = [];
 let spawnTimeout = null;
 let hideTimeout = null;
 
-/* LOAD JSON */
+/* ================= LOAD IMAGES ================= */
 fetch("/static/images/scares/scares.json")
     .then(res => res.json())
     .then(data => {
         scareImages = data.map(img => `/static/images/scares/${img}`);
     });
 
+/* ================= SCAR SYSTEM ================= */
+
 function scheduleNextScare() {
     if (!horrorMode) return;
     if (scareImages.length === 0) return;
 
-    const delay = 1000 + Math.random() * 2000;
+    const delay = 3000 + Math.random() * 4000; // FIXED pacing
 
     spawnTimeout = setTimeout(showScare, delay);
 }
@@ -225,8 +226,12 @@ function showScare() {
 
     sprite.src = scareImages[Math.floor(Math.random() * scareImages.length)];
 
-    const maxX = window.innerWidth - 200;
-    const maxY = window.innerHeight - 200;
+    // consistent size
+    sprite.style.width = "160px";
+    sprite.style.height = "auto";
+
+    const maxX = window.innerWidth - 160;
+    const maxY = window.innerHeight - 160;
 
     sprite.style.left = Math.random() * maxX + "px";
     sprite.style.top = Math.random() * maxY + "px";
@@ -235,7 +240,11 @@ function showScare() {
 
     hideTimeout = setTimeout(() => {
         sprite.classList.remove("show");
-        scheduleNextScare();
+
+        setTimeout(() => {
+            scheduleNextScare();
+        }, 800);
+
     }, 3000);
 }
 
@@ -260,13 +269,15 @@ sprite.addEventListener("touchstart", (e) => {
     disappearIntoSmoke();
 });
 
-/* ================= CORE HORROR ================= */
+/* ================= POPUP (KEEPED) ================= */
 
 function showPopup() {
     if (!horrorMode) return;
     popup.classList.add("show");
     setTimeout(() => popup.classList.remove("show"), 2000);
 }
+
+/* ================= RESET ================= */
 
 function resetHorror() {
     horrorMode = false;
@@ -282,7 +293,8 @@ function resetHorror() {
     smoke.classList.remove("animate");
 }
 
-/* animation loop */
+/* ================= ANIMATION ================= */
+
 function animate() {
     const idle = Date.now() - lastMove > 900;
 
@@ -312,7 +324,8 @@ function animate() {
 }
 animate();
 
-/* mouse tracking */
+/* ================= MOUSE ================= */
+
 document.addEventListener("mousemove", (e) => {
     if (!logo) return;
 
@@ -329,7 +342,8 @@ document.addEventListener("mousemove", (e) => {
     }
 });
 
-/* TRIGGERS */
+/* ================= TRIGGERS ================= */
+
 if (logo) {
     logo.addEventListener("mouseenter", () => {
         hoverTimer = setTimeout(() => {
