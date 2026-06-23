@@ -82,63 +82,13 @@
 <!-- ================= MAIN LAYOUT ================= -->
 <main class="site-container main-content">
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        <div class="flash-stack">
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-    {% endwith %}
+    {% block content %}{% endblock %}
 
-    <section class="main-layout">
-
-        <section class="content-column">
-            {% block content %}{% endblock %}
-        </section>
-
-        <aside class="dashboard-sidebar">
-
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('user_posts', username=current_user.username) }}" class="sidebar-card-link">
-            {% else %}
-                <a href="{{ url_for('register') }}" class="sidebar-card-link">
-            {% endif %}
-
-                <div class="sidebar-card">
-                    <h3>✳️ Profile</h3>
-                    <p>Overview of your profile</p>
-                </div>
-            </a>
-
-            <a href="{{ url_for('about') }}" class="sidebar-card-link">
-                <div class="sidebar-card">
-                    <h4>ℹ️ About</h4>
-                    <ul>
-                        <li>About Knights</li>
-                        <li>Our purpose</li>
-                        <li>Community</li>
-                    </ul>
-                </div>
-            </a>
-
-            <div class="sidebar-card">
-                <h4>⚡ Quick Actions</h4>
-
-                {% if current_user.is_authenticated %}
-                <a href="{{ url_for('new_post') }}" class="btn btn-primary">+ New Post</a>
-                {% endif %}
-
-                <a href="{{ url_for('home') }}" class="btn btn-secondary">Refresh Feed</a>
-            </div>
-
-        </aside>
-
-    </section>
 </main>
+
+<!-- ================= HORROR SPRITES ================= -->
+<img id="horrorSprite" class="horror-sprite" src="" alt="">
+<div id="smoke" class="smoke-effect"></div>
 
 <!-- ================= DARK MODE ================= -->
 <script>
@@ -191,127 +141,30 @@ let watchTimer;
 const whisper = new Audio("https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3");
 whisper.volume = 0.25;
 
-/* popup */
-function showPopup() {
-    if (!horrorMode) return;
-    popup.classList.add("show");
-    setTimeout(() => popup.classList.remove("show"), 2000);
-}
-
-/* reset */
-function resetHorror() {
-    document.body.classList.remove("logo-active");
-    popup.classList.remove("show");
-
-    clearTimeout(spawnTimeout);
-    clearTimeout(hideTimeout);
-
-    sprite.classList.remove("show");
-    smoke.classList.remove("animate");
-}
-
-/* animation loop */
-function animate() {
-    const idle = Date.now() - lastMove > 900;
-
-    cx += (tx - cx) * 0.08;
-    cy += (ty - cy) * 0.08;
-
-    if (logo) {
-        logo.style.transform = `
-            perspective(700px)
-            rotateX(${cy * -1}deg)
-            rotateY(${cx}deg)
-        `;
-    }
-
-    if (eye) {
-        eye.style.height = horrorMode ? "6px" : "8px";
-        eye.style.opacity = horrorMode && idle ? "0.4" : "1";
-
-        eye.style.transform = `
-            translate(-50%,-50%)
-            translate(${cx * (horrorMode ? 1.5 : 1)}px,
-                      ${cy * (horrorMode ? 1.5 : 1)}px)
-        `;
-    }
-
-    requestAnimationFrame(animate);
-}
-animate();
-
-/* mouse tracking */
-document.addEventListener("mousemove", (e) => {
-    if (!logo) return;
-
-    const rect = logo.getBoundingClientRect();
-
-    const dx = e.clientX - (rect.left + rect.width / 2);
-    const dy = e.clientY - (rect.top + rect.height / 2);
-
-    tx = (dx / window.innerWidth) * 10;
-    ty = (dy / window.innerHeight) * 10;
-
-    document.body.style.setProperty("--x", e.clientX + "px");
-    document.body.style.setProperty("--y", e.clientY + "px");
-
-    lastMove = Date.now();
-
-    if (horrorMode) {
-        clearTimeout(watchTimer);
-        watchTimer = setTimeout(() => {
-            showPopup();
-        }, 2000);
-    }
-});
-
-/* ================= HORROR TRIGGERS ================= */
-if (logo) {
-
-    logo.addEventListener("mouseenter", () => {
-        hoverTimer = setTimeout(() => {
-            horrorMode = true;
-            document.body.classList.add("logo-active");
-
-            whisper.currentTime = 0;
-            whisper.play().catch(() => {});
-
-            scheduleNextScare();
-        }, 3000);
-    });
-
-    logo.addEventListener("mouseleave", () => {
-        clearTimeout(hoverTimer);
-    });
-
-    logo.addEventListener("click", () => {
-        horrorMode = false;
-        document.body.classList.remove("logo-active");
-        resetHorror();
-    });
-}
-
-/* ================= HORROR SPRITES ================= */
+/* ================= SPRITES ================= */
 
 const sprite = document.getElementById("horrorSprite");
 const smoke = document.getElementById("smoke");
 
 let scareImages = [];
+let spawnTimeout = null;
+let hideTimeout = null;
 
+/* load JSON */
 fetch("/static/images/scares/scares.json")
     .then(res => res.json())
     .then(data => {
         scareImages = data.map(img => `/static/images/scares/${img}`);
     });
 
-let spawnTimeout;
-let hideTimeout;
-
 function scheduleNextScare() {
     if (!horrorMode || scareImages.length === 0) return;
 
     const delay = 1000 + Math.random() * 2000;
-    spawnTimeout = setTimeout(showScare, delay);
+
+    spawnTimeout = setTimeout(() => {
+        showScare();
+    }, delay);
 }
 
 function showScare() {
@@ -353,6 +206,99 @@ sprite.addEventListener("touchstart", (e) => {
     e.preventDefault();
     disappearIntoSmoke();
 });
+
+/* ================= CORE HORROR ================= */
+
+function showPopup() {
+    if (!horrorMode) return;
+    popup.classList.add("show");
+    setTimeout(() => popup.classList.remove("show"), 2000);
+}
+
+function resetHorror() {
+    horrorMode = false;
+
+    document.body.classList.remove("logo-active");
+    popup.classList.remove("show");
+
+    clearTimeout(spawnTimeout);
+    clearTimeout(hideTimeout);
+    clearTimeout(watchTimer);
+
+    sprite.classList.remove("show");
+    smoke.classList.remove("animate");
+}
+
+/* animation */
+function animate() {
+    const idle = Date.now() - lastMove > 900;
+
+    cx += (tx - cx) * 0.08;
+    cy += (ty - cy) * 0.08;
+
+    if (logo) {
+        logo.style.transform = `
+            perspective(700px)
+            rotateX(${cy * -1}deg)
+            rotateY(${cx}deg)
+        `;
+    }
+
+    if (eye) {
+        eye.style.height = horrorMode ? "6px" : "8px";
+        eye.style.opacity = horrorMode && idle ? "0.4" : "1";
+
+        eye.style.transform = `
+            translate(-50%,-50%)
+            translate(${cx * (horrorMode ? 1.5 : 1)}px,
+                      ${cy * (horrorMode ? 1.5 : 1)}px)
+        `;
+    }
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* mouse tracking */
+document.addEventListener("mousemove", (e) => {
+    if (!logo) return;
+
+    const rect = logo.getBoundingClientRect();
+
+    tx = (e.clientX - (rect.left + rect.width / 2)) / window.innerWidth * 10;
+    ty = (e.clientY - (rect.top + rect.height / 2)) / window.innerHeight * 10;
+
+    lastMove = Date.now();
+
+    if (horrorMode) {
+        clearTimeout(watchTimer);
+        watchTimer = setTimeout(showPopup, 2000);
+    }
+});
+
+/* ================= TRIGGERS ================= */
+
+if (logo) {
+    logo.addEventListener("mouseenter", () => {
+        hoverTimer = setTimeout(() => {
+            horrorMode = true;
+            document.body.classList.add("logo-active");
+
+            whisper.currentTime = 0;
+            whisper.play().catch(() => {});
+
+            scheduleNextScare();
+        }, 3000);
+    });
+
+    logo.addEventListener("mouseleave", () => {
+        clearTimeout(hoverTimer);
+    });
+
+    logo.addEventListener("click", () => {
+        resetHorror();
+    });
+}
 </script>
 
 </body>
