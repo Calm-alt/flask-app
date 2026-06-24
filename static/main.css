@@ -722,9 +722,8 @@ body.dark-mode .dark-mode-toggle{
     75%{opacity:1;}
     100%{opacity:.7;}
 }
-
 /* =========================
-   SCREEN DIM / VIGNETTE
+   HORROR VIGNETTE SYSTEM (CLEAN)
 ========================= */
 
 body::before{
@@ -732,21 +731,18 @@ body::before{
     position:fixed;
     inset:0;
     pointer-events:none;
-    opacity:0;
-    transition:opacity .25s ease;
-
-    background:radial-gradient(
-        circle at var(--x,50%) var(--y,50%),
-        transparent 0%,
-        rgba(0,0,0,.35) 40%,
-        rgba(0,0,0,.85) 100%
-    );
 
     z-index:9998;
-}
 
-body.logo-active::before{
+    background:radial-gradient(
+        circle at var(--x, 50vw) var(--y, 50vh),
+        transparent 0%,
+        rgba(0,0,0, calc(var(--horror, 0) * 0.35)) 40%,
+        rgba(0,0,0, calc(var(--horror, 0) * 0.85)) 100%
+    );
+
     opacity:1;
+    transition: background 0.2s ease;
 }
 
 /* =========================

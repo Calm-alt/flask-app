@@ -140,9 +140,6 @@
     </section>
 </main>
 
-<!-- ================= HORROR SPRITES ================= -->
-<img id="horrorSprite" class="horror-sprite" src="" alt="">
-<div id="smoke" class="smoke-effect"></div>
 
 <!-- ================= DARK MODE ================= -->
 <script>
@@ -174,7 +171,6 @@ function toggleNav() {
 }
 </script>
 
-<script>
 window.addEventListener("DOMContentLoaded", () => {
 
 const logo = document.querySelector(".site-logo");
@@ -182,24 +178,23 @@ const eye = document.querySelector(".skull-eye");
 
 if (!logo || !eye) return;
 
-/* ================= STATE MACHINE ================= */
+/* ================= STATE ================= */
 const state = {
-    active: false,        // horror mode
+    active: false,
     lastMove: Date.now(),
-    lastInteract: Date.now(),
-    intensity: 0,         // 0 → 1
+    intensity: 0,
     x: 0,
     y: 0
 };
 
 /* ================= CONFIG ================= */
 const config = {
-    activateDelay: 2500,   // hover idle before horror starts
-    decaySpeed: 0.01,
-    growSpeed: 0.03
+    activateDelay: 2500,
+    growSpeed: 0.03,
+    decaySpeed: 0.015
 };
 
-/* ================= MOUSE ================= */
+/* ================= MOUSE TRACKING ================= */
 document.addEventListener("mousemove", (e) => {
 
     state.lastMove = Date.now();
@@ -207,7 +202,6 @@ document.addEventListener("mousemove", (e) => {
     state.x = e.clientX;
     state.y = e.clientY;
 
-    /* radial light (your CSS uses --x --y) */
     document.body.style.setProperty("--x", e.clientX + "px");
     document.body.style.setProperty("--y", e.clientY + "px");
 });
@@ -215,31 +209,29 @@ document.addEventListener("mousemove", (e) => {
 /* ================= ACTIVATE / DEACTIVATE ================= */
 function activate() {
     state.active = true;
-    document.body.classList.add("logo-active");
 }
 
 function deactivate() {
     state.active = false;
-    document.body.classList.remove("logo-active");
 }
 
-/* ================= LOOP ================= */
+/* ================= MAIN LOOP ================= */
 function loop() {
 
     const now = Date.now();
     const idle = now - state.lastMove;
 
-    /* ENTER HORROR MODE */
+    /* enter horror */
     if (!state.active && idle > config.activateDelay) {
         activate();
     }
 
-    /* EXIT if user becomes active again */
-    if (state.active && idle < 500) {
+    /* exit horror */
+    if (state.active && idle < 400) {
         deactivate();
     }
 
-    /* intensity logic */
+    /* intensity */
     if (state.active) {
         state.intensity += config.growSpeed;
     } else {
@@ -267,13 +259,11 @@ function loop() {
         translate(${dx * 1.5}px, ${dy * 1.5}px)
     `;
 
-    eye.style.opacity = state.active ? 0.6 + Math.random() * 0.4 : 1;
+    eye.style.opacity = state.active ? 0.6 : 1;
 
-    eye.style.height = state.active
-        ? "6px"
-        : "8px";
+    eye.style.height = state.active ? "6px" : "8px";
 
-    /* ================= SCREEN HORROR ================= */
+    /* ================= VIGNETTE STRENGTH ================= */
     document.body.style.setProperty(
         "--horror",
         state.intensity.toFixed(3)
@@ -284,14 +274,13 @@ function loop() {
 
 loop();
 
-/* ================= MANUAL RESET ================= */
+/* ================= RESET ================= */
 logo.addEventListener("click", () => {
     deactivate();
     state.intensity = 0;
 });
 
 });
-</script>
 
 </body>
 </html>
