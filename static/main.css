@@ -117,7 +117,7 @@ a{
         #cffff6
     );
     background-size:300% 100%;
-    animation:logoFlow 12s ease-in-out infinite,
+    animation:logoFlow 10s ease-in-out infinite,
               flagWave 6s ease-in-out infinite;
 
     background-clip:text;
@@ -157,8 +157,8 @@ a{
     top:50%;
     left:50%;
 
-    width:8px;
-    height:8px;
+    width:10px;
+    height:10px;
     border-radius:50%;
 
     /* Keep the glowing look */
