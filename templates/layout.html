@@ -307,22 +307,11 @@ function toggleNav() {
 
     state.lastMouseMove = Date.now();
 
-    const pageWidth = Math.max(
-        document.documentElement.scrollWidth,
-        document.body.scrollWidth
-    );
+    const maxX = Math.max(1, document.documentElement.scrollWidth - window.innerWidth);
+    const maxY = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 
-    const pageHeight = Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight
-    );
-
-    const docX = e.clientX + window.scrollX;
-    const docY = e.clientY + window.scrollY;
-
-    // Position relative to the CENTER of the entire page
-    state.x = docX - pageWidth / 2;
-    state.y = docY - pageHeight / 2;
+    state.x = ((e.clientX + window.scrollX) / maxX) * 2 - 1;
+    state.y = ((e.clientY + window.scrollY) / maxY) * 2 - 1;
 
     document.body.style.setProperty("--x", e.clientX + "px");
     document.body.style.setProperty("--y", e.clientY + "px");
@@ -345,19 +334,6 @@ function toggleNav() {
             );
         }
 
-        const pageWidth = Math.max(
-            document.documentElement.scrollWidth,
-            document.body.scrollWidth
-        );
-
-        const pageHeight = Math.max(
-            document.documentElement.scrollHeight,
-            document.body.scrollHeight
-        );
-
-        const dx = state.x;
-        const dy = state.y;
-
         const maxRadius = state.active ? 11 : 9;
 
         let targetX;
@@ -376,22 +352,8 @@ if (idle > 2000) {
 
     const hesitation = 0.15;
 
-const pageWidth = Math.max(
-    document.documentElement.scrollWidth,
-    document.body.scrollWidth
-);
-
-const pageHeight = Math.max(
-    document.documentElement.scrollHeight,
-    document.body.scrollHeight
-);
-
-// Convert to a range of -1 to 1
-const normalizedX = dx / (pageWidth / 2);
-const normalizedY = dy / (pageHeight / 2);
-
-targetX = normalizedX * maxRadius * (1 - hesitation);
-targetY = normalizedY * maxRadius * (1 - hesitation);
+targetX = state.x * maxRadius * (1 - hesitation);
+targetY = state.y * maxRadius * (1 - hesitation);
 }
 
 
