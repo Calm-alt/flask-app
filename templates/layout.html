@@ -304,25 +304,19 @@ function toggleNav() {
     });
 
     window.addEventListener("mousemove", (e) => {
-         
-        state.lastMouseMove = Date.now();
 
-        const rect = logo.getBoundingClientRect();
+    state.lastMouseMove = Date.now();
 
-        state.x = e.clientX - rect.left;
-        state.y = e.clientY - rect.top;
+    const docX = e.clientX + window.scrollX;
+    const docY = e.clientY + window.scrollY;
 
-        document.body.style.setProperty(
-            "--x",
-            e.clientX + "px"
-        );
+    state.x = docX - document.documentElement.scrollWidth / 2;
+    state.y = docY - document.documentElement.scrollHeight / 2;
 
-        document.body.style.setProperty(
-            "--y",
-            e.clientY + "px"
-        );
+    document.body.style.setProperty("--x", e.clientX + "px");
+    document.body.style.setProperty("--y", e.clientY + "px");
 
-    });
+});
 
     function animate() {
 
@@ -341,13 +335,21 @@ function toggleNav() {
             );
         }
 
-        const rect = logo.getBoundingClientRect();
+        const pageWidth = Math.max(
+    document.documentElement.scrollWidth,
+    document.body.scrollWidth
+);
 
-        const cx = rect.width / 2;
-        const cy = rect.height / 2;
+const pageHeight = Math.max(
+    document.documentElement.scrollHeight,
+    document.body.scrollHeight
+);
 
-        const dx = state.x - cx;
-        const dy = state.y - cy;
+const docX = e.clientX + window.scrollX;
+const docY = e.clientY + window.scrollY;
+
+state.x = docX - pageWidth / 2;
+state.y = docY - pageHeight / 2;
 
         let targetX;
 let targetY;
@@ -436,6 +438,5 @@ requestAnimationFrame(animate);
 
 })();
 </script>
-
 </body>
 </html>
