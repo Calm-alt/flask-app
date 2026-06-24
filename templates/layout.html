@@ -172,116 +172,158 @@ function toggleNav() {
 
 <script>
 (() => {
-  const logo = document.querySelector(".site-logo");
-  const eye = document.querySelector(".skull-eye");
+    const logo = document.querySelector(".site-logo");
+    const eye = document.querySelector(".skull-eye");
 
-  if (!logo || !eye) return;
+    if (!logo || !eye) return;
 
-  const STORAGE_KEY = "knights_horror_mode";
+    const STORAGE_KEY = "knights_horror_mode";
 
-  const config = {
-    activateDelay: 4000,   // idle before auto-on
-    autoOffDelay: 20000    // idle before auto-off
-  };
+    const config = {
+        activateDelay: 4000,
+        autoOffDelay: 20000
+    };
 
-  const state = {
-    active: localStorage.getItem(STORAGE_KEY) === "on",
-    lastMove: Date.now(),
-    x: innerWidth / 2,
-    y: innerHeight / 2,
-    intensity: 0
-  };
+    const state = {
+        active: localStorage.getItem(STORAGE_KEY) === "on",
+        lastMove: Date.now(),
+        x: 0,
+        y: 0,
+        intensity: 0
+    };
 
-  function setHorror(on) {
-    state.active = on;
+    function setHorror(on) {
+        state.active = on;
 
-    localStorage.setItem(STORAGE_KEY, on ? "on" : "off");
+        localStorage.setItem(
+            STORAGE_KEY,
+            on ? "on" : "off"
+        );
 
-    document.body.classList.toggle("horror-active", on);
-    document.body.classList.toggle("horror-shake", false);
-  }
+        document.body.classList.toggle(
+            "horror-active",
+            on
+        );
 
-  // INITIAL STATE (IMPORTANT FIX)
-  setHorror(state.active);
-
-  // Reset stuck state on refresh safety
-  if (!localStorage.getItem(STORAGE_KEY)) {
-    setHorror(false);
-  }
-
-  // CLICK TO TOGGLE (NOT FORCE ON)
-  logo.addEventListener("click", (e) => {
-    e.preventDefault();
-    setHorror(!state.active);
-  });
-
-  // TRACK MOUSE
-  window.addEventListener("mousemove", (e) => {
-    state.lastMove = Date.now();
-    const rect = logo.getBoundingClientRect();
-
-    state.x = e.clientX - rect.left;
-    state.y = e.clientY - rect.top;
-
-    document.body.style.setProperty("--x", `${e.clientX}px`);
-    document.body.style.setProperty("--y", `${e.clientY}px`);
-  });
-
-  function loop() {
-    const now = Date.now();
-    const idle = now - state.lastMove;
-
-    // AUTO ON
-    if (!state.active && idle > config.activateDelay) {
-      setHorror(true);
+        document.body.classList.remove(
+            "horror-shake"
+        );
     }
 
-    // AUTO OFF (FIXED: prevents permanent horror lock)
-    if (state.active && idle > config.autoOffDelay) {
-      setHorror(false);
+    // Initialize state
+    setHorror(state.active);
+
+    // Clicking the logo toggles horror mode
+    // (keeps your existing behavior)
+    logo.addEventListener("click", (e) => {
+        e.preventDefault();
+        setHorror(!state.active);
+    });
+
+    function markActivity(e) {
+        state.lastMove = Date.now();
+
+        const rect = logo.getBoundingClientRect();
+
+        if (e && typeof e.clientX === "number") {
+            state.x = e.clientX - rect.left;
+            state.y = e.clientY - rect.top;
+
+            document.body.style.setProperty(
+                "--x",
+                e.clientX + "px"
+            );
+
+            document.body.style.setProperty(
+                "--y",
+                e.clientY + "px"
+            );
+        }
     }
 
-    // SMOOTH INTENSITY
-    state.intensity += state.active ? 0.02 : -0.03;
-    state.intensity = Math.max(0, Math.min(1, state.intensity));
+    window.addEventListener("mousemove", markActivity);
+    window.addEventListener("mousedown", markActivity);
+    window.addEventListener("keydown", markActivity);
+    window.addEventListener("touchstart", markActivity, {
+        passive: true
+    });
 
-    const rect = logo.getBoundingClientRect();
+    function loop() {
 
-    // LOGO TILT
-    const dx = (state.x - (rect.left + rect.width / 2)) * 0.02;
-    const dy = (state.y - (rect.top + rect.height / 2)) * 0.02;
+        const now = Date.now();
+        const idle = now - state.lastMove;
 
-    logo.style.transform =
-      `perspective(900px)
-       rotateX(${-dy * state.intensity}deg)
-       rotateY(${dx * state.intensity}deg)
-       scale(${1 + state.intensity * 0.02})`;
+        // Automatic horror activation
+        if (!state.active && idle >= config.activateDelay) {
+            setHorror(true);
+        }
 
-    // EYE (ALWAYS VISIBLE FIX)
-    eye.style.opacity = "1";
-    eye.style.visibility = "visible";
-    eye.style.display = "block";
+        // Automatic horror shutdown
+        if (state.active && idle >= config.autoOffDelay) {
+            setHorror(false);
+        }
 
+        // Smooth transition
+        if (state.active) {
+            state.intensity = Math.min(
+                1,
+                state.intensity + 0.02
+            );
+        } else {
+            state.intensity = Math.max(
+                0,
+                state.intensity - 0.03
+            );
+        }
 
-    const pad = 6;
+        const rect = logo.getBoundingClientRect();
 
-    mx = Math.max(pad, Math.min(rect.width - pad, mx));
-    my = Math.max(pad, Math.min(rect.height - pad, my));
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
 
-    eye.style.transform =
-      `translate(${mx - rect.width / 2}px, ${my - rect.height / 2}px)`;
+        // Mouse offset from center
+        let mx = state.x - centerX;
+        let my = state.y - centerY;
 
-    eye.style.boxShadow =
-      state.active
-        ? "0 0 14px rgba(0,255,210,.7)"
-        : "0 0 8px rgba(0,255,210,.35)";
+        // Clamp movement
+        mx = Math.max(-6, Math.min(6, mx));
+        my = Math.max(-6, Math.min(6, my));
 
-    document.body.style.setProperty("--horror", state.intensity.toFixed(3));
+        // Eye ALWAYS tracks mouse
+        eye.style.opacity = "1";
+        eye.style.visibility = "visible";
+        eye.style.display = "block";
+        eye.style.transform =
+            `translate(${mx}px, ${my}px)`;
 
-    requestAnimationFrame(loop);
-  }
+        eye.style.boxShadow =
+            state.active
+                ? "0 0 14px rgba(0,255,210,.7)"
+                : "0 0 8px rgba(0,255,210,.35)";
 
-  loop();
+        // Logo tilt:
+        // small in normal mode, stronger in horror mode
+        const strength =
+            0.3 + state.intensity * 0.7;
+
+        const dx = mx * 0.35 * strength;
+        const dy = my * 0.35 * strength;
+
+        logo.style.transform =
+            `perspective(900px)
+             rotateX(${-dy}deg)
+             rotateY(${dx}deg)
+             scale(${1 + state.intensity * 0.02})`;
+
+        document.body.style.setProperty(
+            "--horror",
+            state.intensity.toFixed(3)
+        );
+
+        requestAnimationFrame(loop);
+    }
+
+    loop();
 })();
 </script>
 
