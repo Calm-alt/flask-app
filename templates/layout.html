@@ -217,23 +217,28 @@ function toggleNav() {
 
     function showPopup() {
 
-        let popup = document.querySelector(".watch-popup");
+    let popup = document.querySelector(".watch-popup");
 
-        if (!popup) {
-            popup = document.createElement("div");
-            popup.className = "watch-popup";
-            document.body.appendChild(popup);
-        }
-
-        popup.textContent =
-            messages[Math.floor(Math.random() * messages.length)];
-
-        popup.classList.add("show");
-
-        setTimeout(() => {
-            popup.classList.remove("show");
-        }, 2500);
+    if (!popup) {
+        popup = document.createElement("div");
+        popup.className = "watch-popup";
+        document.body.appendChild(popup);
     }
+
+    // Don't show another popup if one is already visible
+    if (popup.classList.contains("show")) {
+        return;
+    }
+
+    popup.textContent =
+        messages[Math.floor(Math.random() * messages.length)];
+
+    popup.classList.add("show");
+
+    setTimeout(() => {
+        popup.classList.remove("show");
+    }, 2500);
+}
 
     function popupLoop() {
 
@@ -270,16 +275,23 @@ function toggleNav() {
 
         if (on) {
 
-            showPopup();
+    // Show the first popup 3 seconds after activation
+    state.popupTimer = setTimeout(() => {
 
-            const delay = 5000 + Math.random() * 15000;
+        showPopup();
 
-            state.popupTimer = setTimeout(
-                popupLoop,
-                delay
-            );
-        }
+        // After the first popup, continue with the normal random timing
+        const delay = 5000 + Math.random() * 15000;
+
+        state.popupTimer = setTimeout(
+            popupLoop,
+            delay
+        );
+
+       }, 3000);
+      }
     }
+
 
     setHorror(state.active);
 
