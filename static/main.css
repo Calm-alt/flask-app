@@ -761,32 +761,39 @@ body:not(.horror-active) .site-logo:hover::after{
 ========================= */
 
 .watch-popup{
-    position:fixed;
-    top:20px;
-    right:20px;
-    padding:10px 14px;
+    position: fixed;
 
-    font-size:0.75rem;
-    letter-spacing:3px;
+    top: 20px;
+    right: 20px;
 
-    color:rgba(0,255,210,.9);
-    background:rgba(10,20,16,.8);
-    border:1px solid rgba(0,255,210,.4);
+    padding: 10px 14px;
 
-    border-radius:10px;
-    box-shadow:0 0 20px rgba(0,255,210,.15);
+    font-size: 0.75rem;
+    letter-spacing: 3px;
 
-    opacity:0;
-    transform:translateY(-10px);
+    color: rgba(0,255,210,.9);
+    background: rgba(10,20,16,.8);
+    border: 1px solid rgba(0,255,210,.4);
 
-    transition:all .3s ease;
-    z-index:10000;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,255,210,.15);
+
+    opacity: 0;
+
+    /* Remove the slide-in effect */
+    transform: none;
+
+    /* Optional: quick fade only */
+    transition: opacity 0.08s linear;
+
+    z-index: 10000;
 }
 
 .watch-popup.show{
-    opacity:1;
-    transform:translateY(0);
+    opacity: 1;
+    transform: none;
 }
+
 
 .watch-popup {
     overflow: visible;
