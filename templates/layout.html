@@ -218,8 +218,10 @@ function toggleNav() {
   // TRACK MOUSE
   window.addEventListener("mousemove", (e) => {
     state.lastMove = Date.now();
-    state.x = e.clientX;
-    state.y = e.clientY;
+    const rect = logo.getBoundingClientRect();
+
+    state.x = e.clientX - rect.left;
+    state.y = e.clientY - rect.top;
 
     document.body.style.setProperty("--x", `${e.clientX}px`);
     document.body.style.setProperty("--y", `${e.clientY}px`);
@@ -260,8 +262,6 @@ function toggleNav() {
     eye.style.visibility = "visible";
     eye.style.display = "block";
 
-    let mx = state.x - rect.left;
-    let my = state.y - rect.top;
 
     const pad = 6;
 
