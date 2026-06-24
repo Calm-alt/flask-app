@@ -117,8 +117,8 @@ a{
         #cffff6
     );
     background-size:300% 100%;
-    animation:logoFlow 6s ease-in-out infinite,
-              flagWave 5s ease-in-out infinite;
+    animation:logoFlow 12s ease-in-out infinite,
+              flagWave 6s ease-in-out infinite;
 
     background-clip:text;
     -webkit-background-clip:text;
