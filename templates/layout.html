@@ -179,18 +179,29 @@ function toggleNav() {
 
     const STORAGE_KEY = "knights_horror_mode";
 
-    const config = {
-        activateDelay: 4000,
-        autoOffDelay: 20000
-    };
-
     const state = {
         active: localStorage.getItem(STORAGE_KEY) === "on",
-        lastMove: Date.now(),
         x: 0,
         y: 0,
         intensity: 0
     };
+
+    function showPopup() {
+        let popup = document.querySelector(".watch-popup");
+
+        if (!popup) {
+            popup = document.createElement("div");
+            popup.className = "watch-popup";
+            popup.textContent = "IT'S WATCHING";
+            document.body.appendChild(popup);
+        }
+
+        popup.classList.add("show");
+
+        setTimeout(() => {
+            popup.classList.remove("show");
+        }, 2500);
+    }
 
     function setHorror(on) {
         state.active = on;
@@ -205,114 +216,66 @@ function toggleNav() {
             on
         );
 
-        document.body.classList.remove(
-            "horror-shake"
-        );
+        if (on) {
+            showPopup();
+        }
     }
 
-    // Initialize state
     setHorror(state.active);
 
-    // Clicking the logo toggles horror mode
-    // (keeps your existing behavior)
     logo.addEventListener("click", (e) => {
         e.preventDefault();
         setHorror(!state.active);
     });
 
-    function markActivity(e) {
-        state.lastMove = Date.now();
+    window.addEventListener("mousemove", (e) => {
 
         const rect = logo.getBoundingClientRect();
 
-        if (e && typeof e.clientX === "number") {
-            state.x = e.clientX - rect.left;
-            state.y = e.clientY - rect.top;
+        state.x = e.clientX - rect.left;
+        state.y = e.clientY - rect.top;
 
-            document.body.style.setProperty(
-                "--x",
-                e.clientX + "px"
-            );
-
-            document.body.style.setProperty(
-                "--y",
-                e.clientY + "px"
-            );
-        }
-    }
-
-    window.addEventListener("mousemove", markActivity);
-    window.addEventListener("mousedown", markActivity);
-    window.addEventListener("keydown", markActivity);
-    window.addEventListener("touchstart", markActivity, {
-        passive: true
+        document.body.style.setProperty("--x", e.clientX + "px");
+        document.body.style.setProperty("--y", e.clientY + "px");
     });
 
-    function loop() {
+    function animate() {
 
-        const now = Date.now();
-        const idle = now - state.lastMove;
-
-        // Automatic horror activation
-        if (!state.active && idle >= config.activateDelay) {
-            setHorror(true);
-        }
-
-        // Automatic horror shutdown
-        if (state.active && idle >= config.autoOffDelay) {
-            setHorror(false);
-        }
-
-        // Smooth transition
         if (state.active) {
-            state.intensity = Math.min(
-                1,
-                state.intensity + 0.02
-            );
+            state.intensity = Math.min(1, state.intensity + 0.03);
         } else {
-            state.intensity = Math.max(
-                0,
-                state.intensity - 0.03
-            );
+            state.intensity = Math.max(0, state.intensity - 0.03);
         }
 
         const rect = logo.getBoundingClientRect();
 
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
 
-        // Mouse offset from center
-        let mx = state.x - centerX;
-        let my = state.y - centerY;
+        const dx = state.x - cx;
+        const dy = state.y - cy;
 
-        // Clamp movement
-        mx = Math.max(-6, Math.min(6, mx));
-        my = Math.max(-6, Math.min(6, my));
+        const dist = Math.hypot(dx, dy) || 1;
 
-        // Eye ALWAYS tracks mouse
-        eye.style.opacity = "1";
-        eye.style.visibility = "visible";
-        eye.style.display = "block";
+        const radius = 3.5;
+
+        const eyeX = (dx / dist) * radius;
+        const eyeY = (dy / dist) * radius;
+
         eye.style.transform =
-            `translate(${mx}px, ${my}px)`;
+            `translate(calc(-50% + ${eyeX}px), calc(-50% + ${eyeY}px))`;
 
-        eye.style.boxShadow =
-            state.active
-                ? "0 0 14px rgba(0,255,210,.7)"
-                : "0 0 8px rgba(0,255,210,.35)";
+        eye.style.boxShadow = state.active
+            ? "0 0 14px rgba(0,255,210,.75)"
+            : "0 0 8px rgba(0,255,210,.35)";
 
-        // Logo tilt:
-        // small in normal mode, stronger in horror mode
-        const strength =
-            0.3 + state.intensity * 0.7;
-
-        const dx = mx * 0.35 * strength;
-        const dy = my * 0.35 * strength;
+        const tiltX = eyeX * (0.4 + state.intensity * 0.8);
+        const tiltY = eyeY * (0.4 + state.intensity * 0.8);
 
         logo.style.transform =
             `perspective(900px)
-             rotateX(${-dy}deg)
-             rotateY(${dx}deg)
+             rotateX(${-tiltY}deg)
+             rotateY(${tiltX}deg)
              scale(${1 + state.intensity * 0.02})`;
 
         document.body.style.setProperty(
@@ -320,10 +283,10 @@ function toggleNav() {
             state.intensity.toFixed(3)
         );
 
-        requestAnimationFrame(loop);
+        requestAnimationFrame(animate);
     }
 
-    loop();
+    animate();
 })();
 </script>
 

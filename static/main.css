@@ -149,19 +149,28 @@ a{
     position:absolute;
     top:50%;
     left:50%;
-    margin-left:-4px;
-    margin-top:-4px;
 
     width:8px;
     height:8px;
     border-radius:50%;
 
-    background:radial-gradient(circle,
+    /* Keep the glowing look */
+    background:radial-gradient(
+        circle,
         rgba(0,255,210,1),
         rgba(0,255,210,.2)
     );
 
     box-shadow:0 0 12px rgba(0,255,210,.6);
+
+    /* Important for smooth JS movement */
+    transform:translate(-50%,-50%);
+    will-change:transform;
+
+    opacity:1;
+    visibility:visible;
+    display:block;
+
     pointer-events:none;
 }
 /* crossed swords */
@@ -688,7 +697,7 @@ body.dark-mode .dark-mode-toggle{
 
 /* whisper text already exists (enhanced) */
 .site-logo::after{
-    content:"IT SEES YOU";
+    content: attr(data-whisper);
     position:absolute;
     left:50%;
     top:-28px;
@@ -832,7 +841,3 @@ body.horror-active .site-logo::after{
     animation:whisperFlicker 0.9s infinite;
 }
 
-.skull-eye{
-    opacity:1;
-    visibility:visible;
-}
