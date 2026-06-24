@@ -176,6 +176,7 @@ function toggleNav() {
 
     const logo = document.querySelector(".site-logo");
     const eye = document.querySelector(".skull-eye");
+    const skull = document.querySelector(".logo-skull");
 
     if (!logo || !eye) return;
 
@@ -194,7 +195,8 @@ function toggleNav() {
 
         lastMouseMove: Date.now(),
         wanderAngle: 0,
-        blinkUntil: 0,
+
+        pupilScale: 1.0,
 
         popupTimer: null
     };
@@ -246,20 +248,6 @@ function toggleNav() {
         );
     }
 
-
-function blinkRandomly() {
-
-    if (!state.active) return;
-
-    state.blinkUntil = Date.now() + 120;
-
-    const next =
-        3000 + Math.random() * 9000;
-
-    setTimeout(blinkRandomly, next);
-}
-
-
     function setHorror(on) {
 
         state.active = on;
@@ -282,7 +270,6 @@ function blinkRandomly() {
         if (on) {
 
             showPopup();
-            blinkRandomly();
 
             const delay = 5000 + Math.random() * 15000;
 
@@ -391,29 +378,23 @@ targetY = (dy * 0.08) * (1 - hesitation);
         state.eyeY +=
             (limitedY - state.eyeY) * 0.12;
 
-        
+        state.pupilScale += (((state.active ? (1.08 + 0.06 * Math.sin(Date.now()/500)) : 1.0)) - state.pupilScale) * 0.08;
 
-        const proximity = Math.min(Math.hypot(dx, dy) / 300, 1);
-        const dilation = state.active
-            ? (1.15 + 0.12 * Math.sin(Date.now() / 350) + (1 - proximity) * 0.18)
-            : 1.0;
+        const blinkScale = (state.active && Math.random() < 0.002) ? 0.1 : 1;
+
+        eye.style.setProperty("--pupil-scale", state.pupilScale.toFixed(3));
+
+        eye.style.setProperty("--eye-x", `${state.eyeX}px`);
+        eye.style.setProperty("--eye-y", `${state.eyeY}px`);
+        eye.style.setProperty("--blink-scale", blinkScale.toFixed(3));
+        eye.style.transform =
+            `translate(calc(-50% + ${state.eyeX}px),
+                       calc(-50% + ${state.eyeY}px))`;
 
         eye.style.boxShadow =
             state.active
             ? "0 0 20px rgba(0,255,210,.95)"
             : "0 0 10px rgba(0,255,210,.45)";
-
-        const jitterX = state.active ? (Math.random() - 0.5) * 0.15 : 0;
-        const jitterY = state.active ? (Math.random() - 0.5) * 0.15 : 0;
-
-        const blink =
-            Date.now() < state.blinkUntil
-                ? " scaleY(0.1)"
-                : "";
-
-        eye.style.transform =
-            `translate(calc(-50% + ${state.eyeX + jitterX}px),
-                       calc(-50% + ${state.eyeY + jitterY}px))${blink} scale(${dilation})`;
 
         const tiltX = state.eyeX * 0.8;
         const tiltY = state.eyeY * 0.8;
@@ -429,7 +410,11 @@ targetY = (dy * 0.08) * (1 - hesitation);
             state.intensity.toFixed(3)
         );
 
-        requestAnimationFrame(animate);
+        if (skull) {
+    skull.classList.toggle("eye-blink", blinkScale < 0.5);
+}
+
+requestAnimationFrame(animate);
     }
 
     animate();
