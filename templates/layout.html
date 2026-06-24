@@ -307,15 +307,25 @@ function toggleNav() {
 
     state.lastMouseMove = Date.now();
 
+    const pageWidth = Math.max(
+        document.documentElement.scrollWidth,
+        document.body.scrollWidth
+    );
+
+    const pageHeight = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+    );
+
     const docX = e.clientX + window.scrollX;
     const docY = e.clientY + window.scrollY;
 
-    state.x = docX - document.documentElement.scrollWidth / 2;
-    state.y = docY - document.documentElement.scrollHeight / 2;
+    // Position relative to the CENTER of the entire page
+    state.x = docX - pageWidth / 2;
+    state.y = docY - pageHeight / 2;
 
     document.body.style.setProperty("--x", e.clientX + "px");
     document.body.style.setProperty("--y", e.clientY + "px");
-
 });
 
     function animate() {
@@ -336,20 +346,19 @@ function toggleNav() {
         }
 
         const pageWidth = Math.max(
-    document.documentElement.scrollWidth,
-    document.body.scrollWidth
-);
+            document.documentElement.scrollWidth,
+            document.body.scrollWidth
+        );
 
-const pageHeight = Math.max(
-    document.documentElement.scrollHeight,
-    document.body.scrollHeight
-);
+        const pageHeight = Math.max(
+            document.documentElement.scrollHeight,
+            document.body.scrollHeight
+        );
 
-const docX = e.clientX + window.scrollX;
-const docY = e.clientY + window.scrollY;
+        const dx = state.x;
+        const dy = state.y;
 
-state.x = docX - pageWidth / 2;
-state.y = docY - pageHeight / 2;
+        const maxRadius = state.active ? 11 : 9;
 
         let targetX;
 let targetY;
@@ -367,12 +376,24 @@ if (idle > 2000) {
 
     const hesitation = 0.15;
 
-targetX = (dx * 0.08) * (1 - hesitation);
-targetY = (dy * 0.08) * (1 - hesitation);
+const pageWidth = Math.max(
+    document.documentElement.scrollWidth,
+    document.body.scrollWidth
+);
+
+const pageHeight = Math.max(
+    document.documentElement.scrollHeight,
+    document.body.scrollHeight
+);
+
+// Convert to a range of -1 to 1
+const normalizedX = dx / (pageWidth / 2);
+const normalizedY = dy / (pageHeight / 2);
+
+targetX = normalizedX * maxRadius * (1 - hesitation);
+targetY = normalizedY * maxRadius * (1 - hesitation);
 }
 
-        const maxRadius =
-            state.active ? 11 : 9;
 
         const distance =
             Math.hypot(targetX, targetY);
