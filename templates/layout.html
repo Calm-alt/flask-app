@@ -140,7 +140,6 @@
     </section>
 </main>
 
-
 <!-- ================= DARK MODE ================= -->
 <script>
 function updateThemeButton() {
@@ -171,6 +170,7 @@ function toggleNav() {
 }
 </script>
 
+<script>
 window.addEventListener("DOMContentLoaded", () => {
 
 const logo = document.querySelector(".site-logo");
@@ -178,27 +178,23 @@ const eye = document.querySelector(".skull-eye");
 
 if (!logo || !eye) return;
 
-/* ================= STATE ================= */
 const state = {
     active: false,
     lastMove: Date.now(),
     intensity: 0,
-    x: 0,
-    y: 0
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2
 };
 
-/* ================= CONFIG ================= */
 const config = {
     activateDelay: 2500,
     growSpeed: 0.03,
     decaySpeed: 0.015
 };
 
-/* ================= MOUSE TRACKING ================= */
+/* ================= MOUSE TRACK ================= */
 document.addEventListener("mousemove", (e) => {
-
     state.lastMove = Date.now();
-
     state.x = e.clientX;
     state.y = e.clientY;
 
@@ -206,7 +202,7 @@ document.addEventListener("mousemove", (e) => {
     document.body.style.setProperty("--y", e.clientY + "px");
 });
 
-/* ================= ACTIVATE / DEACTIVATE ================= */
+/* ================= ACTIVATE ================= */
 function activate() {
     state.active = true;
 }
@@ -215,72 +211,59 @@ function deactivate() {
     state.active = false;
 }
 
-/* ================= MAIN LOOP ================= */
+/* ================= LOOP ================= */
 function loop() {
 
     const now = Date.now();
     const idle = now - state.lastMove;
 
-    /* enter horror */
     if (!state.active && idle > config.activateDelay) {
         activate();
     }
 
-    /* exit horror */
-    if (state.active && idle < 400) {
+    if (state.active && idle < 300) {
         deactivate();
     }
 
-    /* intensity */
-    if (state.active) {
-        state.intensity += config.growSpeed;
-    } else {
-        state.intensity -= config.decaySpeed;
-    }
-
+    state.intensity += state.active ? config.growSpeed : -config.decaySpeed;
     state.intensity = Math.max(0, Math.min(1, state.intensity));
 
-    /* ================= LOGO EFFECT ================= */
     const rect = logo.getBoundingClientRect();
 
     const dx = (state.x - (rect.left + rect.width / 2)) * 0.02;
     const dy = (state.y - (rect.top + rect.height / 2)) * 0.02;
 
-    logo.style.transform = `
-        perspective(800px)
+    /* ================= LOGO EFFECT ================= */
+    logo.style.transform =
+        `perspective(800px)
         rotateX(${-dy * state.intensity}deg)
         rotateY(${dx * state.intensity}deg)
-        scale(${1 + state.intensity * 0.02})
-    `;
+        scale(${1 + state.intensity * 0.02})`;
 
-    /* ================= EYE ================= */
-    eye.style.transform = `
-        translate(-50%, -50%)
-        translate(${dx * 1.5}px, ${dy * 1.5}px)
-    `;
+    /* ================= MOVING EYE (FIXED) ================= */
+    eye.style.transform =
+        `translate(-50%, -50%)
+         translate(${dx * 1.5}px, ${dy * 1.5}px)`;
 
-    eye.style.opacity = state.active ? 0.6 : 1;
-
+    eye.style.opacity = state.active ? 0.65 : 1;
     eye.style.height = state.active ? "6px" : "8px";
 
-    /* ================= VIGNETTE STRENGTH ================= */
-    document.body.style.setProperty(
-        "--horror",
-        state.intensity.toFixed(3)
-    );
+    /* ================= VIGNETTE ================= */
+    document.body.style.setProperty("--horror", state.intensity.toFixed(3));
 
     requestAnimationFrame(loop);
 }
 
 loop();
 
-/* ================= RESET ================= */
+/* ================= RESET ON CLICK ================= */
 logo.addEventListener("click", () => {
-    deactivate();
     state.intensity = 0;
+    deactivate();
 });
 
 });
+</script>
 
 </body>
 </html>
