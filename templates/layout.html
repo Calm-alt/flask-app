@@ -257,7 +257,7 @@ function toggleNav() {
 
         const dist = Math.hypot(dx, dy) || 1;
 
-        const radius = 3.5;
+        const radius = state.active ? 10 : 8;
 
         const eyeX = (dx / dist) * radius;
         const eyeY = (dy / dist) * radius;

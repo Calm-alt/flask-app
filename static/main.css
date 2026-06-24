@@ -122,7 +122,7 @@ a{
     background-clip:text;
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    transition:none;
+    transition: transform 0.04s linear;
 }
 
 /* skull container */
