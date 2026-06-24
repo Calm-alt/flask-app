@@ -118,7 +118,7 @@ a{
     );
     background-size:300% 100%;
     animation:logoFlow 6s ease-in-out infinite,
-              flagWave 3.2s ease-in-out infinite;
+              flagWave 5s ease-in-out infinite;
 
     background-clip:text;
     -webkit-background-clip:text;
@@ -128,53 +128,8 @@ a{
 }
 
 @keyframes flagWave {
-    0% {
-        transform:
-            perspective(800px)
-            rotateY(0deg)
-            rotateZ(0deg)
-            skewY(0deg);
-    }
-
-    20% {
-        transform:
-            perspective(800px)
-            rotateY(-3deg)
-            rotateZ(-0.5deg)
-            skewY(-1deg);
-    }
-
-    40% {
-        transform:
-            perspective(800px)
-            rotateY(2deg)
-            rotateZ(0.4deg)
-            skewY(0.8deg);
-    }
-
-    60% {
-        transform:
-            perspective(800px)
-            rotateY(-2deg)
-            rotateZ(-0.3deg)
-            skewY(-0.8deg);
-    }
-
-    80% {
-        transform:
-            perspective(800px)
-            rotateY(1deg)
-            rotateZ(0.2deg)
-            skewY(0.4deg);
-    }
-
-    100% {
-        transform:
-            perspective(800px)
-            rotateY(0deg)
-            rotateZ(0deg)
-            skewY(0deg);
-    }
+    0%, 100% { transform: rotate(-0.2deg); }
+    50%      { transform: rotate(0.2deg); }
 }
 
 /* skull container */
