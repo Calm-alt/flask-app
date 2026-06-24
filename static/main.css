@@ -122,8 +122,7 @@ a{
     background-clip:text;
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-
-    transition:transform .08s linear;
+    transition:none;
 }
 
 /* skull container */
@@ -146,11 +145,12 @@ a{
     overflow:hidden; /* keeps eye inside skull */
 }
 
-/* moving eye */
 .skull-eye{
     position:absolute;
     top:50%;
     left:50%;
+    margin-left:-4px;
+    margin-top:-4px;
 
     width:8px;
     height:8px;
@@ -161,9 +161,7 @@ a{
         rgba(0,255,210,.2)
     );
 
-    transform:translate(-50%,-50%);
     box-shadow:0 0 12px rgba(0,255,210,.6);
-
     pointer-events:none;
 }
 /* crossed swords */
@@ -711,14 +709,6 @@ body.dark-mode .dark-mode-toggle{
     transition:opacity .25s ease, transform .25s ease;
 }
 
-
-
-/* controlled ONLY by JS state */
-body.horror-active .site-logo::after{
-    opacity:1;
-    transform:translateX(-50%) translateY(-2px);
-}
-
 body:not(.horror-active) .site-logo:hover::after{
     opacity:1;
     transform:translateX(-50%) translateY(0px);
@@ -825,11 +815,6 @@ body::before{
     justify-content:center;
 }
 
-.skull-eye{
-    opacity:1;
-    visibility:visible;
-    display:block;
-}
 
 body.horror-active .logo-skull{
     border-color: rgba(0,255,210,.9);
