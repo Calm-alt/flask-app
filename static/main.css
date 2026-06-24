@@ -217,6 +217,7 @@ a{
 
     /* Important for smooth JS movement */
     transform:translate(-50%,-50%);
+    transition:none;
     will-change:transform;
 
     opacity:1;
@@ -881,9 +882,9 @@ body.horror-active .logo-skull{
     border-color: rgba(0,255,210,.9);
 }
 
-/* eye becomes more “alive” when active */
-body.horror-active .skull-eye {
-    filter: drop-shadow(0 0 8px rgba(0,255,210,.8));
+body.horror-active .skull-eye{
+    filter:drop-shadow(0 0 12px rgba(0,255,210,.95));
+    box-shadow:0 0 20px rgba(0,255,210,.9);
 }
 
 

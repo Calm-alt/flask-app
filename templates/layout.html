@@ -184,6 +184,10 @@ function toggleNav() {
         active: localStorage.getItem(STORAGE_KEY) === "on",
         x: 0,
         y: 0,
+
+        eyeX: 0,
+        eyeY: 0,
+
         intensity: 0
     };
 
@@ -255,23 +259,39 @@ function toggleNav() {
 
         const dx = state.x - cx;
         const dy = state.y - cy;
+        // Cursor offset from center
+        const targetX = dx * 0.08;
+        const targetY = dy * 0.08;
 
-        const dist = Math.hypot(dx, dy) || 1;
+        // Maximum movement inside skull
+        const maxRadius = state.active ? 11 : 9;
 
-        const radius = state.active ? 10 : 8;
+        const distance = Math.hypot(targetX, targetY);
 
-        const eyeX = (dx / dist) * radius;
-        const eyeY = (dy / dist) * radius;
+        let limitedX = targetX;
+        let limitedY = targetY;
 
-        eye.style.transform =
-            `translate(calc(-50% + ${eyeX}px), calc(-50% + ${eyeY}px))`;
+        if (distance > maxRadius) {
+         limitedX = targetX * maxRadius / distance;
+         limitedY = targetY * maxRadius / distance;
+}
 
-        eye.style.boxShadow = state.active
-            ? "0 0 14px rgba(0,255,210,.75)"
-            : "0 0 8px rgba(0,255,210,.35)";
+// Smooth easing
+state.eyeX += (limitedX - state.eyeX) * 0.12;
+state.eyeY += (limitedY - state.eyeY) * 0.12;
 
-        const tiltX = eyeX * (0.4 + state.intensity * 0.8);
-        const tiltY = eyeY * (0.4 + state.intensity * 0.8);
+// Apply movement
+eye.style.transform =
+    `translate(calc(-50% + ${state.eyeX}px),
+               calc(-50% + ${state.eyeY}px))`;
+
+eye.style.boxShadow = state.active
+    ? "0 0 18px rgba(0,255,210,.9)"
+    : "0 0 10px rgba(0,255,210,.45)";
+
+// Logo tilt
+const tiltX = state.eyeX * 0.8;
+const tiltY = state.eyeY * 0.8;
 
         logo.style.transform =
             `perspective(900px)
