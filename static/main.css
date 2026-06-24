@@ -142,6 +142,8 @@ a{
         0 0 18px rgba(0,255,210,.18);
 
     animation:skullPulse 3.5s ease-in-out infinite;
+
+    overflow:hidden; /* keeps eye inside skull */
 }
 
 /* moving eye */
@@ -162,9 +164,8 @@ a{
     transform:translate(-50%,-50%);
     box-shadow:0 0 12px rgba(0,255,210,.6);
 
-    transition:transform .08s linear, opacity .25s ease, height .25s ease;
+    pointer-events:none;
 }
-
 /* crossed swords */
 .logo-skull::before,
 .logo-skull::after{
@@ -692,8 +693,8 @@ body.dark-mode .dark-mode-toggle{
     content:"IT SEES YOU";
     position:absolute;
     left:50%;
-    top:-32px;
-    transform:translateX(-50%) translateY(6px);
+    top:-28px;
+    transform:translateX(-50%);
 
     font-size:0.65rem;
     letter-spacing:4px;
@@ -705,8 +706,14 @@ body.dark-mode .dark-mode-toggle{
     opacity:0;
     pointer-events:none;
 
-    transition:all .25s ease;
+    transition:opacity .2s ease, transform .2s ease;
     white-space:nowrap;
+}
+
+/* controlled ONLY by JS state */
+body.horror-active .site-logo::after{
+    opacity:1;
+    transform:translateX(-50%) translateY(-2px);
 }
 
 .site-logo:hover::after{
@@ -792,7 +799,7 @@ body::before{
     pointer-events:none;
     z-index:9998;
 
-    opacity:0; /* IMPORTANT FIX */
+    opacity: calc(var(--horror, 0) * 1);
 
     background: radial-gradient(
         circle at var(--x, 50vw) var(--y, 50vh),
@@ -820,11 +827,8 @@ body::before{
     display:block;
 }
 
-/* active horror mode glow */
-body.horror-active .logo-skull {
-    box-shadow:
-        inset 0 0 18px rgba(0,255,210,.25),
-        0 0 32px rgba(0,255,210,.35);
+body.horror-active .logo-skull{
+    border-color: rgba(0,255,210,.9);
 }
 
 /* eye becomes more “alive” when active */
