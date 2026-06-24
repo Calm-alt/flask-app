@@ -202,94 +202,99 @@ let tx = 0, ty = 0;
 let cx = 0, cy = 0;
 let lastMove = Date.now();
 
-let watchTimer = null;
-let spawnTimeout = null;
+/* 🔥 FIX CORE */
+let scareImages = [];
+let scareActive = false;
+let scareTimeout = null;
 let hideTimeout = null;
 let popupTimeout = null;
 
-let scareImages = [];
-let scareActive = false;
-let lastScareIndex = -1;
+/* prevents instant respawn */
+let nextAllowedTime = 0;
 
 const reduceMotion =
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ================= LOAD SCARES ================= */
+/* ================= LOAD IMAGES ================= */
 fetch("/static/images/scares/scares.json")
-    .then(res => res.json())
-    .then(data => {
+.then(res => res.json())
+.then(data => {
+    scareImages = data.map(img => `/static/images/scares/${img}`);
 
-        scareImages = data.map(
-            img => `/static/images/scares/${img}`
-        );
+    scareImages.forEach(src => {
+        const i = new Image();
+        i.src = src;
+    });
+})
+.catch(() => scareImages = []);
 
-        scareImages.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
-
-    })
-    .catch(() => scareImages = []);
-
-/* ================= LIGHT FOLLOW (IMPORTANT PART) ================= */
-function updateLight(x, y) {
-    document.body.style.setProperty("--x", x + "px");
-    document.body.style.setProperty("--y", y + "px");
-}
-
-/* always active */
+/* ================= LIGHT FOLLOW ================= */
 document.addEventListener("mousemove", (e) => {
 
-    updateLight(e.clientX, e.clientY);
+    document.body.style.setProperty("--x", e.clientX + "px");
+    document.body.style.setProperty("--y", e.clientY + "px");
 
     const rect = logo.getBoundingClientRect();
 
-    tx = ((e.clientX - (rect.left + rect.width / 2)) / window.innerWidth) * 10;
-    ty = ((e.clientY - (rect.top + rect.height / 2)) / window.innerHeight) * 10;
+    tx = ((e.clientX - (rect.left + rect.width/2)) / window.innerWidth) * 10;
+    ty = ((e.clientY - (rect.top + rect.height/2)) / window.innerHeight) * 10;
 
     lastMove = Date.now();
 
     if (horrorMode) {
-        clearTimeout(watchTimer);
-        watchTimer = setTimeout(showPopup, 2000);
+        clearTimeout(popupTimeout);
+        popupTimeout = setTimeout(() => {
+            popup.classList.add("show");
+            setTimeout(() => popup.classList.remove("show"), 2000);
+        }, 2000);
     }
 });
 
-/* ================= SCARE ================= */
-function getRandomScare() {
+/* ================= SAFE RANDOM ================= */
+let lastIndex = -1;
+
+function getScare() {
     if (!scareImages.length) return "";
+
+    if (scareImages.length === 1) return scareImages[0];
 
     let i;
     do {
         i = Math.floor(Math.random() * scareImages.length);
-    } while (i === lastScareIndex && scareImages.length > 1);
+    } while (i === lastIndex);
 
-    lastScareIndex = i;
+    lastIndex = i;
     return scareImages[i];
 }
 
+/* ================= SCHEDULER (FIXED CORE) ================= */
 function scheduleScare() {
-
-    clearTimeout(spawnTimeout);
 
     if (!horrorMode) return;
     if (scareActive) return;
+    if (Date.now() < nextAllowedTime) return;
     if (!scareImages.length) return;
+
+    clearTimeout(scareTimeout);
 
     const delay = 4000 + Math.random() * 5000;
 
-    spawnTimeout = setTimeout(() => {
+    scareTimeout = setTimeout(() => {
+
         if (!horrorMode || scareActive) return;
+
         showScare();
+
     }, delay);
 }
 
+/* ================= SHOW ================= */
 function showScare() {
 
     scareActive = true;
 
-    const size = 80;
-    sprite.src = getRandomScare();
+    const size = 40;
+    sprite.src = getScare();
 
     const maxX = window.innerWidth - size;
     const maxY = window.innerHeight - size;
@@ -305,14 +310,22 @@ function showScare() {
         sprite.style.opacity = "1";
     });
 
+    clearTimeout(hideTimeout);
+
     hideTimeout = setTimeout(() => {
 
         sprite.style.opacity = "0";
 
         setTimeout(() => {
+
             sprite.classList.remove("show");
             scareActive = false;
+
+            /* 🔥 IMPORTANT FIX */
+            nextAllowedTime = Date.now() + 1200;
+
             scheduleScare();
+
         }, reduceMotion ? 0 : 300);
 
     }, 3000);
@@ -336,6 +349,8 @@ function disappearIntoSmoke() {
     }
 
     scareActive = false;
+    nextAllowedTime = Date.now() + 1200;
+
     scheduleScare();
 }
 
@@ -344,41 +359,6 @@ sprite.addEventListener("touchstart", (e) => {
     e.preventDefault();
     disappearIntoSmoke();
 }, { passive: false });
-
-/* ================= POPUP ================= */
-function showPopup() {
-    if (!horrorMode) return;
-
-    popup.classList.add("show");
-
-    clearTimeout(popupTimeout);
-    popupTimeout = setTimeout(() => {
-        popup.classList.remove("show");
-    }, 2000);
-}
-
-/* ================= RESET ================= */
-function resetHorror() {
-
-    horrorMode = false;
-
-    clearTimeout(hoverTimer);
-    clearTimeout(spawnTimeout);
-    clearTimeout(hideTimeout);
-    clearTimeout(watchTimer);
-    clearTimeout(popupTimeout);
-
-    scareActive = false;
-
-    document.body.classList.remove("logo-active");
-
-    popup.classList.remove("show");
-
-    sprite.classList.remove("show");
-    sprite.style.opacity = "0";
-
-    smoke.classList.remove("animate");
-}
 
 /* ================= ANIMATION ================= */
 function animate() {
@@ -429,7 +409,18 @@ logo.addEventListener("mouseleave", () => {
     clearTimeout(hoverTimer);
 });
 
-logo.addEventListener("click", resetHorror);
+logo.addEventListener("click", () => {
+
+    horrorMode = false;
+
+    clearTimeout(scareTimeout);
+    clearTimeout(hideTimeout);
+
+    scareActive = false;
+
+    document.body.classList.remove("logo-active");
+
+});
 
 });
 </script>
