@@ -817,6 +817,41 @@ body:not(.horror-active) .site-logo:hover::after{
     animation: ghostSmoke 1.4s forwards;
 }
 
+.watch-popup.smoke-away {
+    opacity: 0;
+    transform: scale(.82);
+    filter: blur(8px);
+    transition:
+        opacity .35s ease,
+        transform .35s ease,
+        filter .35s ease;
+}
+
+.watch-smoke{
+    position:fixed;
+    width:180px;
+    height:180px;
+
+    pointer-events:none;
+
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+
+    background:
+        radial-gradient(circle,
+            rgba(0,255,210,.45) 0%,
+            rgba(0,255,210,.28) 18%,
+            rgba(0,255,210,.15) 35%,
+            rgba(0,180,150,.08) 60%,
+            transparent 100%);
+
+    filter:blur(20px);
+
+    animation:watchSmokeCloud 2.5s ease-out forwards;
+
+    z-index:99999;
+}
+
 @keyframes smokeAway {
     from {
         opacity: 1;
@@ -828,6 +863,41 @@ body:not(.horror-active) .site-logo:hover::after{
         opacity: 0;
         transform: translateY(-60px) scale(1.2);
         filter: blur(20px);
+    }
+}
+
+@keyframes watchSmokeCloud {
+
+    0% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            scale(0.2);
+        filter: blur(10px);
+    }
+
+    30% {
+        opacity: 0.95;
+        transform:
+            translate(-50%, -55%)
+            scale(0.8);
+        filter: blur(18px);
+    }
+
+    60% {
+        opacity: 0.55;
+        transform:
+            translate(-50%, -70%)
+            scale(1.5);
+        filter: blur(28px);
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translate(-50%, -100%)
+            scale(2.4);
+        filter: blur(48px);
     }
 }
 
@@ -844,6 +914,7 @@ body:not(.horror-active) .site-logo:hover::after{
         filter: blur(28px);
     }
 }
+
 
 /* ================= SEGMENTED CONTROL ================= */
 

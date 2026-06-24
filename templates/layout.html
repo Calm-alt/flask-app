@@ -234,12 +234,10 @@ function toggleNav() {
         messages[Math.floor(Math.random() * messages.length)];
 
     popup.classList.add("show");
-    popup.onmouseenter = () => dissolvePopup(popup);
-    popup.ontouchstart = () => dissolvePopup(popup);
 
     setTimeout(() => {
-    dissolvePopup(popup);
-}, 2500);
+        popup.classList.remove("show");
+    }, 2500);
 }
 
     function popupLoop() {
@@ -256,18 +254,57 @@ function toggleNav() {
         );
     }
 
-    function dissolvePopup(popup) {
+    function showPopup() {
 
-    if (!popup || popup.classList.contains("smoke-away")) {
-        return;
+    let popup = document.querySelector(".watch-popup");
+
+    if (!popup) {
+
+        popup = document.createElement("div");
+        popup.className = "watch-popup";
+        document.body.appendChild(popup);
+
+        popup.addEventListener("mouseenter", () => {
+
+            if (!popup.classList.contains("show")) return;
+            if (popup.classList.contains("smoke-away")) return;
+
+            popup.classList.add("smoke-away");
+
+            const rect = popup.getBoundingClientRect();
+
+            const smoke = document.createElement("div");
+            smoke.className = "watch-smoke";
+
+            smoke.style.left = rect.left + rect.width / 2 + "px";
+            smoke.style.top = rect.top + rect.height / 2 + "px";
+
+            document.body.appendChild(smoke);
+
+            smoke.addEventListener("animationend", () => {
+                smoke.remove();
+            });
+
+            setTimeout(() => {
+                popup.classList.remove("show");
+                popup.classList.remove("smoke-away");
+            }, 350);
+        });
+
     }
 
-    popup.classList.add("smoke-away");
+    if (popup.classList.contains("show")) return;
+
+    popup.textContent =
+        messages[Math.floor(Math.random() * messages.length)];
+
+    popup.classList.add("show");
 
     setTimeout(() => {
-        popup.classList.remove("show");
-        popup.classList.remove("smoke-away");
-    }, 1400);
+        if (!popup.classList.contains("smoke-away")) {
+            popup.classList.remove("show");
+        }
+    }, 2500);
 }
 
     function setHorror(on) {
