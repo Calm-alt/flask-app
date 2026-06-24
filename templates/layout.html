@@ -199,7 +199,8 @@ function toggleNav() {
 
         pupilScale: 1.0,
 
-        popupTimer: null
+        popupTimer: null,
+        firstPopup: true
     };
 
     const messages = [
@@ -298,6 +299,41 @@ function toggleNav() {
     popup.textContent =
         messages[Math.floor(Math.random() * messages.length)];
 
+    if (state.firstPopup) {
+
+    // Keep the first popup in the original location
+    popup.style.top = "20px";
+    popup.style.right = "20px";
+    popup.style.left = "auto";
+
+    state.firstPopup = false;
+
+} else {
+
+    // Randomly place later popups around the edges
+    const popupWidth = 220;
+    const popupHeight = 60;
+    const margin = 30;
+
+    let x, y;
+
+    do {
+        x = Math.random() * (window.innerWidth - popupWidth - margin * 2) + margin;
+        y = Math.random() * (window.innerHeight - popupHeight - margin * 2) + margin;
+
+    } while (
+        // Avoid the central content area
+        x > window.innerWidth * 0.25 &&
+        x < window.innerWidth * 0.75 &&
+        y > 100 &&
+        y < window.innerHeight * 0.85
+    );
+
+    popup.style.left = x + "px";
+    popup.style.top = y + "px";
+    popup.style.right = "auto";
+}
+
     popup.classList.add("show");
 
     setTimeout(() => {
@@ -310,6 +346,10 @@ function toggleNav() {
     function setHorror(on) {
 
         state.active = on;
+
+        if (on) {
+    state.firstPopup = true;
+}
 
         localStorage.setItem(
             STORAGE_KEY,
