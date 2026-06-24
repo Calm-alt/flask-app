@@ -174,7 +174,6 @@ function toggleNav() {
 }
 </script>
 
-<!-- ================= HORROR MODE SYSTEM (FINAL FIX) ================= -->
 <script>
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -183,11 +182,9 @@ const eye = document.querySelector(".skull-eye");
 const sprite = document.getElementById("horrorSprite");
 const smoke = document.getElementById("smoke");
 
-if (!logo || !eye || !sprite || !smoke) {
-    return;
-}
+if (!logo || !eye || !sprite || !smoke) return;
 
-/* prevent duplicate popup creation */
+/* ================= POPUP (single instance) ================= */
 let popup = document.querySelector(".watch-popup");
 
 if (!popup) {
@@ -197,31 +194,35 @@ if (!popup) {
     document.body.appendChild(popup);
 }
 
+/* ================= CORE STATE ================= */
 let horrorMode = false;
 let hoverTimer = null;
 
-let tx = 0;
-let ty = 0;
-let cx = 0;
-let cy = 0;
+let tx = 0, ty = 0;
+let cx = 0, cy = 0;
 let lastMove = Date.now();
 
 let watchTimer = null;
 let spawnTimeout = null;
 let hideTimeout = null;
 let popupTimeout = null;
-let fadeTimeout = null;
 
+/* ================= SCARE CONTROL (FIXED) ================= */
+/*
+   IMPORTANT FIX:
+   - No session racing
+   - No multiple queued scares
+   - Only ONE active scheduled scare at a time
+*/
 let scareImages = [];
 let scareActive = false;
-let scareSession = 0;
+let scareLocked = false;
 let lastScareIndex = -1;
 
 const reduceMotion =
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ================= LOAD IMAGES ================= */
-
+/* ================= LOAD SCARES ================= */
 fetch("/static/images/scares/scares.json")
     .then(res => res.json())
     .then(data => {
@@ -230,132 +231,80 @@ fetch("/static/images/scares/scares.json")
             img => `/static/images/scares/${img}`
         );
 
-        /* preload images */
+        // preload
         scareImages.forEach(src => {
             const img = new Image();
             img.src = src;
         });
 
-        /* if horror already active, resume scheduling */
-        if (horrorMode) {
-            scheduleNextScare();
-        }
-
+        if (horrorMode) scheduleNextScare();
     })
-    .catch(() => {
-        scareImages = [];
-    });
+    .catch(() => scareImages = []);
 
-/* ================= SCARE SYSTEM ================= */
+/* ================= SAFE RANDOM ================= */
+function getRandomScare() {
+    if (!scareImages.length) return "";
 
+    if (scareImages.length === 1) return scareImages[0];
+
+    let index;
+    do {
+        index = Math.floor(Math.random() * scareImages.length);
+    } while (index === lastScareIndex);
+
+    lastScareIndex = index;
+    return scareImages[index];
+}
+
+/* ================= SCHEDULE SYSTEM (FIXED CORE BUG) ================= */
 function scheduleNextScare() {
 
     clearTimeout(spawnTimeout);
 
     if (!horrorMode) return;
+    if (scareLocked) return;
+    if (scareActive) return;
+    if (!scareImages.length) return;
 
-    if (scareImages.length === 0) {
-
-        spawnTimeout = setTimeout(
-            scheduleNextScare,
-            1000
-        );
-
-        return;
-    }
-
-    if (scareActive) {
-
-        spawnTimeout = setTimeout(
-            scheduleNextScare,
-            1000
-        );
-
-        return;
-    }
-
-    const mySession = ++scareSession;
+    scareLocked = true; // 🔥 prevents ANY double scheduling
 
     const delay = 4000 + Math.random() * 5000;
 
     spawnTimeout = setTimeout(() => {
 
-        if (!horrorMode) return;
-        if (mySession !== scareSession) return;
+        scareLocked = false;
 
-        showScare(mySession);
+        if (!horrorMode) return;
+        if (scareActive) return;
+
+        showScare();
 
     }, delay);
 }
 
-function getRandomScare() {
-
-    if (scareImages.length === 0) {
-        return "";
-    }
-
-    if (scareImages.length === 1) {
-        return scareImages[0];
-    }
-
-    let index;
-
-    do {
-
-        index = Math.floor(
-            Math.random() * scareImages.length
-        );
-
-    } while (index === lastScareIndex);
-
-    lastScareIndex = index;
-
-    return scareImages[index];
-}
-
-function showScare(session) {
+/* ================= SHOW SCARE ================= */
+function showScare() {
 
     if (!horrorMode) return;
     if (scareActive) return;
-    if (session !== scareSession) return;
-
-    const src = getRandomScare();
-
-    if (!src) {
-        scareActive = false;
-        scheduleNextScare();
-        return;
-    }
 
     scareActive = true;
 
     const size = 80;
 
-    sprite.src = src;
+    sprite.src = getRandomScare();
 
     sprite.style.width = size + "px";
     sprite.style.height = "auto";
 
-    const maxX = Math.max(
-        0,
-        window.innerWidth - size
-    );
+    const maxX = Math.max(0, window.innerWidth - size);
+    const maxY = Math.max(0, window.innerHeight - size);
 
-    const maxY = Math.max(
-        0,
-        window.innerHeight - size
-    );
-
-    sprite.style.left =
-        (Math.random() * maxX) + "px";
-
-    sprite.style.top =
-        (Math.random() * maxY) + "px";
+    sprite.style.left = (Math.random() * maxX) + "px";
+    sprite.style.top = (Math.random() * maxY) + "px";
 
     sprite.style.transition =
-        reduceMotion
-            ? "none"
-            : "opacity 400ms ease";
+        reduceMotion ? "none" : "opacity 400ms ease";
 
     sprite.style.opacity = "0";
     sprite.classList.add("show");
@@ -365,13 +314,12 @@ function showScare(session) {
     });
 
     clearTimeout(hideTimeout);
-    clearTimeout(fadeTimeout);
 
     hideTimeout = setTimeout(() => {
 
         sprite.style.opacity = "0";
 
-        fadeTimeout = setTimeout(() => {
+        setTimeout(() => {
 
             sprite.classList.remove("show");
             scareActive = false;
@@ -382,11 +330,10 @@ function showScare(session) {
 
     }, 3000);
 }
-
+/* ================= DISAPPEAR INTO SMOKE ================= */
 function disappearIntoSmoke() {
 
     clearTimeout(hideTimeout);
-    clearTimeout(fadeTimeout);
 
     smoke.style.left = sprite.style.left;
     smoke.style.top = sprite.style.top;
@@ -395,11 +342,8 @@ function disappearIntoSmoke() {
     sprite.classList.remove("show");
 
     if (!reduceMotion) {
-
         smoke.classList.remove("animate");
-
         void smoke.offsetWidth;
-
         smoke.classList.add("animate");
     }
 
@@ -408,29 +352,16 @@ function disappearIntoSmoke() {
     scheduleNextScare();
 }
 
-/* ================= SPRITE ================= */
+/* ================= SPRITE EVENTS ================= */
+sprite.addEventListener("click", disappearIntoSmoke);
 
-sprite.addEventListener(
-    "click",
-    disappearIntoSmoke
-);
-
-sprite.addEventListener(
-    "touchstart",
-    e => {
-
-        e.preventDefault();
-
-        disappearIntoSmoke();
-
-    },
-    { passive: false }
-);
+sprite.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    disappearIntoSmoke();
+}, { passive: false });
 
 /* ================= POPUP ================= */
-
 function showPopup() {
-
     if (!horrorMode) return;
 
     popup.classList.add("show");
@@ -438,32 +369,25 @@ function showPopup() {
     clearTimeout(popupTimeout);
 
     popupTimeout = setTimeout(() => {
-
         popup.classList.remove("show");
-
     }, 2000);
 }
 
 /* ================= RESET ================= */
-
 function resetHorror() {
 
     horrorMode = false;
 
-    scareSession++;
-
     clearTimeout(hoverTimer);
     clearTimeout(spawnTimeout);
     clearTimeout(hideTimeout);
-    clearTimeout(fadeTimeout);
     clearTimeout(watchTimer);
     clearTimeout(popupTimeout);
 
     scareActive = false;
+    scareLocked = false;
 
-    document.body.classList.remove(
-        "logo-active"
-    );
+    document.body.classList.remove("logo-active");
 
     popup.classList.remove("show");
 
@@ -473,12 +397,10 @@ function resetHorror() {
     smoke.classList.remove("animate");
 }
 
-/* ================= ANIMATION ================= */
-
+/* ================= ANIMATION LOOP ================= */
 function animate() {
 
-    const idle =
-        Date.now() - lastMove > 900;
+    const idle = Date.now() - lastMove > 900;
 
     cx += (tx - cx) * 0.08;
     cy += (ty - cy) * 0.08;
@@ -489,13 +411,8 @@ function animate() {
         rotateY(${cx}deg)
     `;
 
-    eye.style.height =
-        horrorMode ? "6px" : "8px";
-
-    eye.style.opacity =
-        horrorMode && idle
-            ? "0.4"
-            : "1";
+    eye.style.height = horrorMode ? "6px" : "8px";
+    eye.style.opacity = horrorMode && idle ? "0.4" : "1";
 
     eye.style.transform = `
         translate(-50%,-50%)
@@ -507,91 +424,53 @@ function animate() {
 
     requestAnimationFrame(animate);
 }
-
 animate();
 
-/* ================= MOUSE ================= */
+/* ================= MOUSE TRACKING + LIGHT FIX ================= */
+document.addEventListener("mousemove", (e) => {
 
-document.addEventListener(
-    "mousemove",
-    e => {
+    const rect = logo.getBoundingClientRect();
 
-        const rect =
-            logo.getBoundingClientRect();
+    tx = ((e.clientX - (rect.left + rect.width / 2)) / window.innerWidth) * 10;
+    ty = ((e.clientY - (rect.top + rect.height / 2)) / window.innerHeight) * 10;
 
-        tx =
-            (
-                e.clientX -
-                (
-                    rect.left +
-                    rect.width / 2
-                )
-            ) /
-            window.innerWidth *
-            10;
+    lastMove = Date.now();
 
-        ty =
-            (
-                e.clientY -
-                (
-                    rect.top +
-                    rect.height / 2
-                )
-            ) /
-            window.innerHeight *
-            10;
-
-        lastMove = Date.now();
-
-        if (horrorMode) {
-
-            clearTimeout(watchTimer);
-
-            watchTimer = setTimeout(
-                showPopup,
-                2000
-            );
-        }
+    /* 🔥 RESTORED LIGHT SPOT EFFECT */
+    if (horrorMode) {
+        document.body.style.setProperty("--x", e.clientX + "px");
+        document.body.style.setProperty("--y", e.clientY + "px");
     }
-);
+
+    /* popup trigger */
+    if (horrorMode) {
+        clearTimeout(watchTimer);
+        watchTimer = setTimeout(showPopup, 2000);
+    }
+});
 
 /* ================= TRIGGERS ================= */
+logo.addEventListener("mouseenter", () => {
 
-logo.addEventListener(
-    "mouseenter",
-    () => {
+    clearTimeout(hoverTimer);
 
-        clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(() => {
 
-        hoverTimer = setTimeout(() => {
+        if (horrorMode) return;
 
-            if (horrorMode) return;
+        horrorMode = true;
+        document.body.classList.add("logo-active");
 
-            horrorMode = true;
+        scheduleNextScare();
 
-            document.body.classList.add(
-                "logo-active"
-            );
+    }, 3000);
+});
 
-            scheduleNextScare();
+logo.addEventListener("mouseleave", () => {
+    clearTimeout(hoverTimer);
+});
 
-        }, 3000);
-    }
-);
-
-logo.addEventListener(
-    "mouseleave",
-    () => {
-
-        clearTimeout(hoverTimer);
-
-    }
-);
-
-logo.addEventListener(
-    "click",
-    resetHorror
-);
+logo.addEventListener("click", resetHorror);
 
 });
 </script>

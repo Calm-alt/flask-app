@@ -886,3 +886,12 @@ body.logo-active::after{
 .flicker-overlay.active {
     opacity: 0.8;
 }
+
+body {
+    background: radial-gradient(
+        circle at var(--x, 50vw) var(--y, 50vh),
+        transparent 0%,
+        rgba(0,0,0,.35) 40%,
+        rgba(0,0,0,.85) 100%
+    );
+}
