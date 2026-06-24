@@ -223,9 +223,9 @@ function toggleNav() {
 
     setHorror(state.active);
 
-    logo.addEventListener("click", (e) => {
-        e.preventDefault();
-        setHorror(!state.active);
+    logo.addEventListener("dblclick", (e) => {
+    e.preventDefault(); // Prevent navigation on double-click
+    setHorror(!state.active);
     });
 
     window.addEventListener("mousemove", (e) => {
