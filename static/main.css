@@ -785,16 +785,14 @@ body.dark-mode .dark-mode-toggle{
 }
 
 
-/* =========================
-   HORROR VIGNETTE SYSTEM (FIXED)
-========================= */
-
 body::before{
     content:"";
     position:fixed;
     inset:0;
     pointer-events:none;
     z-index:9998;
+
+    opacity:0; /* IMPORTANT FIX */
 
     background: radial-gradient(
         circle at var(--x, 50vw) var(--y, 50vh),
@@ -803,10 +801,8 @@ body::before{
         rgba(0,0,0, calc(var(--horror, 0) * 0.9)) 100%
     );
 
-    opacity:1;
-    transition: background 0.15s ease;
+    transition: opacity .25s ease, background .15s ease;
 }
-
 
 /* =========================
    HORROR SYSTEM V2 PATCH
@@ -816,6 +812,12 @@ body::before{
 .logo-skull {
     position: relative;
     overflow: hidden;
+}
+
+.skull-eye{
+    opacity:1;
+    visibility:visible;
+    display:block;
 }
 
 /* active horror mode glow */
@@ -830,11 +832,6 @@ body.horror-active .skull-eye {
     filter: drop-shadow(0 0 8px rgba(0,255,210,.8));
 }
 
-/* smoother vignette response */
-body::before {
-    transition: opacity .2s ease, background .15s ease;
-}
-
 
 
 /* stronger “IT SEES YOU” effect when active */
@@ -843,7 +840,6 @@ body.horror-active .site-logo::after {
     animation: whisperFlicker 0.9s infinite;
 }
 
-/* intensify vignette when horror active */
 body.horror-active::before {
-    opacity: 1;
+    opacity:1;
 }
