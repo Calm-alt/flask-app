@@ -21,7 +21,9 @@
         <a class="site-logo" href="{{ url_for('home') }}" data-whisper="IT SEES YOU">
 
             <span class="logo-skull">
-                <span class="skull-eye"></span>
+                <span class="skull-eye">
+                    <span class="skull-pupil"></span>
+                </span>
             </span>
 
             
@@ -291,6 +293,8 @@ function toggleNav() {
     });
 
     window.addEventListener("mousemove", (e) => {
+         
+        state.lastMouseMove = Date.now();
 
         const rect = logo.getBoundingClientRect();
 

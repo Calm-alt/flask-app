@@ -865,3 +865,50 @@ body.horror-active .site-logo::after{
 }
 
 
+/* ==========================================
+   SKULL PUPIL SUPPORT
+   (Append to the end of main.css)
+========================================== */
+
+.skull-eye{
+    --pupil-scale: 1;
+    --blink-scale: 1;
+    --eye-x: 0px;
+    --eye-y: 0px;
+
+    width:12px;
+    height:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    overflow:hidden;
+}
+
+.skull-pupil{
+    width:42%;
+    height:42%;
+    border-radius:50%;
+
+    background:#001a16;
+
+    box-shadow:
+        0 0 4px rgba(0,255,210,.35),
+        inset 0 0 2px rgba(255,255,255,.15);
+
+    transform-origin:center;
+
+    transform:
+        scale(var(--pupil-scale))
+        scaleY(var(--blink-scale));
+
+    transition:transform 0.08s linear;
+}
+
+/* Optional: make the glow slightly stronger in horror mode */
+body.horror-active .skull-eye{
+    box-shadow:
+        0 0 20px rgba(0,255,210,.95),
+        0 0 40px rgba(0,255,210,.25);
+}
