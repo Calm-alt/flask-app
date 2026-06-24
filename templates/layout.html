@@ -307,11 +307,9 @@ function toggleNav() {
 
     state.lastMouseMove = Date.now();
 
-    const maxX = Math.max(1, document.documentElement.scrollWidth - window.innerWidth);
-    const maxY = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-
-    state.x = ((e.clientX + window.scrollX) / maxX) * 2 - 1;
-    state.y = ((e.clientY + window.scrollY) / maxY) * 2 - 1;
+    // Viewport-based normalization for reliable tracking
+    state.x = (e.clientX / window.innerWidth) * 2 - 1;
+    state.y = (e.clientY / window.innerHeight) * 2 - 1;
 
     document.body.style.setProperty("--x", e.clientX + "px");
     document.body.style.setProperty("--y", e.clientY + "px");
