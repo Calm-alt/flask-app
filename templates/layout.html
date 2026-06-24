@@ -234,10 +234,12 @@ function toggleNav() {
         messages[Math.floor(Math.random() * messages.length)];
 
     popup.classList.add("show");
+    popup.onmouseenter = () => dissolvePopup(popup);
+    popup.ontouchstart = () => dissolvePopup(popup);
 
     setTimeout(() => {
-        popup.classList.remove("show");
-    }, 2500);
+    dissolvePopup(popup);
+}, 2500);
 }
 
     function popupLoop() {
@@ -253,6 +255,20 @@ function toggleNav() {
             delay
         );
     }
+
+    function dissolvePopup(popup) {
+
+    if (!popup || popup.classList.contains("smoke-away")) {
+        return;
+    }
+
+    popup.classList.add("smoke-away");
+
+    setTimeout(() => {
+        popup.classList.remove("show");
+        popup.classList.remove("smoke-away");
+    }, 1400);
+}
 
     function setHorror(on) {
 

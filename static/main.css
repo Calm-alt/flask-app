@@ -788,6 +788,63 @@ body:not(.horror-active) .site-logo:hover::after{
     transform:translateY(0);
 }
 
+.watch-popup {
+    overflow: visible;
+}
+
+.watch-popup.smoke-away {
+    animation: smokeAway 1.4s forwards;
+    pointer-events: none;
+}
+
+.watch-popup::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,255,210,.35) 0%,
+            rgba(0,255,210,.15) 35%,
+            transparent 75%
+        );
+    opacity: 0;
+    pointer-events: none;
+}
+
+.watch-popup.smoke-away::after {
+    animation: ghostSmoke 1.4s forwards;
+}
+
+@keyframes smokeAway {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-60px) scale(1.2);
+        filter: blur(20px);
+    }
+}
+
+@keyframes ghostSmoke {
+    from {
+        opacity: .8;
+        transform: scale(.7);
+        filter: blur(6px);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(2.2) translateY(-40px);
+        filter: blur(28px);
+    }
+}
+
 /* ================= SEGMENTED CONTROL ================= */
 
 .segmented {
