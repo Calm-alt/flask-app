@@ -256,11 +256,6 @@ function loop() {
         setHorror(true);
     }
 
-    /* auto OFF (prevents infinite horror bug) */
-    if (state.active && idle > config.autoOffDelay) {
-        setHorror(false);
-    }
-
     /* smooth intensity (for vignette only) */
     state.intensity += state.active ? 0.03 : -0.03;
     state.intensity = Math.max(0, Math.min(1, state.intensity));
