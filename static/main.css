@@ -806,3 +806,55 @@ body::before{
     opacity:1;
     transition: background 0.15s ease;
 }
+
+
+/* =========================
+   HORROR SYSTEM V2 PATCH
+========================= */
+
+/* ensure skull always clips eye properly */
+.logo-skull {
+    position: relative;
+    overflow: hidden;
+}
+
+/* active horror mode glow */
+body.horror-active .logo-skull {
+    box-shadow:
+        inset 0 0 18px rgba(0,255,210,.25),
+        0 0 32px rgba(0,255,210,.35);
+}
+
+/* eye becomes more “alive” when active */
+body.horror-active .skull-eye {
+    filter: drop-shadow(0 0 8px rgba(0,255,210,.8));
+}
+
+/* smoother vignette response */
+body::before {
+    transition: opacity .2s ease, background .15s ease;
+}
+
+/* optional horror shake (enabled via JS class) */
+body.horror-shake {
+    animation: horrorShake .12s infinite;
+}
+
+@keyframes horrorShake {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(1px,-1px); }
+    50% { transform: translate(-1px,1px); }
+    75% { transform: translate(1px,1px); }
+    100% { transform: translate(0,0); }
+}
+
+/* stronger “IT SEES YOU” effect when active */
+body.horror-active .site-logo::after {
+    opacity: 1;
+    animation: whisperFlicker 0.9s infinite;
+}
+
+/* intensify vignette when horror active */
+body.horror-active::before {
+    opacity: 1;
+}

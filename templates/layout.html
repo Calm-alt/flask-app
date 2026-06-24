@@ -140,6 +140,10 @@
     </section>
 </main>
 
+<!-- ================= HORROR SPRITES ================= -->
+<img id="horrorSprite" class="horror-sprite" src="" alt="">
+<div id="smoke" class="smoke-effect"></div>
+
 <!-- ================= DARK MODE ================= -->
 <script>
 function updateThemeButton() {
@@ -178,21 +182,56 @@ const eye = document.querySelector(".skull-eye");
 
 if (!logo || !eye) return;
 
-const state = {
-    active: false,
+/* =========================
+   PERSISTENCE KEY
+========================= */
+const KEY = "knights_horror_mode";
+
+/* =========================
+   STATE
+========================= */
+let state = {
+    active: localStorage.getItem(KEY) === "on",
     lastMove: Date.now(),
     intensity: 0,
     x: window.innerWidth / 2,
     y: window.innerHeight / 2
 };
 
+/* =========================
+   CONFIG
+========================= */
 const config = {
-    activateDelay: 2500,
-    growSpeed: 0.03,
-    decaySpeed: 0.015
+    activateDelay: 2000,
+    growSpeed: 0.04,
+    decaySpeed: 0.02
 };
 
-/* ================= MOUSE TRACK ================= */
+/* =========================
+   HELPERS
+========================= */
+function setHorror(on) {
+    state.active = on;
+    localStorage.setItem(KEY, on ? "on" : "off");
+
+    document.body.classList.toggle("horror-active", on);
+}
+
+/* init class */
+setHorror(state.active);
+
+/* =========================
+   TURN OFF ON NAVIGATION
+========================= */
+document.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", () => {
+        setHorror(false);
+    });
+});
+
+/* =========================
+   MOUSE TRACKING
+========================= */
 document.addEventListener("mousemove", (e) => {
     state.lastMove = Date.now();
     state.x = e.clientX;
@@ -202,27 +241,27 @@ document.addEventListener("mousemove", (e) => {
     document.body.style.setProperty("--y", e.clientY + "px");
 });
 
-/* ================= ACTIVATE ================= */
-function activate() {
-    state.active = true;
-}
+/* =========================
+   CLICK TO ENABLE
+========================= */
+logo.addEventListener("click", () => {
+    setHorror(true);
+});
 
-function deactivate() {
-    state.active = false;
-}
-
-/* ================= LOOP ================= */
+/* =========================
+   MAIN LOOP
+========================= */
 function loop() {
 
     const now = Date.now();
     const idle = now - state.lastMove;
 
     if (!state.active && idle > config.activateDelay) {
-        activate();
+        setHorror(true);
     }
 
     if (state.active && idle < 300) {
-        deactivate();
+        // stay active but don’t spam toggle off
     }
 
     state.intensity += state.active ? config.growSpeed : -config.decaySpeed;
@@ -233,34 +272,50 @@ function loop() {
     const dx = (state.x - (rect.left + rect.width / 2)) * 0.02;
     const dy = (state.y - (rect.top + rect.height / 2)) * 0.02;
 
-    /* ================= LOGO EFFECT ================= */
+    /* =========================
+       LOGO EFFECT
+    ========================= */
     logo.style.transform =
         `perspective(800px)
-        rotateX(${-dy * state.intensity}deg)
-        rotateY(${dx * state.intensity}deg)
-        scale(${1 + state.intensity * 0.02})`;
+         rotateX(${-dy * state.intensity}deg)
+         rotateY(${dx * state.intensity}deg)
+         scale(${1 + state.intensity * 0.02})`;
 
-    /* ================= MOVING EYE (FIXED) ================= */
+    /* =========================
+       EYE STAYS INSIDE SKULL
+    ========================= */
+    let mx = state.x - rect.left;
+    let my = state.y - rect.top;
+
+    const pad = 6;
+
+    mx = Math.max(pad, Math.min(rect.width - pad, mx));
+    my = Math.max(pad, Math.min(rect.height - pad, my));
+
     eye.style.transform =
-        `translate(-50%, -50%)
-         translate(${dx * 1.5}px, ${dy * 1.5}px)`;
+        `translate(${mx - rect.width / 2}px, ${my - rect.height / 2}px)`;
 
-    eye.style.opacity = state.active ? 0.65 : 1;
-    eye.style.height = state.active ? "6px" : "8px";
+    /* =========================
+       EYE VISUAL STATE
+    ========================= */
+    eye.style.opacity = state.active ? 0.9 : 0.25;
 
-    /* ================= VIGNETTE ================= */
+    eye.style.boxShadow = state.active
+        ? "0 0 18px rgba(0,255,210,.9)"
+        : "0 0 6px rgba(0,255,210,.2)";
+
+    /* =========================
+       VIGNETTE STRENGTH
+    ========================= */
     document.body.style.setProperty("--horror", state.intensity.toFixed(3));
+
+    /* optional shake */
+    document.body.classList.toggle("horror-shake", state.intensity > 0.7);
 
     requestAnimationFrame(loop);
 }
 
 loop();
-
-/* ================= RESET ON CLICK ================= */
-logo.addEventListener("click", () => {
-    state.intensity = 0;
-    deactivate();
-});
 
 });
 </script>
