@@ -750,29 +750,6 @@ body.logo-active::before{
 }
 
 /* =========================
-   SURVEILLANCE NOISE
-========================= */
-
-body::after{
-    content:"";
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    opacity:0;
-
-    background-image:url("https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif");
-    background-size:300px;
-    mix-blend-mode:overlay;
-
-    transition:opacity .2s ease;
-    z-index:9999;
-}
-
-body.logo-active::after{
-    opacity:.05;
-}
-
-/* =========================
    IT’S WATCHING POPUP
 ========================= */
 
@@ -832,58 +809,20 @@ body.logo-active::after{
     color: white;
 }
 
-.horror-sprite {
-    position: fixed;
-    width: 180px;
-    opacity: 0;
-    pointer-events: auto;
-    z-index: 99999;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-
-.horror-sprite.show {
-    opacity: 1;
-}
-
-.smoke-effect {
-    position: fixed;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    opacity: 0;
-    pointer-events: none;
-    background: radial-gradient(circle,
-        rgba(180,180,180,.7),
-        rgba(100,100,100,.3),
-        transparent);
-}
-
-.smoke-effect.animate {
-    animation: smokePuff 0.8s forwards;
-}
-
-@keyframes smokePuff {
-    from {
-        opacity: 0.8;
-        transform: scale(0.5);
-    }
-    to {
-        opacity: 0;
-        transform: scale(2);
-    }
-}
-
-.flicker-overlay {
+body::before {
+    content: "";
     position: fixed;
     inset: 0;
-    background: white;
-    opacity: 0;
     pointer-events: none;
+
+    background: radial-gradient(
+        circle at var(--x, 50vw) var(--y, 50vh),
+        transparent 0%,
+        rgba(0, 0, 0, calc(var(--horror, 0) * 0.4)) 40%,
+        rgba(0, 0, 0, calc(var(--horror, 0) * 0.9)) 100%
+    );
+
+    opacity: 1;
+    transition: background 0.1s linear;
     z-index: 9998;
 }
-
-.flicker-overlay.active {
-    opacity: 0.8;
-}
-

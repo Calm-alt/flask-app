@@ -179,247 +179,115 @@ window.addEventListener("DOMContentLoaded", () => {
 
 const logo = document.querySelector(".site-logo");
 const eye = document.querySelector(".skull-eye");
-const sprite = document.getElementById("horrorSprite");
-const smoke = document.getElementById("smoke");
 
-if (!logo || !eye || !sprite || !smoke) return;
+if (!logo || !eye) return;
 
-/* ================= POPUP ================= */
-let popup = document.querySelector(".watch-popup");
+/* ================= STATE MACHINE ================= */
+const state = {
+    active: false,        // horror mode
+    lastMove: Date.now(),
+    lastInteract: Date.now(),
+    intensity: 0,         // 0 → 1
+    x: 0,
+    y: 0
+};
 
-if (!popup) {
-    popup = document.createElement("div");
-    popup.className = "watch-popup";
-    popup.textContent = "IT’S WATCHING";
-    document.body.appendChild(popup);
-}
+/* ================= CONFIG ================= */
+const config = {
+    activateDelay: 2500,   // hover idle before horror starts
+    decaySpeed: 0.01,
+    growSpeed: 0.03
+};
 
-/* ================= STATE ================= */
-let horrorMode = false;
-let hoverTimer = null;
-
-let tx = 0, ty = 0;
-let cx = 0, cy = 0;
-let lastMove = Date.now();
-
-/* 🔥 FIX CORE */
-let scareImages = [];
-let scareActive = false;
-let scareTimeout = null;
-let hideTimeout = null;
-let popupTimeout = null;
-
-/* prevents instant respawn */
-let nextAllowedTime = 0;
-
-const reduceMotion =
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-/* ================= LOAD IMAGES ================= */
-fetch("/static/images/scares/scares.json")
-.then(res => res.json())
-.then(data => {
-    scareImages = data.map(img => `/static/images/scares/${img}`);
-
-    scareImages.forEach(src => {
-        const i = new Image();
-        i.src = src;
-    });
-})
-.catch(() => scareImages = []);
-
-/* ================= LIGHT FOLLOW ================= */
+/* ================= MOUSE ================= */
 document.addEventListener("mousemove", (e) => {
 
+    state.lastMove = Date.now();
+
+    state.x = e.clientX;
+    state.y = e.clientY;
+
+    /* radial light (your CSS uses --x --y) */
     document.body.style.setProperty("--x", e.clientX + "px");
     document.body.style.setProperty("--y", e.clientY + "px");
+});
 
+/* ================= ACTIVATE / DEACTIVATE ================= */
+function activate() {
+    state.active = true;
+    document.body.classList.add("logo-active");
+}
+
+function deactivate() {
+    state.active = false;
+    document.body.classList.remove("logo-active");
+}
+
+/* ================= LOOP ================= */
+function loop() {
+
+    const now = Date.now();
+    const idle = now - state.lastMove;
+
+    /* ENTER HORROR MODE */
+    if (!state.active && idle > config.activateDelay) {
+        activate();
+    }
+
+    /* EXIT if user becomes active again */
+    if (state.active && idle < 500) {
+        deactivate();
+    }
+
+    /* intensity logic */
+    if (state.active) {
+        state.intensity += config.growSpeed;
+    } else {
+        state.intensity -= config.decaySpeed;
+    }
+
+    state.intensity = Math.max(0, Math.min(1, state.intensity));
+
+    /* ================= LOGO EFFECT ================= */
     const rect = logo.getBoundingClientRect();
 
-    tx = ((e.clientX - (rect.left + rect.width/2)) / window.innerWidth) * 10;
-    ty = ((e.clientY - (rect.top + rect.height/2)) / window.innerHeight) * 10;
-
-    lastMove = Date.now();
-
-    if (horrorMode) {
-        clearTimeout(popupTimeout);
-        popupTimeout = setTimeout(() => {
-            popup.classList.add("show");
-            setTimeout(() => popup.classList.remove("show"), 2000);
-        }, 2000);
-    }
-});
-
-/* ================= SAFE RANDOM ================= */
-let lastIndex = -1;
-
-function getScare() {
-    if (!scareImages.length) return "";
-
-    if (scareImages.length === 1) return scareImages[0];
-
-    let i;
-    do {
-        i = Math.floor(Math.random() * scareImages.length);
-    } while (i === lastIndex);
-
-    lastIndex = i;
-    return scareImages[i];
-}
-
-/* ================= SCHEDULER (FIXED CORE) ================= */
-function scheduleScare() {
-
-    if (!horrorMode) return;
-    if (scareActive) return;
-    if (Date.now() < nextAllowedTime) return;
-    if (!scareImages.length) return;
-
-    clearTimeout(scareTimeout);
-
-    const delay = 4000 + Math.random() * 5000;
-
-    scareTimeout = setTimeout(() => {
-
-        if (!horrorMode || scareActive) return;
-
-        showScare();
-
-    }, delay);
-}
-
-/* ================= SHOW ================= */
-function showScare() {
-
-    scareActive = true;
-
-    const size = 40;
-    sprite.src = getScare();
-
-    const maxX = window.innerWidth - size;
-    const maxY = window.innerHeight - size;
-
-    sprite.style.width = size + "px";
-    sprite.style.left = Math.random() * maxX + "px";
-    sprite.style.top = Math.random() * maxY + "px";
-
-    sprite.classList.add("show");
-    sprite.style.opacity = "0";
-
-    requestAnimationFrame(() => {
-        sprite.style.opacity = "1";
-    });
-
-    clearTimeout(hideTimeout);
-
-    hideTimeout = setTimeout(() => {
-
-        sprite.style.opacity = "0";
-
-        setTimeout(() => {
-
-            sprite.classList.remove("show");
-            scareActive = false;
-
-            /* 🔥 IMPORTANT FIX */
-            nextAllowedTime = Date.now() + 1200;
-
-            scheduleScare();
-
-        }, reduceMotion ? 0 : 300);
-
-    }, 3000);
-}
-
-/* ================= SMOKE ================= */
-function disappearIntoSmoke() {
-
-    clearTimeout(hideTimeout);
-
-    smoke.style.left = sprite.style.left;
-    smoke.style.top = sprite.style.top;
-
-    sprite.style.opacity = "0";
-    sprite.classList.remove("show");
-
-    if (!reduceMotion) {
-        smoke.classList.remove("animate");
-        void smoke.offsetWidth;
-        smoke.classList.add("animate");
-    }
-
-    scareActive = false;
-    nextAllowedTime = Date.now() + 1200;
-
-    scheduleScare();
-}
-
-sprite.addEventListener("click", disappearIntoSmoke);
-sprite.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    disappearIntoSmoke();
-}, { passive: false });
-
-/* ================= ANIMATION ================= */
-function animate() {
-
-    cx += (tx - cx) * 0.08;
-    cy += (ty - cy) * 0.08;
+    const dx = (state.x - (rect.left + rect.width / 2)) * 0.02;
+    const dy = (state.y - (rect.top + rect.height / 2)) * 0.02;
 
     logo.style.transform = `
-        perspective(700px)
-        rotateX(${cy * -1}deg)
-        rotateY(${cx}deg)
+        perspective(800px)
+        rotateX(${-dy * state.intensity}deg)
+        rotateY(${dx * state.intensity}deg)
+        scale(${1 + state.intensity * 0.02})
     `;
 
-    eye.style.height = horrorMode ? "6px" : "8px";
-
-    eye.style.opacity =
-        horrorMode && Date.now() - lastMove > 900
-            ? "0.4"
-            : "1";
-
+    /* ================= EYE ================= */
     eye.style.transform = `
-        translate(-50%,-50%)
-        translate(${cx * 1.5}px, ${cy * 1.5}px)
+        translate(-50%, -50%)
+        translate(${dx * 1.5}px, ${dy * 1.5}px)
     `;
 
-    requestAnimationFrame(animate);
+    eye.style.opacity = state.active ? 0.6 + Math.random() * 0.4 : 1;
+
+    eye.style.height = state.active
+        ? "6px"
+        : "8px";
+
+    /* ================= SCREEN HORROR ================= */
+    document.body.style.setProperty(
+        "--horror",
+        state.intensity.toFixed(3)
+    );
+
+    requestAnimationFrame(loop);
 }
-animate();
 
-/* ================= TRIGGER ================= */
-logo.addEventListener("mouseenter", () => {
+loop();
 
-    clearTimeout(hoverTimer);
-
-    hoverTimer = setTimeout(() => {
-
-        if (horrorMode) return;
-
-        horrorMode = true;
-        document.body.classList.add("logo-active");
-
-        scheduleScare();
-
-    }, 3000);
-});
-
-logo.addEventListener("mouseleave", () => {
-    clearTimeout(hoverTimer);
-});
-
+/* ================= MANUAL RESET ================= */
 logo.addEventListener("click", () => {
-
-    horrorMode = false;
-
-    clearTimeout(scareTimeout);
-    clearTimeout(hideTimeout);
-
-    scareActive = false;
-
-    document.body.classList.remove("logo-active");
-
+    deactivate();
+    state.intensity = 0;
 });
 
 });
