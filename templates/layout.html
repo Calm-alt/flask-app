@@ -140,10 +140,6 @@
     </section>
 </main>
 
-<!-- ================= HORROR SPRITES ================= -->
-<img id="horrorSprite" class="horror-sprite" src="" alt="">
-<div id="smoke" class="smoke-effect"></div>
-
 <!-- ================= DARK MODE ================= -->
 <script>
 function updateThemeButton() {
@@ -183,7 +179,7 @@ const eye = document.querySelector(".skull-eye");
 if (!logo || !eye) return;
 
 /* =========================
-   PERSISTENCE KEY
+   STORAGE KEY
 ========================= */
 const KEY = "knights_horror_mode";
 
@@ -202,13 +198,12 @@ let state = {
    CONFIG
 ========================= */
 const config = {
-    activateDelay: 2000,
-    growSpeed: 0.04,
-    decaySpeed: 0.02
+    activateDelay: 3000,
+    autoOffDelay: 15000
 };
 
 /* =========================
-   HELPERS
+   APPLY STATE
 ========================= */
 function setHorror(on) {
     state.active = on;
@@ -217,7 +212,7 @@ function setHorror(on) {
     document.body.classList.toggle("horror-active", on);
 }
 
-/* init class */
+/* initialize */
 setHorror(state.active);
 
 /* =========================
@@ -242,7 +237,7 @@ document.addEventListener("mousemove", (e) => {
 });
 
 /* =========================
-   CLICK TO ENABLE
+   CLICK TO ENABLE HORROR
 ========================= */
 logo.addEventListener("click", () => {
     setHorror(true);
@@ -256,15 +251,18 @@ function loop() {
     const now = Date.now();
     const idle = now - state.lastMove;
 
+    /* auto ON */
     if (!state.active && idle > config.activateDelay) {
         setHorror(true);
     }
 
-    if (state.active && idle < 300) {
-        // stay active but don’t spam toggle off
+    /* auto OFF (prevents infinite horror bug) */
+    if (state.active && idle > config.autoOffDelay) {
+        setHorror(false);
     }
 
-    state.intensity += state.active ? config.growSpeed : -config.decaySpeed;
+    /* smooth intensity (for vignette only) */
+    state.intensity += state.active ? 0.03 : -0.03;
     state.intensity = Math.max(0, Math.min(1, state.intensity));
 
     const rect = logo.getBoundingClientRect();
@@ -272,17 +270,15 @@ function loop() {
     const dx = (state.x - (rect.left + rect.width / 2)) * 0.02;
     const dy = (state.y - (rect.top + rect.height / 2)) * 0.02;
 
-    /* =========================
-       LOGO EFFECT
-    ========================= */
+    /* logo movement */
     logo.style.transform =
         `perspective(800px)
          rotateX(${-dy * state.intensity}deg)
          rotateY(${dx * state.intensity}deg)
-         scale(${1 + state.intensity * 0.02})`;
+         scale(${1 + state.intensity * 0.01})`;
 
     /* =========================
-       EYE STAYS INSIDE SKULL
+       EYE (IDENTICAL ALWAYS)
     ========================= */
     let mx = state.x - rect.left;
     let my = state.y - rect.top;
@@ -295,22 +291,11 @@ function loop() {
     eye.style.transform =
         `translate(${mx - rect.width / 2}px, ${my - rect.height / 2}px)`;
 
-    /* =========================
-       EYE VISUAL STATE
-    ========================= */
-    eye.style.opacity = state.active ? 0.9 : 0.25;
+    eye.style.opacity = 0.85;
+    eye.style.boxShadow = "0 0 12px rgba(0,255,210,.55)";
 
-    eye.style.boxShadow = state.active
-        ? "0 0 18px rgba(0,255,210,.9)"
-        : "0 0 6px rgba(0,255,210,.2)";
-
-    /* =========================
-       VIGNETTE STRENGTH
-    ========================= */
+    /* vignette intensity */
     document.body.style.setProperty("--horror", state.intensity.toFixed(3));
-
-    /* optional shake */
-    document.body.classList.toggle("horror-shake", state.intensity > 0.7);
 
     requestAnimationFrame(loop);
 }
