@@ -161,12 +161,11 @@ function toggleDarkMode() {
     updateThemeButton();
 }
 
-window.addEventListener("load", () => {
-    if (localStorage.getItem("darkMode") === "enabled") {
-        document.body.classList.add("dark-mode");
-    }
-    updateThemeButton();
-});
+if (localStorage.getItem("darkMode") === "enabled") {
+    document.body.classList.add("dark-mode");
+}
+
+updateThemeButton();
 
 function toggleNav() {
     document.querySelector(".nav-menu").classList.toggle("active");
