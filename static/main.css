@@ -463,11 +463,20 @@ body.horror-active .skull-eye {
     gap:14px;
 }
 
-.sidebar-card{
-    background:rgba(255,255,255,.02);
-    border:1px solid rgba(255,255,255,.06);
-    padding:14px;
-    border-radius:14px;
+.sidebar-card {
+    background: var(--surface-color);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 1.25rem;
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+}
+
+.sidebar-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    border-color: rgba(120,180,255,0.3);
 }
 
 /* =========================
