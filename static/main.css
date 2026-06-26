@@ -463,26 +463,33 @@ body.horror-active .skull-eye {
     gap:14px;
 }
 
-.sidebar-card {
-    background: var(--surface-color);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 1.25rem;
-    transition: transform 0.25s ease,
-                box-shadow 0.25s ease,
-                border-color 0.25s ease;
-}
-
-.sidebar-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    border-color: rgba(120,180,255,0.3);
+.sidebar-card{
+    background:rgba(255,255,255,.02);
+    border:1px solid rgba(255,255,255,.06);
+    padding:14px;
+    border-radius:14px;
 }
 
 /* =========================
    BUTTONS
 ========================= */
+.sidebar-card h3,
+.sidebar-card h4 {
+    position: relative;
+    padding-left: 12px;
+}
 
+.sidebar-card h3::before,
+.sidebar-card h4::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3px;
+    width: 4px;
+    height: 1.1em;
+    border-radius: 10px;
+    background: #4f8cff;
+}
 .btn{
     display:inline-flex;
     padding:.7rem 1rem;
