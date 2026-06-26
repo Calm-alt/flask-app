@@ -473,22 +473,21 @@ body.horror-active .skull-eye {
 /* =========================
    BUTTONS
 ========================= */
-.sidebar-card h3,
-.sidebar-card h4 {
-    position: relative;
-    padding-left: 12px;
+.sidebar-card .btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
 }
-
-.sidebar-card h3::before,
-.sidebar-card h4::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 3px;
-    width: 4px;
-    height: 1.1em;
-    border-radius: 10px;
-    background: #4f8cff;
+.feed-header {
+    padding: 2rem;
+    border-radius: 20px;
+    background: linear-gradient(
+        135deg,
+        rgba(80, 120, 255, 0.08),
+        rgba(255, 255, 255, 0.02)
+    );
+    border: 1px solid rgba(255,255,255,0.08);
 }
 .btn{
     display:inline-flex;
