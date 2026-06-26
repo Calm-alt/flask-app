@@ -473,7 +473,53 @@ body.horror-active .skull-eye {
 /* =========================
    BUTTONS
 ========================= */
+.search-btn::before,
+.segmented a::before,
+.sidebar-card .btn.btn-primary::before,
+.search-btn::after,
+.segmented a::after,
+.sidebar-card .btn.btn-primary::after {
 
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: .35;
+}
+
+/* Bubble 1 */
+
+.search-btn::before,
+.segmented a::before,
+.sidebar-card .btn.btn-primary::before {
+
+    width: 26px;
+    height: 26px;
+
+    left: 10%;
+    bottom: -30px;
+
+    background: rgba(255,255,255,.55);
+
+    animation: floatBubble1 6s linear infinite;
+}
+
+/* Bubble 2 */
+
+.search-btn::after,
+.segmented a::after,
+.sidebar-card .btn.btn-primary::after {
+
+    width: 16px;
+    height: 16px;
+
+    right: 18%;
+    bottom: -20px;
+
+    background: rgba(255,255,255,.4);
+
+    animation: floatBubble2 8s linear infinite;
+}
 .btn{
     display:inline-flex;
     padding:.7rem 1rem;
