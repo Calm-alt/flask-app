@@ -946,6 +946,11 @@ body:not(.horror-active) .site-logo:hover::after{
     background: rgba(0,0,0,0.05);
 }
 
+.segmented a.active {
+    background: var(--accent, #4f46e5);
+    color: white;
+}
+
 
 body::before{
     content:"";
@@ -1041,125 +1046,4 @@ body.horror-active .skull-eye{
     box-shadow:
         0 0 20px rgba(0,255,210,.95),
         0 0 40px rgba(0,255,210,.25);
-}
-/* ===========================
-   RPG POTION BOTTLE BUTTONS
-=========================== */
-
-.btn-primary,
-.segmented a.active{
-
-    position:relative;
-    overflow:hidden;
-    isolation:isolate;
-
-    color:#f7fff8;
-    font-weight:700;
-
-    padding:.75rem 1.2rem;
-
-    border-radius: 18px 18px 28px 28px;
-
-    border:2px solid rgba(190,255,235,.45);
-
-    background:
-        linear-gradient(
-            to top,
-            #15d986 0%,
-            #24e39a 28%,
-            #36efad 42%,
-            rgba(255,255,255,.08) 42.5%,
-            rgba(255,255,255,.03) 100%
-        );
-
-    box-shadow:
-        inset 0 -12px 25px rgba(0,90,40,.45),
-        inset 0 10px 12px rgba(255,255,255,.18),
-        0 0 18px rgba(0,255,180,.20);
-
-    backdrop-filter:blur(8px);
-
-    transition:.25s;
-}
-
-/* curved liquid surface */
-.btn-primary::before,
-.segmented a.active::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:-10%;
-    width:120%;
-    height:18px;
-
-    bottom:53%;
-
-    border-radius:50%;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            rgba(255,255,255,.35),
-            rgba(255,255,255,0)
-        );
-
-    animation:potionWave 3s ease-in-out infinite;
-}
-
-/* floating bubbles */
-.btn-primary::after,
-.segmented a.active::after{
-
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background:
-        radial-gradient(circle at 18% 82%, white 0 2px, transparent 3px),
-        radial-gradient(circle at 35% 72%, rgba(255,255,255,.9) 0 3px, transparent 4px),
-        radial-gradient(circle at 58% 90%, white 0 2px, transparent 3px),
-        radial-gradient(circle at 74% 76%, rgba(255,255,255,.8) 0 3px, transparent 4px),
-        radial-gradient(circle at 88% 88%, white 0 2px, transparent 3px);
-
-    animation:bubbleRise 5s linear infinite;
-
-    opacity:.9;
-}
-
-.btn-primary:hover,
-.segmented a.active:hover{
-
-    transform:translateY(-3px) scale(1.02);
-
-    box-shadow:
-        inset 0 -12px 25px rgba(0,90,40,.55),
-        inset 0 10px 12px rgba(255,255,255,.2),
-        0 0 30px rgba(0,255,180,.45);
-}
-
-@keyframes bubbleRise{
-
-    from{
-        transform:translateY(18px);
-    }
-
-    to{
-        transform:translateY(-40px);
-    }
-
-}
-
-@keyframes potionWave{
-
-    0%,100%{
-        transform:translateY(0) rotate(-1deg);
-    }
-
-    50%{
-        transform:translateY(2px) rotate(1deg);
-    }
-
 }
