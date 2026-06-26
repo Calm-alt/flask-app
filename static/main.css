@@ -473,22 +473,7 @@ body.horror-active .skull-eye {
 /* =========================
    BUTTONS
 ========================= */
-.sidebar-card .btn {
-    display: block;
-    width: 100%;
-    margin-top: 10px;
-    text-align: center;
-}
-.feed-header {
-    padding: 2rem;
-    border-radius: 20px;
-    background: linear-gradient(
-        135deg,
-        rgba(80, 120, 255, 0.08),
-        rgba(255, 255, 255, 0.02)
-    );
-    border: 1px solid rgba(255,255,255,0.08);
-}
+
 .btn{
     display:inline-flex;
     padding:.7rem 1rem;
