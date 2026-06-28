@@ -2572,13 +2572,13 @@ body.horror-active .skull-eye{
 .timeline-toggle::before{
     content:"";
     position:absolute;
-    inset:2px;
-    border-radius:12px;
+    inset:4px;
+    border-radius:11px;
 
-    background:rgba(22, 30, 22, .38);
+    background:#4b5a47;   /* cover color */
 
-    opacity:1;
-    transition:opacity .28s ease;
+    opacity:.55;
+    transition:opacity .25s ease;
 
     pointer-events:none;
     z-index:1;
@@ -2587,6 +2587,7 @@ body.horror-active .skull-eye{
 .timeline-toggle:hover::before{
     opacity:0;
 }
+
 
 .timeline-toggle a{
 
