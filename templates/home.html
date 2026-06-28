@@ -38,13 +38,13 @@ right
 
     <div class="timeline-slider"></div>
 
-    <a href="{{ url_for('home', sort='newest', q=request.args.get('q','')) }}"
-       class="{% if request.args.get('sort','newest') == 'newest' %}active{% endif %}">
+    <a href="{{ url_for('home', sort='latest', q=request.args.get('q','')) }}"
+       class="{% if request.args.get('sort','latest') == 'latest' %}active{% endif %}">
 
         <span class="toggle-arrow">⮝</span>
 
         <span class="toggle-label">
-            NEWEST
+            LATEST
         </span>
 
     </a>
