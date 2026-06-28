@@ -1356,13 +1356,3 @@ body.horror-active .skull-eye{
     }
 
 }
-.timeline-toggle.animate-right .timeline-slider{
-    animation:forestSlideRight .42s forwards;
-}
-
-.timeline-toggle.animate-left .timeline-slider{
-    animation:forestSlideLeft .42s forwards;
-}
-.timeline-toggle.right .timeline-slider{
-    transform:translateX(100%);
-}
