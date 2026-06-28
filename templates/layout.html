@@ -513,11 +513,18 @@ requestAnimationFrame(animate);
 })();
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.querySelector(".timeline-toggle");
     if (!toggle) return;
 
     const links = toggle.querySelectorAll("a");
+
+    // Set initial position after refresh
+    if (links[1].classList.contains("active")) {
+        toggle.classList.add("right");
+    } else {
+        toggle.classList.remove("right");
+    }
 
     links.forEach((link, index) => {
         link.addEventListener("click", (e) => {
@@ -542,11 +549,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 420);
         });
     });
-
-    const active = toggle.querySelector("a.active");
-    if (active === links[1]) {
-        toggle.classList.add("right");
-    }
 });
 </script>
 </body>
