@@ -26,16 +26,6 @@
 
     <section class="feed-controls">
 
-      <div class="timeline-toggle
-{% if request.args.get('sort') == 'oldest' %}
-right
-{% endif %}">
-
-    <div class="timeline-toggle
-{% if request.args.get('sort') == 'oldest' %}
-right
-{% endif %}">
-
     <div class="timeline-slider"></div>
 
     <a href="{{ url_for('home', sort='latest', q=request.args.get('q','')) }}"
