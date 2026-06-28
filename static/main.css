@@ -1200,18 +1200,12 @@ body.horror-active .skull-eye{
 
 }
 
-/* Heavy movement */
-
-.timeline-toggle.right .timeline-slider{
-
-    animation:forestSlideRight .42s cubic-bezier(.22,.9,.3,1) forwards;
-
+.timeline-toggle.animate-right .timeline-slider{
+    animation:forestSlideRight .42s forwards;
 }
 
-.timeline-toggle:not(.right) .timeline-slider{
-
-    animation:forestSlideLeft .42s cubic-bezier(.22,.9,.3,1) forwards;
-
+.timeline-toggle.animate-left .timeline-slider{
+    animation:forestSlideLeft .42s forwards;
 }
 
 /* ==========================================
@@ -1361,4 +1355,18 @@ body.horror-active .skull-eye{
 
     }
 
+}
+.timeline-toggle.animate-right .timeline-slider{
+    animation:forestSlideRight .42s forwards;
+}
+
+.timeline-toggle.animate-left .timeline-slider{
+    animation:forestSlideLeft .42s forwards;
+}
+.timeline-slider{
+    transform:translateX(0);
+}
+
+.timeline-toggle.right .timeline-slider{
+    transform:translateX(100%);
 }

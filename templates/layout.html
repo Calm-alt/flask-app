@@ -512,5 +512,34 @@ requestAnimationFrame(animate);
 
 })();
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const toggle = document.querySelector(".timeline-toggle");
+    if (!toggle) return;
+
+    // Only animate if the previous page recorded a click
+    const direction = sessionStorage.getItem("timelineAnimation");
+
+    if (direction === "right") {
+        toggle.classList.add("animate-right");
+    } else if (direction === "left") {
+        toggle.classList.add("animate-left");
+    }
+
+    sessionStorage.removeItem("timelineAnimation");
+
+    document.querySelectorAll(".timeline-toggle a").forEach(link => {
+        link.addEventListener("click", () => {
+            if (link.href.includes("sort=oldest")) {
+                sessionStorage.setItem("timelineAnimation", "right");
+            } else {
+                sessionStorage.setItem("timelineAnimation", "left");
+            }
+        });
+    });
+
+});
+</script>
 </body>
 </html>
