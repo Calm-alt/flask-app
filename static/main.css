@@ -959,7 +959,7 @@ body:not(.horror-active) .site-logo:hover::after{
 
     border-radius:12px;
 
-    background:rgba(255,255,255,.025);
+    background:rgba(255,255,255,.02);
 
     border:1px solid rgba(255,255,255,.06);
 
@@ -992,18 +992,14 @@ body:not(.horror-active) .site-logo:hover::after{
 
     border-radius:9px;
 
-    background:
+    background:rgba(255,255,255,.055);
 
-        linear-gradient(
-            180deg,
-            rgba(141,182,143,.20),
-            rgba(141,182,143,.10)
-        );
+    border:1px solid rgba(255,255,255,.08);
 
-    border:1px solid rgba(141,182,143,.22);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.03);
 
     transition:
-
         transform .32s cubic-bezier(.22,1,.36,1);
 
 }
