@@ -925,70 +925,132 @@ body:not(.horror-active) .site-logo:hover::after{
 
 /* ================= SEGMENTED CONTROL ================= */
 /* =========================
-   KNIGHTS TIMELINE TOGGLE
+   FEED CONTROLS
+========================= */
+
+.feed-controls{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:24px 0 30px;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.feed-count{
+    color:var(--muted);
+    font-size:.88rem;
+}
+
+
+/* =========================
+   KNIGHTS TIMELINE SWITCH
 ========================= */
 
 .timeline-toggle{
-    display:inline-flex;
-    align-items:center;
 
-    padding:4px;
+    position:relative;
+
+    display:inline-grid;
+    grid-template-columns:1fr 1fr;
+
+    width:240px;
+    height:56px;
+
+    padding:5px;
+
+    border-radius:18px;
+
+    overflow:hidden;
 
     background:
         linear-gradient(
             180deg,
-            rgba(22,35,28,.98),
-            rgba(12,20,15,.98)
+            rgba(22,36,28,.98),
+            rgba(10,17,13,.98)
         );
 
     border:1px solid rgba(141,182,143,.18);
 
-    border-radius:16px;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.04),
+        0 10px 28px rgba(0,0,0,.35);
+
+}
+
+
+/* Sliding active background */
+
+.timeline-slider{
+
+    position:absolute;
+
+    top:5px;
+    left:5px;
+
+    width:calc(50% - 5px);
+    height:calc(100% - 10px);
+
+    border-radius:14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #a6cca8,
+            #86b58a
+        );
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.03),
-        inset 0 -2px 8px rgba(0,0,0,.35),
-        0 10px 28px rgba(0,0,0,.22);
+        inset 0 1px 0 rgba(255,255,255,.35),
+        0 0 18px rgba(141,182,143,.28);
 
-    gap:4px;
+    transition:
+        transform .35s cubic-bezier(.22,1,.36,1);
+
+    z-index:0;
+
 }
+
+.timeline-toggle.right .timeline-slider{
+
+    transform:translateX(100%);
+
+}
+
+
+/* Buttons */
 
 .timeline-toggle a{
 
-    min-width:88px;
+    position:relative;
+    z-index:2;
 
     display:flex;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 
     gap:8px;
 
-    padding:11px 18px;
+    padding:0 16px;
 
-    border-radius:12px;
+    border-radius:14px;
 
-    font-size:.90rem;
+    font-size:.92rem;
     font-weight:700;
+
+    letter-spacing:.3px;
 
     color:var(--muted);
 
     transition:
-        background .28s ease,
-        color .28s ease,
-        box-shadow .28s ease,
-        transform .25s ease;
+        color .25s ease,
+        transform .2s ease;
 
-    position:relative;
 }
 
 .timeline-toggle a:hover{
 
     color:var(--text);
-
-    background:
-        rgba(255,255,255,.035);
-
-    transform:translateY(-1px);
 
 }
 
@@ -996,78 +1058,54 @@ body:not(.horror-active) .site-logo:hover::after{
 
     color:#08110d;
 
-    background:
-        linear-gradient(
-            180deg,
-            #9dc7a0,
-            #82ae86
-        );
+}
 
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.35),
-        0 0 20px rgba(141,182,143,.30),
-        0 4px 14px rgba(0,0,0,.22);
+.timeline-toggle a:hover .toggle-icon{
+
+    transform:translateY(-2px);
 
 }
 
-/* nice glow */
 
-.timeline-toggle a.active::after{
+/* SVG Icons */
 
-    content:"";
+.toggle-icon{
 
-    position:absolute;
+    width:17px;
+    height:17px;
 
-    inset:0;
+    stroke:currentColor;
+    fill:none;
 
-    border-radius:12px;
+    stroke-width:2.2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
 
-    box-shadow:
-        inset 0 0 16px rgba(255,255,255,.12);
-
-    pointer-events:none;
-
-}
-
-/* icons */
-
-.icon{
-
-    font-size:.72rem;
-
-    opacity:.75;
-
-    transition:
-        transform .3s ease,
-        opacity .3s ease;
+    transition:.25s;
 
 }
 
-.timeline-toggle a:hover .icon{
+.timeline-toggle a.active .toggle-icon{
 
-    opacity:1;
-
-}
-
-.timeline-toggle a.active .icon{
-
-    opacity:1;
+    filter:drop-shadow(0 0 5px rgba(255,255,255,.5));
 
 }
 
-/* animations */
 
-.timeline-toggle a:first-child.active .icon{
+/* Active animation */
+
+.timeline-toggle a:first-child.active .toggle-icon{
 
     animation:arrowUp 1.5s ease-in-out infinite;
 
 }
 
-.timeline-toggle a:last-child.active .icon{
+.timeline-toggle a:last-child.active .toggle-icon{
 
     animation:arrowDown 1.5s ease-in-out infinite;
 
 }
+
 
 @keyframes arrowUp{
 
@@ -1093,15 +1131,18 @@ body:not(.horror-active) .site-logo:hover::after{
 
 }
 
+
+/* Mobile */
+
 @media(max-width:768px){
 
-    .timeline-toggle{
-        width:100%;
+    .feed-controls{
+        flex-direction:column;
+        align-items:flex-start;
     }
 
-    .timeline-toggle a{
-        flex:1;
-        min-width:0;
+    .timeline-toggle{
+        width:220px;
     }
 
 }

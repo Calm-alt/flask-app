@@ -28,16 +28,28 @@
 
       <div class="timeline-toggle">
 
+    <div class="timeline-slider"></div>
+
     <a href="{{ url_for('home', sort='latest', q=request.args.get('q','')) }}"
        class="{% if sort != 'oldest' %}active{% endif %}">
-        <span class="icon">▲</span>
-        Latest
+
+        <svg class="toggle-icon" viewBox="0 0 24 24">
+            <path d="M12 18V6M12 6L8 10M12 6L16 10"/>
+        </svg>
+
+        <span>Latest</span>
+
     </a>
 
     <a href="{{ url_for('home', sort='oldest', q=request.args.get('q','')) }}"
        class="{% if sort == 'oldest' %}active{% endif %}">
-        <span class="icon">▼</span>
-        Oldest
+
+        <svg class="toggle-icon" viewBox="0 0 24 24">
+            <path d="M12 6v12M12 18l-4-4M12 18l4-4"/>
+        </svg>
+
+        <span>Oldest</span>
+
     </a>
 
 </div>
