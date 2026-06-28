@@ -2737,7 +2737,7 @@ body.horror-active .skull-eye{
     background:
         linear-gradient(
             rgba(255,255,255,.10),
-            rgba(0,0,0,.25)
+            rgba(0,0,0,.05)
         );
 
     backdrop-filter:blur(2px);
