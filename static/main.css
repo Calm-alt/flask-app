@@ -925,6 +925,23 @@ body:not(.horror-active) .site-logo:hover::after{
 
 /* ================= SEGMENTED CONTROL ================= */
 /* ==========================================
+   FEED CONTROLS
+========================================== */
+
+.feed-controls{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:24px 0 34px;
+}
+
+.feed-count{
+    font-size:.82rem;
+    color:var(--muted);
+    letter-spacing:.3px;
+}
+
+/* ==========================================
    TIMELINE TOGGLE
 ========================================== */
 
@@ -935,170 +952,150 @@ body:not(.horror-active) .site-logo:hover::after{
     display:grid;
     grid-template-columns:1fr 1fr;
 
-    width:320px;
-    height:72px;
+    width:170px;
+    height:40px;
 
-    padding:8px;
+    padding:4px;
 
-    border-radius:22px;
+    border-radius:12px;
 
-    background:linear-gradient(
-        180deg,
-        #131d18,
-        #0c1310
-    );
+    background:rgba(255,255,255,.025);
 
-    border:1px solid rgba(255,255,255,.05);
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.04),
-        0 14px 30px rgba(0,0,0,.35);
+    border:1px solid rgba(255,255,255,.06);
 
     overflow:hidden;
+
+    transition:.25s;
 }
 
-/* ========================= */
+/* subtle hover */
+
+.timeline-toggle:hover{
+
+    border-color:rgba(141,182,143,.18);
+
+    background:rgba(255,255,255,.03);
+
+}
+
+/* ========================================== */
 
 .timeline-slider{
 
     position:absolute;
 
-    top:8px;
-    left:8px;
+    top:4px;
+    left:4px;
 
-    width:calc(50% - 8px);
-    height:calc(100% - 16px);
+    width:calc(50% - 4px);
+    height:calc(100% - 8px);
 
-    border-radius:16px;
+    border-radius:9px;
 
-    background:linear-gradient(
-        180deg,
-        #f3efe4,
-        #ded8c8
-    );
+    background:
 
-    box-shadow:
-        0 10px 22px rgba(0,0,0,.25),
-        inset 0 1px 0 rgba(255,255,255,.7);
+        linear-gradient(
+            180deg,
+            rgba(141,182,143,.20),
+            rgba(141,182,143,.10)
+        );
+
+    border:1px solid rgba(141,182,143,.22);
 
     transition:
-        transform .45s cubic-bezier(.22,1,.36,1);
 
-    z-index:1;
+        transform .32s cubic-bezier(.22,1,.36,1);
+
 }
 
-/* Slide to Oldest */
+/* move slider */
 
 .timeline-toggle.right .timeline-slider{
 
     transform:translateX(100%);
+
 }
 
-/* ========================= */
+/* ========================================== */
 
 .timeline-toggle a{
 
     position:relative;
+
     z-index:2;
 
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:10px;
 
-    font-size:1rem;
-    font-weight:700;
+    gap:5px;
 
-    color:#8f9d92;
+    font-size:.78rem;
 
-    transition:
-        color .25s ease,
-        transform .2s ease;
+    font-weight:600;
+
+    color:var(--muted);
+
+    transition:.22s;
+
 }
-
-/* Active */
 
 .timeline-toggle a.active{
 
-    color:#18211c;
+    color:var(--text);
+
 }
 
-/* Hover */
+.timeline-toggle a:hover{
 
-.timeline-toggle a:not(.active):hover{
+    color:var(--text-soft);
 
-    color:#ffffff;
-    transform:translateY(-1px);
 }
 
-/* ========================= */
+/* ========================================== */
 
 .toggle-icon{
 
-    width:18px;
-    height:18px;
+    width:14px;
+    height:14px;
 
     stroke:currentColor;
+
     fill:none;
 
     stroke-width:2.3;
-    stroke-linecap:round;
-    stroke-linejoin:round;
 
-    transition:transform .25s ease;
+    transition:.2s;
+
 }
 
 .timeline-toggle a:hover .toggle-icon{
 
-    transform:translateY(-2px);
+    transform:translateY(-1px);
+
 }
 
-/* ========================= */
+/* ========================================== */
 
-.feed-controls{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin:34px 0 28px;
-}
-
-.feed-count{
-
-    color:var(--muted);
-    font-size:.95rem;
-    font-weight:600;
-}
-
-/* ========================= */
-
-@media (max-width:768px){
+@media(max-width:768px){
 
     .feed-controls{
 
         flex-direction:column;
-        gap:18px;
+
+        gap:14px;
+
+        align-items:flex-start;
+
     }
 
     .timeline-toggle{
 
-        width:100%;
-        max-width:340px;
+        width:160px;
+        height:38px;
 
-        height:66px;
     }
 
-    .timeline-toggle a{
-
-        font-size:.95rem;
-    }
-
-    .toggle-icon{
-
-        width:17px;
-        height:17px;
-    }
 }
 
 
