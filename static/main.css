@@ -1308,22 +1308,22 @@ body.horror-active .skull-eye{
 
 }
 .timeline-toggle{
-    background:#1a1814;
-    border:1px solid #705b34;
+    background:#101717;
+    border:1px solid rgba(0,255,210,.25);
 }
 
 .timeline-slider{
     background:linear-gradient(
         180deg,
-        #cfa85c,
-        #8b6b2f
+        #00ffd0,
+        #00a68d
     );
 }
 
 .timeline-toggle a{
-    color:#9d927b;
+    color:#79c7ba;
 }
 
 .timeline-toggle a.active{
-    color:#fff5d7;
+    color:#ffffff;
 }
