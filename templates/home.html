@@ -31,27 +31,32 @@
 right
 {% endif %}">
 
+    <div class="timeline-toggle
+{% if request.args.get('sort') == 'oldest' %}
+right
+{% endif %}">
+
     <div class="timeline-slider"></div>
 
-    <a href="{{ url_for('home', sort='latest', q=request.args.get('q','')) }}"
-       class="{% if request.args.get('sort','latest') == 'latest' %}active{% endif %}">
+    <a href="{{ url_for('home', sort='newest', q=request.args.get('q','')) }}"
+       class="{% if request.args.get('sort','newest') == 'newest' %}active{% endif %}">
 
-        <svg class="toggle-icon" viewBox="0 0 24 24">
-            <path d="M12 18V6M12 6L8 10M12 6L16 10"/>
-        </svg>
+        <span class="toggle-arrow">⮝</span>
 
-        Latest
+        <span class="toggle-label">
+            NEWEST
+        </span>
 
     </a>
 
     <a href="{{ url_for('home', sort='oldest', q=request.args.get('q','')) }}"
        class="{% if request.args.get('sort') == 'oldest' %}active{% endif %}">
 
-        <svg class="toggle-icon" viewBox="0 0 24 24">
-            <path d="M12 6V18M12 18L8 14M12 18L16 14"/>
-        </svg>
+        <span class="toggle-arrow">⮟</span>
 
-        Oldest
+        <span class="toggle-label">
+            OLDEST
+        </span>
 
     </a>
 
