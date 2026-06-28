@@ -26,12 +26,18 @@
 
     <section class="feed-controls">
 
-       <div class="segmented">
-    <a href="/home?sort=latest" class="{% if request.args.get('sort') != 'oldest' %}active{% endif %}">
+      <div class="timeline-toggle">
+    <span class="slider"></span>
+
+    <a href="/home?sort=latest"
+       class="{{ 'active' if sort == 'latest' else '' }}">
+        <span class="icon">▲</span>
         Latest
     </a>
 
-    <a href="/home?sort=oldest" class="{% if request.args.get('sort') == 'oldest' %}active{% endif %}">
+    <a href="/home?sort=oldest"
+       class="{{ 'active' if sort == 'oldest' else '' }}">
+        <span class="icon">▼</span>
         Oldest
     </a>
 </div>

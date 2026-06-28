@@ -923,34 +923,55 @@ body:not(.horror-active) .site-logo:hover::after{
 }
 
 
-/* ================= SEGMENTED CONTROL ================= */
-
-.segmented {
-    display: inline-flex;
-    border: 1px solid var(--border, #ccc);
-    border-radius: 10px;
-    overflow: hidden;
-    background: transparent;
+.icon{
+    display:inline-block;
+    margin-right:6px;
+    transition:
+        transform .25s ease,
+        color .25s ease,
+        text-shadow .25s ease;
 }
 
-.segmented a {
-    padding: 6px 12px;
-    text-decoration: none;
-    font-size: 14px;
-    transition: 0.2s;
-    color: inherit;
-    background: transparent;
+.timeline-toggle a:hover .icon{
+    transform:translateY(-3px);
 }
 
-.segmented a:hover {
-    background: rgba(0,0,0,0.05);
+.timeline-toggle a.active .icon{
+    color:#66ffe3;
+    text-shadow:0 0 10px rgba(0,255,210,.6);
 }
 
-.segmented a.active {
-    background: var(--accent, #4f46e5);
-    color: white;
+.timeline-toggle a:first-child.active .icon{
+    animation:arrowUp 1.5s ease-in-out infinite;
 }
 
+@keyframes arrowUp{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-4px);
+    }
+
+}
+
+.timeline-toggle a:last-child.active .icon{
+    animation:arrowDown 1.5s ease-in-out infinite;
+}
+
+@keyframes arrowDown{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(4px);
+    }
+
+}
 
 body::before{
     content:"";
