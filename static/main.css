@@ -1308,23 +1308,46 @@ body.horror-active .skull-eye{
 
 }
 /* ==========================================
+   FEED CONTROLS
+========================================== */
+
+.feed-controls{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:24px 0 34px;
+}
+
+.feed-count{
+    font-size:.82rem;
+    color:var(--muted);
+    letter-spacing:.3px;
+}
+
+/* ==========================================
    KNIGHTS STONE TIMELINE
 ========================================== */
 
 .timeline-toggle{
+
     position:relative;
     display:grid;
     grid-template-columns:1fr 1fr;
 
     width:190px;
     height:46px;
+
     padding:4px;
 
     border-radius:14px;
 
-    /* Stone body */
     background:
-        linear-gradient(180deg,#3f433f 0%,#2e322f 45%,#222522 100%);
+        linear-gradient(
+            180deg,
+            #404441 0%,
+            #313532 45%,
+            #222523 100%
+        );
 
     border:2px solid #6d746d;
 
@@ -1334,13 +1357,19 @@ body.horror-active .skull-eye{
         inset 0 2px rgba(255,255,255,.08),
         inset 0 -3px rgba(0,0,0,.45),
         0 10px 22px rgba(0,0,0,.35);
+
+    transition:.3s ease;
 }
 
-/* carved stone texture */
+/* Stone texture */
+
 .timeline-toggle::before{
+
     content:"";
+
     position:absolute;
     inset:2px;
+
     border-radius:11px;
 
     background:
@@ -1348,13 +1377,17 @@ body.horror-active .skull-eye{
         radial-gradient(circle at 74% 62%,rgba(0,0,0,.20) 0 2px,transparent 3px),
         radial-gradient(circle at 46% 82%,rgba(255,255,255,.04) 0 1px,transparent 2px);
 
-    opacity:.7;
+    opacity:.75;
+
     pointer-events:none;
 }
 
-/* engraved border */
+/* Engraved border */
+
 .timeline-toggle::after{
+
     content:"";
+
     position:absolute;
     inset:0;
 
@@ -1362,12 +1395,30 @@ body.horror-active .skull-eye{
 
     box-shadow:
         inset 0 0 0 1px rgba(255,255,255,.05),
-        inset 0 0 0 2px rgba(0,0,0,.22);
+        inset 0 0 0 2px rgba(0,0,0,.25);
 
     pointer-events:none;
 }
 
+/* Hover */
+
+.timeline-toggle:hover{
+
+    border-color:#8b938c;
+
+    box-shadow:
+        inset 0 2px rgba(255,255,255,.10),
+        inset 0 -3px rgba(0,0,0,.45),
+        0 14px 30px rgba(0,0,0,.45);
+
+}
+
+/* ==========================================
+   STONE SLIDER
+========================================== */
+
 .timeline-slider{
+
     position:absolute;
 
     top:4px;
@@ -1378,37 +1429,62 @@ body.horror-active .skull-eye{
 
     border-radius:10px;
 
-    /* Emerald stone */
     background:
         linear-gradient(
             180deg,
-            #84ad86,
-            #648466,
-            #49634b
+            #909791,
+            #707772,
+            #535a55
         );
 
-    border:1px solid #93bf96;
+    border:1px solid #adb5af;
 
     box-shadow:
-        inset 0 1px rgba(255,255,255,.18),
+        inset 0 1px rgba(255,255,255,.22),
         inset 0 -3px rgba(0,0,0,.35),
-        0 4px 10px rgba(0,0,0,.35),
-        0 0 14px rgba(104,160,113,.15);
+        0 5px 12px rgba(0,0,0,.35);
 
-    transition:transform .35s cubic-bezier(.22,1,.36,1);
+    transform-origin:center;
+
+    transition:
+        background .3s,
+        box-shadow .3s;
+
+}
+
+/* Heavy stone movement */
+
+.timeline-toggle .timeline-slider{
+
+    animation:none;
+
 }
 
 .timeline-toggle.right .timeline-slider{
-    transform:translateX(100%);
+
+    animation:stoneSlideRight .42s cubic-bezier(.2,.95,.3,1) forwards;
+
 }
 
+.timeline-toggle:not(.right) .timeline-slider{
+
+    animation:stoneSlideLeft .42s cubic-bezier(.2,.95,.3,1) forwards;
+
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
 .timeline-toggle a{
+
     position:relative;
     z-index:2;
 
     display:flex;
     justify-content:center;
     align-items:center;
+
     gap:6px;
 
     font-size:.8rem;
@@ -1417,27 +1493,214 @@ body.horror-active .skull-eye{
     text-transform:uppercase;
     letter-spacing:1px;
 
-    color:#bcc5bc;
+    color:#c2c8c2;
 
     transition:.25s;
 }
 
 .timeline-toggle a.active{
-    color:#ffffff;
-    text-shadow:0 0 8px rgba(255,255,255,.18);
+
+    color:#fff;
+
+    text-shadow:
+        0 0 8px rgba(255,255,255,.15);
+
 }
 
 .timeline-toggle a:hover{
-    color:#eef5ef;
+
+    color:#f4f7f4;
+
 }
 
+.timeline-toggle a:first-child{
+
+    border-right:1px solid rgba(255,255,255,.08);
+
+}
+
+/* Icons */
+
 .toggle-icon{
+
     width:14px;
     height:14px;
+
+    stroke:currentColor;
+    fill:none;
     stroke-width:2.4;
+
     transition:.25s;
 }
 
 .timeline-toggle a:hover .toggle-icon{
+
     transform:translateY(-1px);
+
+}
+
+/* ==========================================
+   HORROR MODE
+========================================== */
+
+body.horror-active .timeline-toggle{
+
+    background:
+        linear-gradient(
+            180deg,
+            #2b0707,
+            #190303
+        );
+
+    border:2px solid #7d1b1b;
+
+    box-shadow:
+        inset 0 2px rgba(255,110,110,.06),
+        inset 0 -3px rgba(0,0,0,.6),
+        0 0 28px rgba(120,0,0,.45);
+
+}
+
+/* Bloody stone */
+
+body.horror-active .timeline-toggle::before{
+
+    background:
+        radial-gradient(circle at 22% 30%,rgba(120,10,10,.35) 0 2px,transparent 3px),
+        radial-gradient(circle at 74% 68%,rgba(255,70,70,.08) 0 2px,transparent 3px),
+        radial-gradient(circle at 48% 82%,rgba(0,0,0,.28) 0 2px,transparent 3px);
+
+}
+
+/* Bloody Mary slider */
+
+body.horror-active .timeline-slider{
+
+    background:
+        linear-gradient(
+            180deg,
+            #b62828,
+            #7d1010,
+            #470606
+        );
+
+    border:1px solid #d76d6d;
+
+    box-shadow:
+        inset 0 1px rgba(255,190,190,.18),
+        inset 0 -3px rgba(0,0,0,.45),
+        0 0 16px rgba(180,25,25,.45);
+
+    animation-duration:3s;
+
+}
+
+body.horror-active .timeline-toggle a{
+
+    color:#c89a9a;
+
+}
+
+body.horror-active .timeline-toggle a.active{
+
+    color:#fff3f3;
+
+    text-shadow:
+        0 0 10px rgba(255,70,70,.55);
+
+}
+
+/* ==========================================
+   STONE MOVEMENT
+========================================== */
+
+@keyframes stoneSlideRight{
+
+    0%{
+        transform:translateX(0) scaleX(.97);
+    }
+
+    60%{
+        transform:translateX(calc(100% + 2px)) scaleX(1.01);
+    }
+
+    82%{
+        transform:translateX(calc(100% - 2px));
+    }
+
+    100%{
+        transform:translateX(100%);
+    }
+
+}
+
+@keyframes stoneSlideLeft{
+
+    0%{
+        transform:translateX(100%) scaleX(.97);
+    }
+
+    60%{
+        transform:translateX(-2px) scaleX(1.01);
+    }
+
+    82%{
+        transform:translateX(2px);
+    }
+
+    100%{
+        transform:translateX(0);
+    }
+
+}
+
+/* ==========================================
+   BLOOD PULSE
+========================================== */
+
+@keyframes bloodPulse{
+
+    0%,100%{
+
+        filter:brightness(1);
+
+        box-shadow:
+            inset 0 1px rgba(255,180,180,.15),
+            0 0 10px rgba(120,0,0,.35);
+
+    }
+
+    50%{
+
+        filter:brightness(1.15);
+
+        box-shadow:
+            inset 0 1px rgba(255,220,220,.30),
+            0 0 24px rgba(185,18,18,.75);
+
+    }
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+    .feed-controls{
+
+        flex-direction:column;
+        align-items:flex-start;
+        gap:14px;
+
+    }
+
+    .timeline-toggle{
+
+        width:170px;
+        height:42px;
+
+    }
+
 }
