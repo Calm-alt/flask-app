@@ -28,12 +28,14 @@
 
       <div class="timeline-toggle">
 
-    <a href="/home?sort=latest" class="active">
+    <a href="{{ url_for('home', sort='latest', q=request.args.get('q','')) }}"
+       class="{% if sort != 'oldest' %}active{% endif %}">
         <span class="icon">▲</span>
         Latest
     </a>
 
-    <a href="/home?sort=oldest">
+    <a href="{{ url_for('home', sort='oldest', q=request.args.get('q','')) }}"
+       class="{% if sort == 'oldest' %}active{% endif %}">
         <span class="icon">▼</span>
         Oldest
     </a>
