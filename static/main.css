@@ -1308,32 +1308,22 @@ body.horror-active .skull-eye{
 
 }
 .timeline-toggle{
-    background:linear-gradient(180deg,#111c16,#0b120e);
-    border:1px solid rgba(141,182,143,.25);
-    border-radius:14px;
-    overflow:hidden;
+    background:#1a1814;
+    border:1px solid #705b34;
 }
 
 .timeline-slider{
     background:linear-gradient(
-        135deg,
-        #6ea875,
-        #4b7253
+        180deg,
+        #cfa85c,
+        #8b6b2f
     );
-
-    box-shadow:
-        0 6px 18px rgba(141,182,143,.25),
-        inset 0 1px rgba(255,255,255,.15);
 }
 
 .timeline-toggle a{
-    color:#8fa796;
+    color:#9d927b;
 }
 
 .timeline-toggle a.active{
-    color:white;
-}
-
-.timeline-toggle a:hover{
-    color:#dff8e4;
+    color:#fff5d7;
 }
