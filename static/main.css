@@ -1192,7 +1192,7 @@ body.horror-active .skull-eye{
 }
 
 /* ==========================================
-   TIMELINE TOGGLE - GITHUB
+   TIMELINE TOGGLE - MEDIUM
 ========================================== */
 
 .timeline-toggle{
@@ -1206,11 +1206,11 @@ body.horror-active .skull-eye{
 
     padding:4px;
 
-    border-radius:10px;
+    border-radius:999px;
 
-    background:#0f1419;
+    background:#121816;
 
-    border:1px solid #30363d;
+    border:1px solid rgba(255,255,255,.05);
 
     overflow:hidden;
 }
@@ -1225,13 +1225,13 @@ body.horror-active .skull-eye{
     width:calc(50% - 4px);
     height:calc(100% - 8px);
 
-    border-radius:7px;
+    border-radius:999px;
 
-    background:#21262d;
+    background:#1c2521;
 
-    border:1px solid #30363d;
+    border:1px solid rgba(255,255,255,.04);
 
-    transition:transform .3s ease;
+    transition:transform .3s cubic-bezier(.22,1,.36,1);
 }
 
 .timeline-toggle.right .timeline-slider{
