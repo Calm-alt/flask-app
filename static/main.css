@@ -1307,6 +1307,10 @@ body.horror-active .skull-eye{
     pointer-events:none;
 
 }
+/* ==========================================
+   KNIGHTS STONE TIMELINE
+========================================== */
+
 .timeline-toggle{
     position:relative;
     display:grid;
@@ -1318,44 +1322,47 @@ body.horror-active .skull-eye{
 
     border-radius:14px;
 
-    /* Same colour as search input */
-    background:rgba(8,17,13,.7);
+    /* Stone body */
+    background:
+        linear-gradient(180deg,#3f433f 0%,#2e322f 45%,#222522 100%);
 
-    border:1px solid rgba(141,182,143,.22);
+    border:2px solid #6d746d;
 
     overflow:hidden;
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.04),
-        inset 0 -1px 0 rgba(0,0,0,.45),
-        0 8px 20px rgba(0,0,0,.28);
-
-    transition:.25s;
+        inset 0 2px rgba(255,255,255,.08),
+        inset 0 -3px rgba(0,0,0,.45),
+        0 10px 22px rgba(0,0,0,.35);
 }
 
-/* top highlight layer */
+/* carved stone texture */
 .timeline-toggle::before{
     content:"";
     position:absolute;
-    inset:1px;
-    border-radius:12px;
+    inset:2px;
+    border-radius:11px;
 
-    border:1px solid rgba(255,255,255,.04);
+    background:
+        radial-gradient(circle at 18% 30%,rgba(255,255,255,.05) 0 2px,transparent 3px),
+        radial-gradient(circle at 74% 62%,rgba(0,0,0,.20) 0 2px,transparent 3px),
+        radial-gradient(circle at 46% 82%,rgba(255,255,255,.04) 0 1px,transparent 2px);
 
+    opacity:.7;
     pointer-events:none;
 }
 
-/* soft glow layer */
+/* engraved border */
 .timeline-toggle::after{
     content:"";
     position:absolute;
-    inset:-1px;
+    inset:0;
 
     border-radius:14px;
 
     box-shadow:
-        0 0 0 1px rgba(141,182,143,.08),
-        0 0 22px rgba(141,182,143,.08);
+        inset 0 0 0 1px rgba(255,255,255,.05),
+        inset 0 0 0 2px rgba(0,0,0,.22);
 
     pointer-events:none;
 }
@@ -1371,19 +1378,66 @@ body.horror-active .skull-eye{
 
     border-radius:10px;
 
-    background:linear-gradient(
-        180deg,
-        rgba(34,55,42,.95),
-        rgba(22,36,28,.98)
-    );
+    /* Emerald stone */
+    background:
+        linear-gradient(
+            180deg,
+            #84ad86,
+            #648466,
+            #49634b
+        );
 
-    border:1px solid rgba(141,182,143,.30);
+    border:1px solid #93bf96;
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.05),
-        inset 0 -2px 3px rgba(0,0,0,.35),
-        0 4px 12px rgba(0,0,0,.30),
-        0 0 12px rgba(141,182,143,.10);
+        inset 0 1px rgba(255,255,255,.18),
+        inset 0 -3px rgba(0,0,0,.35),
+        0 4px 10px rgba(0,0,0,.35),
+        0 0 14px rgba(104,160,113,.15);
 
     transition:transform .35s cubic-bezier(.22,1,.36,1);
+}
+
+.timeline-toggle.right .timeline-slider{
+    transform:translateX(100%);
+}
+
+.timeline-toggle a{
+    position:relative;
+    z-index:2;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:6px;
+
+    font-size:.8rem;
+    font-weight:700;
+
+    text-transform:uppercase;
+    letter-spacing:1px;
+
+    color:#bcc5bc;
+
+    transition:.25s;
+}
+
+.timeline-toggle a.active{
+    color:#ffffff;
+    text-shadow:0 0 8px rgba(255,255,255,.18);
+}
+
+.timeline-toggle a:hover{
+    color:#eef5ef;
+}
+
+.toggle-icon{
+    width:14px;
+    height:14px;
+    stroke-width:2.4;
+    transition:.25s;
+}
+
+.timeline-toggle a:hover .toggle-icon{
+    transform:translateY(-1px);
 }
