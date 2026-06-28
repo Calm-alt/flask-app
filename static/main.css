@@ -1192,10 +1192,11 @@ body.horror-active .skull-eye{
 }
 
 /* ==========================================
-   TIMELINE TOGGLE - STONE
+   TIMELINE TOGGLE - FROST
 ========================================== */
 
 .timeline-toggle{
+
     position:relative;
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -1205,17 +1206,15 @@ body.horror-active .skull-eye{
 
     padding:4px;
 
-    border-radius:12px;
+    border-radius:14px;
 
-    background:#111814;
+    background:rgba(18,25,20,.65);
 
-    border:1px solid #1f2b24;
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.05);
 
     overflow:hidden;
-}
-
-.timeline-toggle:hover{
-    border-color:#2a3930;
 }
 
 .timeline-slider{
@@ -1228,11 +1227,11 @@ body.horror-active .skull-eye{
     width:calc(50% - 4px);
     height:calc(100% - 8px);
 
-    border-radius:8px;
+    border-radius:10px;
 
-    background:#18211c;
+    background:rgba(255,255,255,.08);
 
-    border:1px solid #26342c;
+    border:1px solid rgba(255,255,255,.05);
 
     transition:transform .32s ease;
 }
