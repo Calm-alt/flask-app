@@ -1363,10 +1363,6 @@ body.horror-active .skull-eye{
 .timeline-toggle.animate-left .timeline-slider{
     animation:forestSlideLeft .42s forwards;
 }
-.timeline-slider{
-    transform:translateX(0);
-}
-
 .timeline-toggle.right .timeline-slider{
     transform:translateX(100%);
 }
