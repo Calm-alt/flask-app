@@ -2728,3 +2728,31 @@ body.horror-active .skull-eye{
 .timeline-toggle.right .timeline-slider{
     transform:translateX(100%);
 }
+.timeline-toggle::before{
+    content:"";
+    position:absolute;
+    inset:2px;
+    border-radius:12px;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,.10),
+            rgba(0,0,0,.25)
+        );
+
+    backdrop-filter:blur(2px);
+
+    opacity:1;
+    transition:
+        opacity .35s ease,
+        filter .35s ease;
+
+    filter:blur(1px);
+    pointer-events:none;
+    z-index:3;
+}
+
+.timeline-toggle:hover::before{
+    opacity:0;
+    filter:blur(5px);
+}
