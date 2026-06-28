@@ -1191,48 +1191,51 @@ body.horror-active .skull-eye{
         0 0 40px rgba(0,255,210,.25);
 }
 
-/* ===== Knights - Moss ===== */
-
 .timeline-toggle{
+
     position:relative;
+
     display:grid;
     grid-template-columns:1fr 1fr;
 
-    width:170px;
-    height:40px;
+    width:168px;
+    height:38px;
 
-    padding:4px;
+    padding:3px;
 
-    border-radius:12px;
+    border-radius:999px;
 
-    background:#101a14;
-    border:1px solid #24362b;
+    background:#111a15;
 
-    overflow:hidden;
-}
+    border:1px solid #2d4435;
 
-.timeline-toggle:hover{
-    border-color:#35513f;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.03);
+
 }
 
 .timeline-slider{
 
     position:absolute;
-    top:4px;
-    left:4px;
 
-    width:calc(50% - 4px);
-    height:calc(100% - 8px);
+    top:3px;
+    left:3px;
 
-    border-radius:9px;
+    width:calc(50% - 3px);
+    height:calc(100% - 6px);
+
+    border-radius:999px;
 
     background:linear-gradient(
         180deg,
-        #294032,
-        #203128
+        #456a4d,
+        #36553e
     );
 
-    border:1px solid #496652;
+    border:1px solid #6d9772;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08);
 
     transition:transform .32s cubic-bezier(.22,1,.36,1);
 }
