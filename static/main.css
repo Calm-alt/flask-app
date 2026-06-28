@@ -1307,10 +1307,6 @@ body.horror-active .skull-eye{
     pointer-events:none;
 
 }
-/* ==========================================
-   KNIGHTS TIMELINE (Modern + Search Style)
-========================================== */
-
 .timeline-toggle{
     position:relative;
     display:grid;
@@ -1318,7 +1314,6 @@ body.horror-active .skull-eye{
 
     width:190px;
     height:46px;
-
     padding:4px;
 
     border-radius:14px;
@@ -1326,25 +1321,44 @@ body.horror-active .skull-eye{
     /* Same colour as search input */
     background:rgba(8,17,13,.7);
 
-    border:1px solid var(--border);
+    border:1px solid rgba(141,182,143,.22);
 
     overflow:hidden;
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.03),
-        0 8px 24px rgba(0,0,0,.25);
-
-    transition:var(--transition);
-}
-
-.timeline-toggle:hover{
-    border-color:rgba(141,182,143,.45);
-    box-shadow:
         inset 0 1px 0 rgba(255,255,255,.04),
-        0 10px 30px rgba(0,0,0,.32);
+        inset 0 -1px 0 rgba(0,0,0,.45),
+        0 8px 20px rgba(0,0,0,.28);
+
+    transition:.25s;
 }
 
-/* Active slider */
+/* top highlight layer */
+.timeline-toggle::before{
+    content:"";
+    position:absolute;
+    inset:1px;
+    border-radius:12px;
+
+    border:1px solid rgba(255,255,255,.04);
+
+    pointer-events:none;
+}
+
+/* soft glow layer */
+.timeline-toggle::after{
+    content:"";
+    position:absolute;
+    inset:-1px;
+
+    border-radius:14px;
+
+    box-shadow:
+        0 0 0 1px rgba(141,182,143,.08),
+        0 0 22px rgba(141,182,143,.08);
+
+    pointer-events:none;
+}
 
 .timeline-slider{
     position:absolute;
@@ -1359,71 +1373,17 @@ body.horror-active .skull-eye{
 
     background:linear-gradient(
         180deg,
-        rgba(141,182,143,.30),
-        rgba(80,118,83,.45)
+        rgba(34,55,42,.95),
+        rgba(22,36,28,.98)
     );
 
-    border:1px solid rgba(141,182,143,.35);
+    border:1px solid rgba(141,182,143,.30);
 
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,.05),
-        0 0 16px rgba(141,182,143,.12);
+        inset 0 -2px 3px rgba(0,0,0,.35),
+        0 4px 12px rgba(0,0,0,.30),
+        0 0 12px rgba(141,182,143,.10);
 
-    transition:
-        transform .35s cubic-bezier(.22,1,.36,1),
-        background .25s ease;
-}
-
-.timeline-toggle.right .timeline-slider{
-    transform:translateX(100%);
-}
-
-/* Links */
-
-.timeline-toggle a{
-    position:relative;
-    z-index:2;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-
-    font-size:.82rem;
-    font-weight:700;
-    letter-spacing:.3px;
-
-    color:var(--muted);
-
-    transition:var(--transition);
-}
-
-.timeline-toggle a.active{
-    color:var(--text);
-}
-
-.timeline-toggle a:hover{
-    color:var(--text-soft);
-}
-
-.toggle-icon{
-    width:14px;
-    height:14px;
-    stroke-width:2.4;
-    stroke:currentColor;
-    fill:none;
-    transition:transform .2s ease;
-}
-
-.timeline-toggle a:hover .toggle-icon{
-    transform:translateY(-1px);
-}
-
-.timeline-toggle::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,.04);
-    pointer-events:none;
+    transition:transform .35s cubic-bezier(.22,1,.36,1);
 }
