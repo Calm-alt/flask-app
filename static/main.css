@@ -924,66 +924,70 @@ body:not(.horror-active) .site-logo:hover::after{
 
 
 /* ================= SEGMENTED CONTROL ================= */
-/* ====================================================
-   MODERN SEGMENTED CONTROL
-==================================================== */
+/* =====================================================
+   TIMELINE TOGGLE
+===================================================== */
 
 .timeline-toggle{
-
-    --pad:4px;
 
     position:relative;
 
     display:grid;
     grid-template-columns:1fr 1fr;
 
-    width:170px;
-    height:42px;
+    width:158px;
+    height:36px;
 
-    padding:var(--pad);
-
-    border-radius:14px;
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(20,30,24,.98),
-            rgba(9,15,12,.98)
-        );
-
-    border:1px solid rgba(141,182,143,.16);
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.04),
-        0 10px 22px rgba(0,0,0,.32);
-
-    overflow:hidden;
-}
-
-/* ========================================= */
-
-.timeline-slider{
-
-    position:absolute;
-
-    top:var(--pad);
-    left:var(--pad);
-
-    width:calc(50% - var(--pad));
-    height:calc(100% - (var(--pad) * 2));
+    padding:3px;
 
     border-radius:10px;
 
     background:
         linear-gradient(
             180deg,
-            #a8cca8,
-            #84b58b
+            #111b16,
+            #0b120f
+        );
+
+    border:1px solid rgba(141,182,143,.14);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.03),
+        0 8px 18px rgba(0,0,0,.30);
+
+    overflow:hidden;
+}
+
+/* ====================== */
+
+.timeline-slider{
+
+    position:absolute;
+
+    top:3px;
+    left:3px;
+
+    width:calc(50% - 3px);
+    height:calc(100% - 6px);
+
+    border-radius:7px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(150,194,151,.95),
+            rgba(116,156,120,.95)
         );
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.45),
-        0 0 15px rgba(141,182,143,.22);
+
+        inset 0 1px 0 rgba(255,255,255,.18),
+
+        inset 0 -1px 0 rgba(0,0,0,.15),
+
+        0 4px 10px rgba(0,0,0,.18),
+
+        0 0 14px rgba(141,182,143,.12);
 
     transition:
         transform .42s cubic-bezier(.22,1,.36,1);
@@ -991,13 +995,15 @@ body:not(.horror-active) .site-logo:hover::after{
     z-index:0;
 }
 
+/* move right */
+
 .timeline-toggle.right .timeline-slider{
 
-    transform:translateX(calc(100% + var(--pad)));
+    transform:translateX(100%);
 
 }
 
-/* ========================================= */
+/* ====================== */
 
 .timeline-toggle a{
 
@@ -1006,83 +1012,70 @@ body:not(.horror-active) .site-logo:hover::after{
     z-index:2;
 
     display:flex;
-
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 
-    gap:5px;
+    gap:4px;
 
-    padding:0;
+    font-size:.72rem;
 
-    font-size:.77rem;
     font-weight:700;
 
     color:var(--muted);
 
-    border-radius:10px;
-
     transition:
-        color .25s,
-        transform .18s;
+        color .25s ease;
+
 }
+
+/* active */
 
 .timeline-toggle a.active{
 
-    color:#08110d;
+    color:#07100c;
 
 }
 
-.timeline-toggle a:not(.active):hover{
+/* inactive */
+
+.timeline-toggle a:hover:not(.active){
 
     color:var(--text);
 
 }
 
-.timeline-toggle a:active{
-
-    transform:scale(.96);
-
-}
-
-/* ========================================= */
+/* ====================== */
 
 .toggle-icon{
 
-    width:14px;
-    height:14px;
+    width:13px;
+    height:13px;
 
     stroke:currentColor;
+
     fill:none;
 
     stroke-width:2.2;
-    stroke-linecap:round;
-    stroke-linejoin:round;
+
+    transition:.25s;
 
 }
 
-/* ========================================= */
+.timeline-toggle a:hover .toggle-icon{
 
-.timeline-toggle a.active .toggle-icon{
-
-    animation:bob .9s ease;
+    transform:translateY(-1px);
 
 }
 
-@keyframes bob{
+/* mobile */
 
-    0%{transform:translateY(0);}
-    35%{transform:translateY(-2px);}
-    100%{transform:translateY(0);}
-
-}
-
-/* ========================================= */
-
-@media (max-width:768px){
+@media(max-width:768px){
 
     .timeline-toggle{
 
-        width:165px;
+        width:152px;
+
+        height:34px;
 
     }
 
