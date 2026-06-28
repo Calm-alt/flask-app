@@ -954,7 +954,7 @@ body:not(.horror-active) .site-logo:hover::after{
 
     border:1px solid var(--border);
 
-    border-radius:12px;
+    border-radius:10px;
 
     overflow:hidden;
 
@@ -966,14 +966,14 @@ body:not(.horror-active) .site-logo:hover::after{
 .timeline-toggle a{
     display:flex;
     align-items:center;
-    gap:8px;
+    gap:6px;
 
-    padding:12px 20px;
+    padding:8px 14px;
 
     color:var(--muted);
 
     font-weight:700;
-    font-size:.95rem;
+    font-size:.85rem;
 
     transition:
         background .25s ease,
