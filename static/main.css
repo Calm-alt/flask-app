@@ -1319,18 +1319,19 @@ body.horror-active .skull-eye{
 }
 
 .feed-count{
+    color:#9da897;
     font-size:.82rem;
-    color:var(--muted);
     letter-spacing:.3px;
 }
 
 /* ==========================================
-   KNIGHTS STONE TIMELINE
+   FOREST TIMELINE
 ========================================== */
 
 .timeline-toggle{
 
     position:relative;
+
     display:grid;
     grid-template-columns:1fr 1fr;
 
@@ -1339,29 +1340,29 @@ body.horror-active .skull-eye{
 
     padding:4px;
 
-    border-radius:14px;
+    border-radius:15px;
+
+    overflow:hidden;
 
     background:
         linear-gradient(
             180deg,
-            #404441 0%,
-            #313532 45%,
-            #222523 100%
+            #55654f 0%,
+            #445241 45%,
+            #313b30 100%
         );
 
-    border:2px solid #6d746d;
-
-    overflow:hidden;
+    border:2px solid #75866f;
 
     box-shadow:
         inset 0 2px rgba(255,255,255,.08),
-        inset 0 -3px rgba(0,0,0,.45),
-        0 10px 22px rgba(0,0,0,.35);
+        inset 0 -3px rgba(0,0,0,.35),
+        0 10px 22px rgba(0,0,0,.28);
 
-    transition:.3s ease;
+    transition:.35s;
 }
 
-/* Stone texture */
+/* Moss texture */
 
 .timeline-toggle::before{
 
@@ -1370,19 +1371,30 @@ body.horror-active .skull-eye{
     position:absolute;
     inset:2px;
 
-    border-radius:11px;
+    border-radius:12px;
 
     background:
-        radial-gradient(circle at 18% 30%,rgba(255,255,255,.05) 0 2px,transparent 3px),
-        radial-gradient(circle at 74% 62%,rgba(0,0,0,.20) 0 2px,transparent 3px),
-        radial-gradient(circle at 46% 82%,rgba(255,255,255,.04) 0 1px,transparent 2px);
 
-    opacity:.75;
+        radial-gradient(circle at 18% 28%,rgba(255,255,255,.05) 0 2px,transparent 3px),
+
+        radial-gradient(circle at 72% 60%,rgba(30,45,25,.22) 0 2px,transparent 3px),
+
+        radial-gradient(circle at 46% 80%,rgba(120,140,115,.08) 0 2px,transparent 3px),
+
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.02),
+            transparent 45%,
+            rgba(0,0,0,.12)
+        );
+
+    opacity:.9;
 
     pointer-events:none;
+
 }
 
-/* Engraved border */
+/* Carved edge */
 
 .timeline-toggle::after{
 
@@ -1391,30 +1403,29 @@ body.horror-active .skull-eye{
     position:absolute;
     inset:0;
 
-    border-radius:14px;
+    border-radius:15px;
 
     box-shadow:
         inset 0 0 0 1px rgba(255,255,255,.05),
-        inset 0 0 0 2px rgba(0,0,0,.25);
+        inset 0 0 0 2px rgba(0,0,0,.22);
 
     pointer-events:none;
-}
 
-/* Hover */
+}
 
 .timeline-toggle:hover{
 
-    border-color:#8b938c;
+    border-color:#91a08a;
 
     box-shadow:
-        inset 0 2px rgba(255,255,255,.10),
-        inset 0 -3px rgba(0,0,0,.45),
-        0 14px 30px rgba(0,0,0,.45);
+        inset 0 2px rgba(255,255,255,.1),
+        inset 0 -3px rgba(0,0,0,.35),
+        0 14px 26px rgba(0,0,0,.35);
 
 }
 
 /* ==========================================
-   STONE SLIDER
+   SLIDER
 ========================================== */
 
 .timeline-slider{
@@ -1427,22 +1438,22 @@ body.horror-active .skull-eye{
     width:calc(50% - 4px);
     height:calc(100% - 8px);
 
-    border-radius:10px;
+    border-radius:11px;
 
     background:
         linear-gradient(
             180deg,
-            #909791,
-            #707772,
-            #535a55
+            #7e9276,
+            #687c63,
+            #53634e
         );
 
-    border:1px solid #adb5af;
+    border:1px solid #a4b29d;
 
     box-shadow:
-        inset 0 1px rgba(255,255,255,.22),
-        inset 0 -3px rgba(0,0,0,.35),
-        0 5px 12px rgba(0,0,0,.35);
+        inset 0 1px rgba(255,255,255,.20),
+        inset 0 -3px rgba(0,0,0,.25),
+        0 4px 10px rgba(0,0,0,.25);
 
     transform-origin:center;
 
@@ -1452,28 +1463,22 @@ body.horror-active .skull-eye{
 
 }
 
-/* Heavy stone movement */
-
-.timeline-toggle .timeline-slider{
-
-    animation:none;
-
-}
+/* Heavy movement */
 
 .timeline-toggle.right .timeline-slider{
 
-    animation:stoneSlideRight .42s cubic-bezier(.2,.95,.3,1) forwards;
+    animation:forestSlideRight .42s cubic-bezier(.22,.9,.3,1) forwards;
 
 }
 
 .timeline-toggle:not(.right) .timeline-slider{
 
-    animation:stoneSlideLeft .42s cubic-bezier(.2,.95,.3,1) forwards;
+    animation:forestSlideLeft .42s cubic-bezier(.22,.9,.3,1) forwards;
 
 }
 
 /* ==========================================
-   BUTTONS
+   LINKS
 ========================================== */
 
 .timeline-toggle a{
@@ -1485,7 +1490,7 @@ body.horror-active .skull-eye{
     justify-content:center;
     align-items:center;
 
-    gap:6px;
+    color:#d4ddd1;
 
     font-size:.8rem;
     font-weight:700;
@@ -1493,33 +1498,30 @@ body.horror-active .skull-eye{
     text-transform:uppercase;
     letter-spacing:1px;
 
-    color:#c2c8c2;
-
     transition:.25s;
-}
-
-.timeline-toggle a.active{
-
-    color:#fff;
-
-    text-shadow:
-        0 0 8px rgba(255,255,255,.15);
-
-}
-
-.timeline-toggle a:hover{
-
-    color:#f4f7f4;
 
 }
 
 .timeline-toggle a:first-child{
 
-    border-right:1px solid rgba(255,255,255,.08);
+    border-right:1px solid rgba(255,255,255,.06);
 
 }
 
-/* Icons */
+.timeline-toggle a:hover{
+
+    color:#ffffff;
+
+}
+
+.timeline-toggle a.active{
+
+    color:#ffffff;
+
+    text-shadow:
+        0 0 8px rgba(210,230,205,.25);
+
+}
 
 .toggle-icon{
 
@@ -1531,6 +1533,7 @@ body.horror-active .skull-eye{
     stroke-width:2.4;
 
     transition:.25s;
+
 }
 
 .timeline-toggle a:hover .toggle-icon{
@@ -1548,80 +1551,91 @@ body.horror-active .timeline-toggle{
     background:
         linear-gradient(
             180deg,
-            #2b0707,
-            #190303
+            #47463c,
+            #35332d,
+            #282622
         );
 
-    border:2px solid #7d1b1b;
+    border-color:#6b5f58;
 
     box-shadow:
-        inset 0 2px rgba(255,110,110,.06),
-        inset 0 -3px rgba(0,0,0,.6),
-        0 0 28px rgba(120,0,0,.45);
+        inset 0 2px rgba(255,255,255,.03),
+        inset 0 -3px rgba(0,0,0,.45),
+        0 0 18px rgba(70,35,35,.25);
 
 }
 
-/* Bloody stone */
+/* Dead moss */
 
 body.horror-active .timeline-toggle::before{
 
     background:
-        radial-gradient(circle at 22% 30%,rgba(120,10,10,.35) 0 2px,transparent 3px),
-        radial-gradient(circle at 74% 68%,rgba(255,70,70,.08) 0 2px,transparent 3px),
-        radial-gradient(circle at 48% 82%,rgba(0,0,0,.28) 0 2px,transparent 3px);
+
+        radial-gradient(circle at 22% 28%,rgba(90,70,60,.15) 0 2px,transparent 3px),
+
+        radial-gradient(circle at 75% 65%,rgba(50,25,25,.18) 0 2px,transparent 3px),
+
+        radial-gradient(circle at 45% 82%,rgba(120,90,80,.08) 0 2px,transparent 3px),
+
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.02),
+            transparent,
+            rgba(0,0,0,.18)
+        );
 
 }
 
-/* Bloody Mary slider */
+/* Corrupted wood slider */
 
 body.horror-active .timeline-slider{
 
     background:
         linear-gradient(
             180deg,
-            #b62828,
-            #7d1010,
-            #470606
+            #786861,
+            #5d4c46,
+            #453733
         );
 
-    border:1px solid #d76d6d;
+    border:1px solid #8f7a73;
 
     box-shadow:
-        inset 0 1px rgba(255,190,190,.18),
-        inset 0 -3px rgba(0,0,0,.45),
-        0 0 16px rgba(180,25,25,.45);
+        inset 0 1px rgba(255,255,255,.10),
+        inset 0 -3px rgba(0,0,0,.35),
+        0 0 12px rgba(80,35,35,.18);
 
-    animation-duration:3s;
+    animation-duration:4s;
 
 }
 
 body.horror-active .timeline-toggle a{
 
-    color:#c89a9a;
+    color:#cabdb8;
 
 }
 
 body.horror-active .timeline-toggle a.active{
 
-    color:#fff3f3;
+    color:#f4ece8;
 
     text-shadow:
-        0 0 10px rgba(255,70,70,.55);
+        0 0 8px rgba(140,80,80,.20);
 
 }
 
 /* ==========================================
-   STONE MOVEMENT
+   ANIMATIONS
 ========================================== */
 
-@keyframes stoneSlideRight{
+@keyframes forestSlideRight{
 
     0%{
         transform:translateX(0) scaleX(.97);
     }
 
     60%{
-        transform:translateX(calc(100% + 2px)) scaleX(1.01);
+        transform:translateX(calc(100% + 2px)) scaleX(1.02);
     }
 
     82%{
@@ -1634,14 +1648,14 @@ body.horror-active .timeline-toggle a.active{
 
 }
 
-@keyframes stoneSlideLeft{
+@keyframes forestSlideLeft{
 
     0%{
         transform:translateX(100%) scaleX(.97);
     }
 
     60%{
-        transform:translateX(-2px) scaleX(1.01);
+        transform:translateX(-2px) scaleX(1.02);
     }
 
     82%{
@@ -1654,29 +1668,17 @@ body.horror-active .timeline-toggle a.active{
 
 }
 
-/* ==========================================
-   BLOOD PULSE
-========================================== */
-
-@keyframes bloodPulse{
+@keyframes corruptedPulse{
 
     0%,100%{
 
         filter:brightness(1);
 
-        box-shadow:
-            inset 0 1px rgba(255,180,180,.15),
-            0 0 10px rgba(120,0,0,.35);
-
     }
 
     50%{
 
-        filter:brightness(1.15);
-
-        box-shadow:
-            inset 0 1px rgba(255,220,220,.30),
-            0 0 24px rgba(185,18,18,.75);
+        filter:brightness(1.05);
 
     }
 
