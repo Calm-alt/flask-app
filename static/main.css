@@ -925,135 +925,185 @@ body:not(.horror-active) .site-logo:hover::after{
 
 /* ================= SEGMENTED CONTROL ================= */
 /* =========================
-   FEED CONTROLS
-========================= */
-
-.feed-controls{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:20px 0 26px;
-    gap:16px;
-    flex-wrap:wrap;
-}
-
-.feed-count{
-    color:var(--muted);
-    font-size:.85rem;
-}
-
-/* =========================
-   COMPACT SEGMENTED CONTROL
+   KNIGHTS TIMELINE TOGGLE
 ========================= */
 
 .timeline-toggle{
     display:inline-flex;
     align-items:center;
 
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:999px;
+    padding:4px;
 
-    padding:3px;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(22,35,28,.98),
+            rgba(12,20,15,.98)
+        );
+
+    border:1px solid rgba(141,182,143,.18);
+
+    border-radius:16px;
 
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,.03),
-        0 5px 18px rgba(0,0,0,.18);
+        inset 0 -2px 8px rgba(0,0,0,.35),
+        0 10px 28px rgba(0,0,0,.22);
+
+    gap:4px;
 }
 
 .timeline-toggle a{
+
+    min-width:88px;
+
     display:flex;
+    justify-content:center;
     align-items:center;
-    gap:5px;
 
-    padding:6px 13px;
+    gap:8px;
 
-    border-radius:999px;
+    padding:11px 18px;
+
+    border-radius:12px;
+
+    font-size:.90rem;
+    font-weight:700;
 
     color:var(--muted);
 
-    font-size:.82rem;
-    font-weight:700;
-    line-height:1;
-
     transition:
-        background .25s ease,
-        color .25s ease,
-        transform .25s ease,
-        box-shadow .25s ease;
+        background .28s ease,
+        color .28s ease,
+        box-shadow .28s ease,
+        transform .25s ease;
+
+    position:relative;
 }
 
 .timeline-toggle a:hover{
+
     color:var(--text);
-    background:rgba(255,255,255,.05);
+
+    background:
+        rgba(255,255,255,.035);
+
+    transform:translateY(-1px);
+
 }
 
 .timeline-toggle a.active{
-    background:var(--accent);
+
     color:#08110d;
+
+    background:
+        linear-gradient(
+            180deg,
+            #9dc7a0,
+            #82ae86
+        );
+
     box-shadow:
-        0 0 14px rgba(141,182,143,.35);
+        inset 0 1px 0 rgba(255,255,255,.35),
+        0 0 20px rgba(141,182,143,.30),
+        0 4px 14px rgba(0,0,0,.22);
+
 }
 
-/* =========================
-   ICONS
-========================= */
+/* nice glow */
+
+.timeline-toggle a.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:12px;
+
+    box-shadow:
+        inset 0 0 16px rgba(255,255,255,.12);
+
+    pointer-events:none;
+
+}
+
+/* icons */
 
 .icon{
-    font-size:.7rem;
+
+    font-size:.72rem;
+
+    opacity:.75;
+
     transition:
-        transform .25s ease,
-        text-shadow .25s ease;
+        transform .3s ease,
+        opacity .3s ease;
+
 }
 
 .timeline-toggle a:hover .icon{
-    transform:translateY(-2px);
+
+    opacity:1;
+
 }
 
 .timeline-toggle a.active .icon{
-    text-shadow:0 0 8px rgba(255,255,255,.45);
+
+    opacity:1;
+
 }
 
-/* Latest animation */
+/* animations */
 
 .timeline-toggle a:first-child.active .icon{
-    animation:arrowUp 1.4s ease-in-out infinite;
+
+    animation:arrowUp 1.5s ease-in-out infinite;
+
 }
 
-/* Oldest animation */
-
 .timeline-toggle a:last-child.active .icon{
-    animation:arrowDown 1.4s ease-in-out infinite;
+
+    animation:arrowDown 1.5s ease-in-out infinite;
+
 }
 
 @keyframes arrowUp{
+
     0%,100%{
         transform:translateY(0);
     }
+
     50%{
         transform:translateY(-3px);
     }
+
 }
 
 @keyframes arrowDown{
+
     0%,100%{
         transform:translateY(0);
     }
+
     50%{
         transform:translateY(3px);
     }
+
 }
 
-@media (max-width:768px){
-
-    .feed-controls{
-        flex-direction:column;
-        align-items:flex-start;
-    }
+@media(max-width:768px){
 
     .timeline-toggle{
-        width:auto;
+        width:100%;
     }
+
+    .timeline-toggle a{
+        flex:1;
+        min-width:0;
+    }
+
 }
 
 
