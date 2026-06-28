@@ -924,134 +924,106 @@ body:not(.horror-active) .site-logo:hover::after{
 
 
 /* ================= SEGMENTED CONTROL ================= */
-/* =========================
-   FEED CONTROLS
-========================= */
-
-.feed-controls{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:24px 0 30px;
-    gap:20px;
-    flex-wrap:wrap;
-}
-
-.feed-count{
-    color:var(--muted);
-    font-size:.88rem;
-}
-
-
-/* =========================
-   KNIGHTS TIMELINE SWITCH
-========================= */
+/* ====================================================
+   MODERN SEGMENTED CONTROL
+==================================================== */
 
 .timeline-toggle{
 
+    --pad:4px;
+
     position:relative;
 
-    display:inline-grid;
+    display:grid;
     grid-template-columns:1fr 1fr;
 
-    width:240px;
-    height:56px;
+    width:170px;
+    height:42px;
 
-    padding:5px;
+    padding:var(--pad);
 
-    border-radius:18px;
-
-    overflow:hidden;
+    border-radius:14px;
 
     background:
         linear-gradient(
             180deg,
-            rgba(22,36,28,.98),
-            rgba(10,17,13,.98)
+            rgba(20,30,24,.98),
+            rgba(9,15,12,.98)
         );
 
-    border:1px solid rgba(141,182,143,.18);
+    border:1px solid rgba(141,182,143,.16);
 
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,.04),
-        0 10px 28px rgba(0,0,0,.35);
+        0 10px 22px rgba(0,0,0,.32);
 
+    overflow:hidden;
 }
 
-
-/* Sliding active background */
+/* ========================================= */
 
 .timeline-slider{
 
     position:absolute;
 
-    top:5px;
-    left:5px;
+    top:var(--pad);
+    left:var(--pad);
 
-    width:calc(50% - 5px);
-    height:calc(100% - 10px);
+    width:calc(50% - var(--pad));
+    height:calc(100% - (var(--pad) * 2));
 
-    border-radius:14px;
+    border-radius:10px;
 
     background:
         linear-gradient(
             180deg,
-            #a6cca8,
-            #86b58a
+            #a8cca8,
+            #84b58b
         );
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.35),
-        0 0 18px rgba(141,182,143,.28);
+        inset 0 1px 0 rgba(255,255,255,.45),
+        0 0 15px rgba(141,182,143,.22);
 
     transition:
-        transform .35s cubic-bezier(.22,1,.36,1);
+        transform .42s cubic-bezier(.22,1,.36,1);
 
     z-index:0;
-
 }
 
 .timeline-toggle.right .timeline-slider{
 
-    transform:translateX(100%);
+    transform:translateX(calc(100% + var(--pad)));
 
 }
 
-
-/* Buttons */
+/* ========================================= */
 
 .timeline-toggle a{
 
     position:relative;
+
     z-index:2;
 
     display:flex;
-    align-items:center;
+
     justify-content:center;
+    align-items:center;
 
-    gap:8px;
+    gap:5px;
 
-    padding:0 16px;
+    padding:0;
 
-    border-radius:14px;
-
-    font-size:.92rem;
+    font-size:.77rem;
     font-weight:700;
-
-    letter-spacing:.3px;
 
     color:var(--muted);
 
+    border-radius:10px;
+
     transition:
-        color .25s ease,
-        transform .2s ease;
-
-}
-
-.timeline-toggle a:hover{
-
-    color:var(--text);
-
+        color .25s,
+        transform .18s;
 }
 
 .timeline-toggle a.active{
@@ -1060,19 +1032,24 @@ body:not(.horror-active) .site-logo:hover::after{
 
 }
 
-.timeline-toggle a:hover .toggle-icon{
+.timeline-toggle a:not(.active):hover{
 
-    transform:translateY(-2px);
+    color:var(--text);
 
 }
 
+.timeline-toggle a:active{
 
-/* SVG Icons */
+    transform:scale(.96);
+
+}
+
+/* ========================================= */
 
 .toggle-icon{
 
-    width:17px;
-    height:17px;
+    width:14px;
+    height:14px;
 
     stroke:currentColor;
     fill:none;
@@ -1081,68 +1058,32 @@ body:not(.horror-active) .site-logo:hover::after{
     stroke-linecap:round;
     stroke-linejoin:round;
 
-    transition:.25s;
-
 }
+
+/* ========================================= */
 
 .timeline-toggle a.active .toggle-icon{
 
-    filter:drop-shadow(0 0 5px rgba(255,255,255,.5));
+    animation:bob .9s ease;
 
 }
 
+@keyframes bob{
 
-/* Active animation */
-
-.timeline-toggle a:first-child.active .toggle-icon{
-
-    animation:arrowUp 1.5s ease-in-out infinite;
-
-}
-
-.timeline-toggle a:last-child.active .toggle-icon{
-
-    animation:arrowDown 1.5s ease-in-out infinite;
+    0%{transform:translateY(0);}
+    35%{transform:translateY(-2px);}
+    100%{transform:translateY(0);}
 
 }
 
+/* ========================================= */
 
-@keyframes arrowUp{
-
-    0%,100%{
-        transform:translateY(0);
-    }
-
-    50%{
-        transform:translateY(-3px);
-    }
-
-}
-
-@keyframes arrowDown{
-
-    0%,100%{
-        transform:translateY(0);
-    }
-
-    50%{
-        transform:translateY(3px);
-    }
-
-}
-
-
-/* Mobile */
-
-@media(max-width:768px){
-
-    .feed-controls{
-        flex-direction:column;
-        align-items:flex-start;
-    }
+@media (max-width:768px){
 
     .timeline-toggle{
-        width:220px;
+
+        width:165px;
+
     }
 
 }
