@@ -924,9 +924,9 @@ body:not(.horror-active) .site-logo:hover::after{
 
 
 /* ================= SEGMENTED CONTROL ================= */
-/* =========================================
+/* ==========================================
    TIMELINE TOGGLE
-========================================= */
+========================================== */
 
 .timeline-toggle{
 
@@ -935,118 +935,103 @@ body:not(.horror-active) .site-logo:hover::after{
     display:grid;
     grid-template-columns:1fr 1fr;
 
-    width:240px;
-    height:52px;
+    width:320px;
+    height:72px;
 
-    padding:5px;
+    padding:8px;
 
-    border-radius:16px;
+    border-radius:22px;
 
     background:linear-gradient(
         180deg,
-        #121f18,
-        #0b110d
+        #131d18,
+        #0c1310
     );
 
-    border:1px solid rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.05);
 
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.05),
-        0 15px 35px rgba(0,0,0,.35);
+        inset 0 1px 0 rgba(255,255,255,.04),
+        0 14px 30px rgba(0,0,0,.35);
 
     overflow:hidden;
 }
 
-/* Sliding pill */
+/* ========================= */
 
 .timeline-slider{
 
     position:absolute;
 
-    top:5px;
-    left:5px;
+    top:8px;
+    left:8px;
 
-    width:calc(50% - 5px);
-    height:calc(100% - 10px);
+    width:calc(50% - 8px);
+    height:calc(100% - 16px);
 
-    border-radius:12px;
+    border-radius:16px;
 
     background:linear-gradient(
         180deg,
-        #9fd6a1,
-        #79ba7f
+        #f3efe4,
+        #ded8c8
     );
 
     box-shadow:
-
-        inset 0 1px 1px rgba(255,255,255,.35),
-
-        0 10px 24px rgba(121,186,127,.30),
-
-        0 0 30px rgba(141,182,143,.18);
+        0 10px 22px rgba(0,0,0,.25),
+        inset 0 1px 0 rgba(255,255,255,.7);
 
     transition:
         transform .45s cubic-bezier(.22,1,.36,1);
 
-    z-index:0;
+    z-index:1;
 }
 
-/* Move */
+/* Slide to Oldest */
 
 .timeline-toggle.right .timeline-slider{
 
     transform:translateX(100%);
-
 }
 
-/* Buttons */
+/* ========================= */
 
 .timeline-toggle a{
 
     position:relative;
-
     z-index:2;
 
     display:flex;
     justify-content:center;
     align-items:center;
+    gap:10px;
 
-    gap:8px;
-
-    font-size:.9rem;
+    font-size:1rem;
     font-weight:700;
 
-    color:#8d9e90;
+    color:#8f9d92;
 
     transition:
-        color .28s,
-        transform .25s;
-
+        color .25s ease,
+        transform .2s ease;
 }
 
 /* Active */
 
 .timeline-toggle a.active{
 
-    color:#06100a;
-
+    color:#18211c;
 }
 
 /* Hover */
 
-.timeline-toggle a:hover{
-
-    transform:translateY(-1px);
-
-}
-
 .timeline-toggle a:not(.active):hover{
 
     color:#ffffff;
-
+    transform:translateY(-1px);
 }
 
-/* Icons */
+/* ========================= */
 
 .toggle-icon{
 
@@ -1054,24 +1039,66 @@ body:not(.horror-active) .site-logo:hover::after{
     height:18px;
 
     stroke:currentColor;
-
     fill:none;
 
-    stroke-width:2.2;
+    stroke-width:2.3;
+    stroke-linecap:round;
+    stroke-linejoin:round;
 
+    transition:transform .25s ease;
 }
 
-/* Mobile */
+.timeline-toggle a:hover .toggle-icon{
 
-@media(max-width:768px){
+    transform:translateY(-2px);
+}
+
+/* ========================= */
+
+.feed-controls{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin:34px 0 28px;
+}
+
+.feed-count{
+
+    color:var(--muted);
+    font-size:.95rem;
+    font-weight:600;
+}
+
+/* ========================= */
+
+@media (max-width:768px){
+
+    .feed-controls{
+
+        flex-direction:column;
+        gap:18px;
+    }
 
     .timeline-toggle{
 
-        width:210px;
-        height:48px;
+        width:100%;
+        max-width:340px;
 
+        height:66px;
     }
 
+    .timeline-toggle a{
+
+        font-size:.95rem;
+    }
+
+    .toggle-icon{
+
+        width:17px;
+        height:17px;
+    }
 }
 
 
