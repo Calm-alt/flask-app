@@ -26,7 +26,10 @@
 
     <section class="feed-controls">
 
-      <div class="timeline-toggle {% if request.args.get('sort', 'latest') == 'oldest' %}right{% endif %}">
+      <div class="timeline-toggle
+{% if request.args.get('sort') == 'oldest' %}
+right
+{% endif %}">
 
     <div class="timeline-slider"></div>
 
@@ -37,7 +40,7 @@
             <path d="M12 18V6M12 6L8 10M12 6L16 10"/>
         </svg>
 
-        Latest
+        <span>Latest</span>
 
     </a>
 
@@ -48,7 +51,7 @@
             <path d="M12 6V18M12 18L8 14M12 18L16 14"/>
         </svg>
 
-        Oldest
+        <span>Oldest</span>
 
     </a>
 
