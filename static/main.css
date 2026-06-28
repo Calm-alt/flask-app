@@ -2569,6 +2569,24 @@ body.horror-active .skull-eye{
 /* ==========================================
    LINKS
 ========================================== */
+.timeline-toggle::before{
+    content:"";
+    position:absolute;
+    inset:2px;
+    border-radius:12px;
+
+    background:rgba(22, 30, 22, .38);
+
+    opacity:1;
+    transition:opacity .28s ease;
+
+    pointer-events:none;
+    z-index:1;
+}
+
+.timeline-toggle:hover::before{
+    opacity:0;
+}
 
 .timeline-toggle a{
 
@@ -2727,22 +2745,4 @@ body.horror-active .skull-eye{
 
 .timeline-toggle.right .timeline-slider{
     transform:translateX(100%);
-}
-.timeline-toggle::before{
-    content:"";
-    position:absolute;
-    inset:2px;
-    border-radius:12px;
-
-    background:rgba(255,255,255,.03); /* Very subtle overlay */
-
-    opacity:1;
-    transition:opacity .3s ease;
-
-    pointer-events:none;
-    z-index:3;
-}
-
-.timeline-toggle:hover::before{
-    opacity:0;
 }
