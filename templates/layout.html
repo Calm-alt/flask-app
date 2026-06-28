@@ -513,68 +513,61 @@ requestAnimationFrame(animate);
 })();
 </script>
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-    const toggle = document.querySelector(".timeline-toggle");
-    if (!toggle) return;
-
-    const links = toggle.querySelectorAll("a");
-
-    // Set initial position after refresh
-    if (links[1].classList.contains("active")) {
-        toggle.classList.add("right");
-    } else {
-        toggle.classList.remove("right");
-    }
-
-    links.forEach((link, index) => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
-
-            const url = link.href;
-
-            toggle.classList.remove("animate-left", "animate-right");
-
-            if (index === 0) {
-                toggle.classList.remove("right");
-                void toggle.offsetWidth;
-                toggle.classList.add("animate-left");
-            } else {
-                toggle.classList.add("right");
-                void toggle.offsetWidth;
-                toggle.classList.add("animate-right");
-            }
-
-            setTimeout(() => {
-                window.location.href = url;
-            }, 420);
-        });
-    });
-});
-    document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.querySelector(".timeline-toggle");
     if (!toggle) return;
 
     const latest = toggle.querySelector('a[href*="sort=latest"]');
     const oldest = toggle.querySelector('a[href*="sort=oldest"]');
+    const links = [latest, oldest];
 
-    // If URL has no sort parameter, restore last choice
+    // Restore last selected sort if URL has none
     const params = new URLSearchParams(window.location.search);
 
     if (!params.has("sort")) {
         const saved = localStorage.getItem("timelineSort");
 
         if (saved === "oldest") {
-            window.location.href = oldest.href;
+            window.location.replace(oldest.href);
             return;
         }
     }
 
-    latest.addEventListener("click", () => {
-        localStorage.setItem("timelineSort", "latest");
-    });
+    // Set slider position on page load
+    if (oldest.classList.contains("active")) {
+        toggle.classList.add("right");
+    } else {
+        toggle.classList.remove("right");
+    }
 
-    oldest.addEventListener("click", () => {
-        localStorage.setItem("timelineSort", "oldest");
+    // Handle clicks
+    links.forEach((link, index) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // Save choice
+            localStorage.setItem(
+                "timelineSort",
+                index === 0 ? "latest" : "oldest"
+            );
+
+            // Restart animation
+            toggle.classList.remove("animate-left", "animate-right");
+            void toggle.offsetWidth;
+
+            if (index === 0) {
+                toggle.classList.remove("right");
+                toggle.classList.add("animate-left");
+            } else {
+                toggle.classList.add("right");
+                toggle.classList.add("animate-right");
+            }
+
+            // Navigate after animation
+            setTimeout(() => {
+                window.location.href = link.href;
+            }, 420);
+        });
     });
 });
 </script>
